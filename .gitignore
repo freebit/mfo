@@ -18,3 +18,8 @@
 
 .idea/
 .idea/*
+
+
+Gemfile.lock
+
+/config/database.yml

@@ -65,11 +65,15 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec'
   gem 'rspec-rails'
+
+
   gem 'rb-inotify', '~> 0.9', :require => false
 
 end
 
 group :test do
-  gem 'capybara', '2.1.0'
+  gem 'capybara', '2.2.0'
+  gem 'spork', '~> 1.0rc'
+  gem 'database_cleaner'
 end
 
