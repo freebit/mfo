@@ -8,5 +8,5 @@
 
 # создаем роли
 
-Role.create(name:'client')
 Role.create(name:'admin')
+Role.create(name:'client')
