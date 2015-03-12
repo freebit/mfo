@@ -1,0 +1,12 @@
+<SOAP-ENV:Envelope  xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:t="www.example.com">
+
+  <SOAP-ENV:Header>
+
+  </SOAP-ENV:Header>
+
+
+  <SOAP-ENV:Body>
+
+  </SOAP-ENV:Body>
+
+</SOAP-ENV:Envelope>
