@@ -1,0 +1,18 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: "Поле не может быть пустым"
+              too_short: "Слишком короткое имя"
+              too_long: "Слишком длинное имя"
+            email:
+              blank: "Поле не может быть пустым"
+              invalid: "Неверный e-mail"
+            password:
+              blank: "Поле не может быть пустым"
+              too_short: "Слишком короткий пароль"
+            password_confirmation:
+              confirmation: "Неверное подтверждение пароля"

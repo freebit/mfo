@@ -2,10 +2,10 @@ FactoryGirl.define do
   factory :user do
     name "Testus"
     email "test@mail.ru"
-    password "test"
-    password_confirmation "test"
+    password "testus"
+    password_confirmation "testus"
     last_visit "2015-02-23 10:29:38"
-    active false
+    active true
   end
 
 end

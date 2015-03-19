@@ -6,11 +6,12 @@ gem 'rails', '4.2.0'
 
 # use Haml
 gem 'haml'
-
 gem 'haml-rails'
 
 gem 'bootstrap-sass'
 gem 'compass-rails'
+
+gem 'simple_form'
 
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'

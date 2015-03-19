@@ -1,0 +1,19 @@
+%table
+  %thead
+    %tr
+      %td Логин
+      %td Email
+      %td Роль
+      %td Активност
+      %td Последний вход
+      %td Изменить
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= user.name
+          %td= user.email
+          %td= user.role
+          %td= user.active
+          %td= user.last_visit
+          %td
+            = #link_to "изменить", user, action_name: :edit
