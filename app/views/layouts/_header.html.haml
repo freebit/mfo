@@ -1,3 +1,12 @@
 %header
   .container
+    %nav.main-menu
+      %ul
+        %li= link_to "Пользователи", users_path
+        - if signed_in?
+          %li= link_to "Выход", signout_path, method: "delete"
+        - else
+          %li= link_to "Вход", signin_path
+
     %h1.page-title= @title;
+

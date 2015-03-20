@@ -8,8 +8,8 @@ gem 'rails', '4.2.0'
 gem 'haml'
 gem 'haml-rails'
 
-gem 'bootstrap-sass'
-gem 'compass-rails'
+gem 'bootstrap-sass-rails'
+#gem 'compass-rails'
 
 gem 'simple_form'
 

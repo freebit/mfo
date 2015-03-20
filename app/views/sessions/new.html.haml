@@ -1,0 +1,10 @@
+.form-wrap
+  = form_for(:session, url: sessions_path) do |f|
+    .field
+      %label E-mail
+      = f.text_field :email
+    .field
+      %label Пароль
+      = f.password_field :password
+    .field.submit
+      = f.submit "Войти", class: "btn btn-success"

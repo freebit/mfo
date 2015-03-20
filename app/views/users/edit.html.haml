@@ -1,2 +1,28 @@
-%h1 Users#edit
-%p Find me in app/views/users/edit.html.haml
+.form-wrap
+  = simple_form_for @user, validation: true do |f|
+    .field
+      %label Имя
+      = f.input_field :name
+      = f.error :name
+    .field
+      %label Email
+      = f.input_field :email
+      = f.error :email
+    .field
+      %label Активность
+      = f.input_field :active
+    .field
+      %label Роль
+      = f.select(:roles, Role.all.reverse.map {|role| [role.title, role.name]}, selected: @user.roles.first.name)
+    .field
+      %label Пароль
+      = f.input_field :password
+      = f.error :password
+    .field
+      %label Повторите пароль
+      = f.input_field :password_confirmation
+      = f.error :password_confirmation
+    .field.submit
+      = f.button :submit, value: "Обновить", class:"btn-success"
+
+

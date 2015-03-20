@@ -15,8 +15,8 @@
  */
 
 
-@import "bootstrap-sprockets";
 @import "bootstrap";
+
 
 $header-height: 130px;
 $footer-height: 90px;
@@ -28,6 +28,10 @@ body{
   margin: 0;
   padding: 0;
   background-color: #999999;
+}
+
+html{
+  overflow-y: scroll;
 }
 
 .page-wrap{
@@ -46,6 +50,27 @@ header{
   position: relative;
   height: $header-height;
   background-color: darkslategrey;
+}
+
+.main-menu{
+  position: relative;
+
+  ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li{
+    display: inline-block;
+  }
+
+  a{
+    display: block;
+    padding: 0 5px;
+    font-size: 12px;
+    color:#fff;
+  }
 }
 
 .page-title{
@@ -71,3 +96,5 @@ footer{
 
 
 @import "welcome";
+@import "forms";
+@import "users";

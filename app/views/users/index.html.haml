@@ -1,19 +1,25 @@
-%table
+%table.user-list
   %thead
     %tr
       %td Логин
       %td Email
       %td Роль
-      %td Активност
+      %td Активность
       %td Последний вход
-      %td Изменить
+      %td
     %tbody
       - @users.each do |user|
         %tr
           %td= user.name
           %td= user.email
-          %td= user.role
-          %td= user.active
-          %td= user.last_visit
+          %td= user.roles.first.title
           %td
-            = #link_to "изменить", user, action_name: :edit
+            - if user.active
+              активен
+            - else
+              неактивен
+          %td= user.last_visit.to_formatted_s(:long)
+          %td.edit
+            = link_to "изменить", edit_user_path(user)
+- if current_user && current_user.is_admin?
+  %div.add-user= link_to "Добавить пользователя", users_new_path
