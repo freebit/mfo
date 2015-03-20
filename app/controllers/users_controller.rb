@@ -45,10 +45,17 @@ class UsersController < ApplicationController
   end
 
   def update
-
     @user = User.find(params[:id])
 
-    if @user.update_attributes(user_params)
+    if params[:user][:password].blank?
+      @user.skip_password_validation = true
+      cur_params = user_params_without_pass
+    else
+      cur_params = user_params
+    end
+
+    if @user.update_attributes(cur_params)
+      update_user_role
       flash[:success] = "Данные пользователя обновлены"
       redirect_to @user
     else
@@ -80,6 +87,16 @@ class UsersController < ApplicationController
     def create_user_role
       @role = Role.find_by_name params[:user][:roles]
       UsersRole.create user:@user, role:@role
+    end
+
+    def update_user_role
+      role = Role.find_by_name params[:user][:roles]
+      user_role = UsersRole.find_by(user:@user)
+      user_role.update_attribute(:role, role)
+    end
+
+    def user_params_without_pass
+      params.require(:user).permit(:name, :email, :active)
     end
 
     def user_params

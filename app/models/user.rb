@@ -13,9 +13,9 @@ class User < ActiveRecord::Base
 
 
   has_secure_password
-  validates :password, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }, unless: :skip_password_validation
 
-
+  attr_accessor :skip_password_validation
 
   def User.new_remember_token
     SecureRandom.urlsafe_base64
@@ -34,5 +34,6 @@ class User < ActiveRecord::Base
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
     end
+
 
 end

@@ -16,11 +16,11 @@
       = f.select(:roles, Role.all.reverse.map {|role| [role.title, role.name]}, selected: @user.roles.first.name)
     .field
       %label Пароль
-      = f.input_field :password
+      = f.password_field :password, value:""
       = f.error :password
     .field
       %label Повторите пароль
-      = f.input_field :password_confirmation
+      = f.password_field :password_confirmation
       = f.error :password_confirmation
     .field.submit
       = f.button :submit, value: "Обновить", class:"btn-success"
