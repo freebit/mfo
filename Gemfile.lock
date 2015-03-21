@@ -36,6 +36,9 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    akami (1.2.2)
+      gyoku (>= 0.4.0)
+      nokogiri
     arel (6.0.0)
     bcrypt (3.1.9)
     binding_of_caller (0.7.2)
@@ -82,6 +85,8 @@ GEM
     ffi (1.9.6)
     globalid (0.3.3)
       activesupport (>= 4.1.0)
+    gyoku (1.2.3)
+      builder (>= 2.1.2)
     haml (4.0.6)
       tilt
     haml-rails (0.8.2)
@@ -96,6 +101,8 @@ GEM
       haml (~> 4.0.0)
       nokogiri (~> 1.6.0)
       ruby_parser (~> 3.5)
+    httpi (2.3.0)
+      rack
     i18n (0.7.0)
     jbuilder (2.2.8)
       activesupport (>= 3.0.0, < 5)
@@ -108,6 +115,8 @@ GEM
     libv8 (3.16.14.7)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
+    macaddr (1.7.1)
+      systemu (~> 2.6.2)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
@@ -117,6 +126,7 @@ GEM
     multi_json (1.10.1)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    nori (2.4.0)
     pg (0.18.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -190,6 +200,15 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (~> 1.1)
+    savon (2.10.1)
+      akami (~> 1.2)
+      builder (>= 2.1.2)
+      gyoku (~> 1.2)
+      httpi (~> 2.3)
+      nokogiri (>= 1.4.0)
+      nori (~> 2.4)
+      uuid (~> 2.3.7)
+      wasabi (~> 3.4)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -211,6 +230,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    systemu (2.6.5)
     therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
       ref
@@ -228,6 +248,11 @@ GEM
     uglifier (2.7.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    uuid (2.3.7)
+      macaddr (~> 1.0)
+    wasabi (3.4.0)
+      httpi (~> 2.0)
+      nokogiri (>= 1.4.2)
     web-console (2.0.0)
       activemodel (~> 4.0)
       binding_of_caller (>= 0.7.2)
@@ -259,6 +284,7 @@ DEPENDENCIES
   rspec
   rspec-rails
   sass-rails (~> 5.0)
+  savon (~> 2.0)
   sdoc (~> 0.4.0)
   shoulda-matchers
   simple_form

@@ -47,6 +47,9 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Thin as the app server
 gem 'thin'
 
+# Use Savon as the soap client
+gem 'savon', '~> 2.0'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
