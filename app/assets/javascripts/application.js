@@ -15,3 +15,21 @@
 //= require bootstrap
 //= require turbolinks
 //= require_tree .
+
+;(function($){
+
+    'use strict';
+
+    $("a[data-targetform]").on('click', function(){
+        $("form[data-remote]").submit();
+    });
+
+    $("form[data-remote]").on('ajax:success', function(e, data, status, xhr){
+
+       $("pre.json-data").text(data["Наименование"]);
+
+       console.log(data);
+
+    });
+
+})(jQuery);

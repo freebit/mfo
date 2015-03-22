@@ -1,5 +1,17 @@
+.to_ajax
+  %a{data: {targetform:"get-client-form"}} Проверить клиента
+
+
+%h1
+  Contact
+  %aside.ajax-form-block
+    = form_tag "/uzel", remote:true do
+      = hidden_field_tag :action, "get-client"
+      = text_field_tag :inn, "7710948466"
+      = text_field_tag :kpp, "771001001"
 %div
   operations
   %span= @operations
-%pre= JSON.pretty_generate @data
+%pre.json-data
+  = JSON.pretty_generate @data
 

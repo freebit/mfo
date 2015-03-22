@@ -9,8 +9,8 @@ class WelcomeController < ApplicationController
     @data = response.body[:get_client_response][:return]
     @operations = client.operations
 
-    #response = client.call(:get_data)
-    #@data = response.body[:get_data_response][:return]
+    response = client.call(:get_data)
+    @data = response.body[:get_data_response][:return]
 
 
 

@@ -20,9 +20,7 @@ class UsersController < ApplicationController
   end
 
   def create
-
     #binding.pry
-
     @user = User.new user_params
 
     if @user.save
@@ -34,9 +32,6 @@ class UsersController < ApplicationController
       render 'new'
 
     end
-
-
-
   end
 
   def edit
@@ -64,6 +59,18 @@ class UsersController < ApplicationController
     end
 
   end
+
+  def ajax_uzel
+
+    client = Savon.client(soap_version:2, namespace:"http://mfoalliance.ru", wsdl:"http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl")
+
+    response = client.call(:get_client, message: {ИНН:params[:inn], КПП:params[:kpp]})
+    @data = response.body[:get_client_response][:return]
+
+    render json: @data
+
+  end
+
 
   private
 
