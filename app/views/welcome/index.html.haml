@@ -12,6 +12,11 @@
 %div
   operations
   %span= @operations
+%h3 Заявка
 %pre.json-data
-  = JSON.pretty_generate @data
+  = JSON.pretty_generate @order_data
+
+%h3 Клиент
+%pre.json-data
+  = JSON.pretty_generate @client_data
 
