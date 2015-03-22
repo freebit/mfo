@@ -18,6 +18,8 @@ class CreateIndividuals < ActiveRecord::Migration
       t.string :phone
       t.string :email
 
+      t.references :organization, index: true
+
       t.timestamps null: false
     end
 
