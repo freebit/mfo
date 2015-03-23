@@ -9,6 +9,8 @@ class CreateOrders < ActiveRecord::Migration
       t.string :number_data_protocol
       t.string :personal_number
       t.references :platform, index: true
+      t.integer :guarantor_legal_id
+      t.integer :guarantor_individual_id
       t.string :agent
       t.string :agent_name
       t.float :agent_summa
@@ -17,5 +19,6 @@ class CreateOrders < ActiveRecord::Migration
       t.timestamps null: false
     end
     add_foreign_key :orders, :platforms
+
   end
 end

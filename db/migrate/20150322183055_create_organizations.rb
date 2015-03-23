@@ -12,6 +12,8 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :head_position
       t.date :reg_date
 
+      t.references :order, index: true
+
       t.timestamps null: false
     end
   end

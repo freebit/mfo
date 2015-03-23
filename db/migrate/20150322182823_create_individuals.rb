@@ -19,8 +19,10 @@ class CreateIndividuals < ActiveRecord::Migration
       t.string :email
 
       t.references :organization, index: true
+      t.references :order, index: true
 
       t.timestamps null: false
+
     end
 
     add_index :individuals, :pass_serial_number, unique: true

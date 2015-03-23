@@ -4,10 +4,11 @@ class CreateFounders < ActiveRecord::Migration
       t.string :name
       t.float :share
       t.string :pass_data_ogrn
+
       t.references :organization, index: true
 
       t.timestamps null: false
     end
-    add_foreign_key :founders, :organizations
+
   end
 end

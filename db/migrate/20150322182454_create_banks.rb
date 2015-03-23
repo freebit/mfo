@@ -8,6 +8,8 @@ class CreateBanks < ActiveRecord::Migration
       t.string :city
       t.string :address
 
+      t.references :bank_account, index: true
+
       t.timestamps null: false
     end
   end

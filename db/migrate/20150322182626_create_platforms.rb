@@ -10,6 +10,8 @@ class CreatePlatforms < ActiveRecord::Migration
       t.float :min
       t.boolean :active
 
+      t.references :order, index:true
+
       t.timestamps null: false
     end
   end

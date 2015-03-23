@@ -1,5 +1,6 @@
 class Individual < ActiveRecord::Base
   belongs_to :organization
+  belongs_to :order
 
   before_save { self.email = email.downcase }
 
