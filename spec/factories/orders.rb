@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :order do
+  factory :orders do
     number "MyString"
 number_mfo "MyString"
 create_date "2015-03-22"

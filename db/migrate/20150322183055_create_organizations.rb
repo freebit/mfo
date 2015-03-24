@@ -1,7 +1,7 @@
 class CreateOrganizations < ActiveRecord::Migration
   def change
     create_table :organizations do |t|
-      t.string :type
+      t.string :type_o
       t.string :name
       t.string :fullname
       t.string :inn

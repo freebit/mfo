@@ -1,0 +1,50 @@
+// Place all the styles related to the order controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.new-order{
+  position: relative;
+  margin-top: 30px;
+
+  li a{
+    color: inherit;
+  }
+
+
+  .field{
+
+    &.radio-group{
+
+      span{
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        min-width: 170px;
+      }
+
+      input[type=radio]{
+        display: inline-block;
+        position: relative;
+        width:20px;
+
+        + label{
+          display: inline-block;
+          position: relative;
+        }
+      }
+
+    }
+  }
+
+  .field-horizontal{
+    position: relative;
+
+    .field{
+      display: inline-block;
+      position: relative;
+      vertical-align: top;
+    }
+
+  }
+}

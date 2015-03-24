@@ -18,7 +18,7 @@
               активен
             - else
               неактивен
-          %td= user.last_visit.to_formatted_s(:long)
+          %td= user.last_visit.to_formatted_s(:long) if user.last_visit
           %td.edit
             = link_to "изменить", edit_user_path(user)
 - if current_user && current_user.is_admin?

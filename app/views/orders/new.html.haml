@@ -1,0 +1,512 @@
+= @borrower.errors
+.new-order
+  %ul.nav.nav-tabs{id:"order-tabs"}
+    %li
+      %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
+    %li
+      %a{href:"#loan", data:{toggle:"tab"}} Займ
+    %li
+      %a{href:"#borrower", data:{toggle:"tab"}} Организация заемщик
+    %li
+      %a{href:"#individual", data:{toggle:"tab"}} Персональные данные заемщика
+    %li.active
+      %a{href:"#guarantors", data:{toggle:"tab"}} Поручители
+    %li
+      %a{href:"#documents", data:{toggle:"tab"}} Прикрепленные документы
+
+  = form_tag orders_path, :method => :post do
+    .tab-content{id:"tabs"}
+
+      -# КАЛЬКУЛЯТОР #
+      .tab-pane.fade{id:"calc"}
+        = simple_fields_for :order_platform, validation: true do |f|
+          .field
+            %label Площадка
+            = f.select(:number, Platform.all.map {|platform| [platform.name, platform.id,data:{number:platform.number}]})
+
+          -# ЗАЯВКА #
+
+      .tab-pane.fade{id:"loan"}
+        = simple_fields_for @order, validation: true do |f|
+          .field
+            %label Сумма
+            = f.input_field :summa
+            = f.error :summa
+          .field
+            %label Крайний срок предоставления
+            = f.date_field :submission_deadline
+            = f.error :submission_deadline
+          .field
+            %label Агент
+            = f.input_field :agent
+            = f.error :agent
+          .field
+            %label АгентНаименование
+            = f.input_field :agent_name
+            = f.error :agent_name
+          .field
+            %label АгентВознаграждение
+            = f.input_field :agent_summa
+            = f.error :agent_summa
+          .field
+            %label Номер
+            = f.input_field :number
+            = f.error :number
+          .field
+            %label НомерМФО
+            = f.input_field :number_mfo
+            = f.error :number_mfo
+          .field
+            %label НомерДатаПротокола
+            = f.input_field :number_data_protocol
+            = f.error :number_data_protocol
+          .field
+            %label Лицевой счет
+            = f.input_field :personal_number
+            = f.error :personal_number
+          .field
+            %label Статус
+            = f.input_field :status
+            = f.error :status
+
+
+      -# ОРГАНИЗАЦИЯ - ЗАЕМЩИК #
+
+      .tab-pane.fade{id:"borrower"}
+        = simple_fields_for :borrower, validation: true do |b|
+          .field.radio-group
+            %label Укажите тип заемщика
+            = b.collection_radio_buttons :type_o, [['ЮЛ', 'Юридическое лицо'] ,['ФЛ', 'Физическое лицо']], :first, :last, checked:'ЮЛ'
+          .field-horizontal
+            .field.inn
+              %label ИНН
+              = b.input_field :inn
+              = b.error :inn
+            .field.kpp
+              %label КПП
+              = b.input_field :kpp
+              = b.error :kpp
+          .field
+            %label Название организации
+            = b.input_field :name
+            = b.error :name
+          .field
+            %label Полное название организации
+            = b.input_field :fullname
+            = b.error :fullname
+          .field
+            %label ОГРН
+            = b.input_field :ogrn
+            = b.error :ogrn
+          .field
+            %label Юридический адрес
+            = b.input_field :address_legal
+            = b.error :address_legal
+          .field
+            %label Фактический адрес
+            = b.input_field :address_actual
+            = b.error :address_actual
+          .field
+            %label Должность руководителя
+            = b.input_field :head_position
+            = b.error :head_position
+          .field
+            %label Дата регистрации
+            = b.date_field :reg_date
+            = b.error :reg_date
+
+          .field-group
+            %h5 Учредитель
+            = simple_fields_for :borrower_founder do |bf|
+              .field
+                %label Имя учредителя
+                = bf.input_field :name
+                = bf.error :name
+              .field
+                %label Паспортные данные ОГРН
+                = bf.input_field :pass_data_ogrn
+                = bf.error :pass_data_ogrn
+              .field
+                %label Доля в компании
+                = bf.input_field :share
+                = bf.error :share
+
+          .field-group
+            %h5 Основной банковский счет
+
+            = simple_fields_for :borrower_bank_account do |ba|
+              .field
+                %label Номер счета
+                = ba.input_field :account_number
+                = ba.error :account_number
+
+            = simple_fields_for :borrower_bank do |bank|
+              .field
+                %label Бик
+                = bank.input_field :bik
+                = bank.error :bik
+              .field
+                %label Коррсчет
+                = bank.input_field :korr_number
+                = bank.error :korr_number
+              .field
+                %label ИНН
+                = bank.input_field :inn
+                = bank.error :inn
+              .field
+                %label Наименование банка
+                = bank.input_field :name
+                = bank.error :name
+              .field
+                %label Город
+                = bank.input_field :city
+                = bank.error :city
+              .field
+                %label Адрес
+                = bank.input_field :address
+                = bank.error :address
+
+      -# Персональные данные представителя организации #
+      .tab-pane.fade{id:"individual"}
+
+        = simple_fields_for :borrower_person do |p|
+          .field
+            %label ФИО
+            = p.input_field :fullname
+            = p.error :borrower_person_fullname
+          .field
+            %label Дата рождения
+            = p.date_field :birthday
+            = p.error :borrower_person_birthday
+          .field
+            %label Место рождения
+            = p.input_field :birth_place
+            = p.error :borrower_person_birth_place
+          .field
+            %label Гражданство
+            = p.input_field :citizenship
+            = p.error :borrower_person_citizenship
+          .field
+            %label Телефон
+            = p.input_field :phone
+            = p.error :borrower_person_phone
+          .field
+            %label E-mail
+            = p.input_field :email
+            = p.error :borrower_person_email
+          .field
+            %label Место регистрации
+            = p.input_field :reg_place
+            = p.error :borrower_person_reg_place
+          .field
+            %label Место пребывания
+            = p.input_field :curr_place
+            = p.error :borrower_person_curr_place
+
+
+          .field-group
+            %h5 Паспортные данные
+
+            .field
+              %label Серия и номер паспорта
+              = p.input_field :pass_serial_number
+              = p.error :borrower_person_pass_serial_number
+
+            .field
+              %label Кем выдан
+              = p.input_field :pass_issued
+              = p.error :borrower_person_pass_issued
+
+            .field
+              %label Код подразделения
+              = p.input_field :pass_issued_code
+              = p.error :borrower_person_pass_issued_code
+
+            .field
+              %label Дата выдачи
+              = p.date_field :pass_issue_date
+              = p.error :borrower_person_pass_issue_date
+
+          .field-group
+            %h5 Данные о ранее выданных паспортах
+
+            .field
+              %label Серия и номер паспорта
+              = p.input_field :old_pass_serial_number
+              = p.error :borrower_person_old_pass_serial_number
+
+            .field
+              %label Кем выдан
+              = p.input_field :old_pass_issued
+              = p.error :borrower_person_old_pass_issued
+
+            .field
+              %label Код подразделения
+              = p.input_field :old_pass_issued_code
+              = p.error :borrower_person_pass_issued_code
+
+            .field
+              %label Дата выдачи
+              = p.date_field :old_pass_issue_date
+              = p.error :borrower_person_old_pass_issue_date
+
+      -# ПОРУЧИТЕЛИ #
+
+      .tab-pane.active.fade.in{id:"guarantors"}
+
+        = simple_fields_for :guarantor do |g|
+          .field.radio-group
+            %label Укажите тип поручителя
+            = g.collection_radio_buttons :type, [['ФЛ', 'Физическое лицо'], ['ЮЛ', 'Юридическое лицо']], :first, :last, checked:'ФЛ'
+
+        -# ПОРУЧИТЕЛЬ ФИЗИЧЕСКОЕ ЛИЦО #
+
+        .guarantor_individual
+          %h4 Поручитель ФЛ
+          = simple_fields_for :guarantor_individual do |gi|
+            .field
+              %label ФИО
+              = gi.input_field :fullname
+              = gi.error :borrower_person_fullname
+            .field
+              %label Дата рождения
+              = gi.date_field :birthday
+              = gi.error :borrower_person_birthday
+            .field
+              %label Место рождения
+              = gi.input_field :birth_place
+              = gi.error :borrower_person_birth_place
+            .field
+              %label Гражданство
+              = gi.input_field :citizenship
+              = gi.error :borrower_person_citizenship
+            .field
+              %label Телефон
+              = gi.input_field :phone
+              = gi.error :borrower_person_phone
+            .field
+              %label E-mail
+              = gi.input_field :email
+              = gi.error :borrower_person_email
+            .field
+              %label Место регистрации
+              = gi.input_field :reg_place
+              = gi.error :borrower_person_reg_place
+            .field
+              %label Место пребывания
+              = gi.input_field :curr_place
+              = gi.error :borrower_person_curr_place
+
+
+            .field-group
+              %h5 Паспортные данные
+
+              .field
+                %label Серия и номер паспорта
+                = gi.input_field :pass_serial_number
+                = gi.error :borrower_person_pass_serial_number
+
+              .field
+                %label Кем выдан
+                = gi.input_field :pass_issued
+                = gi.error :borrower_person_pass_issued
+
+              .field
+                %label Код подразделения
+                = gi.input_field :pass_issued_code
+                = gi.error :borrower_person_pass_issued_code
+
+              .field
+                %label Дата выдачи
+                = gi.date_field :pass_issue_date
+                = gi.error :borrower_person_pass_issue_date
+
+            .field-group
+              %h5 Данные о ранее выданных паспортах
+
+              .field
+                %label Серия и номер паспорта
+                = gi.input_field :old_pass_serial_number
+                = gi.error :borrower_person_old_pass_serial_number
+
+              .field
+                %label Кем выдан
+                = gi.input_field :old_pass_issued
+                = gi.error :borrower_person_old_pass_issued
+
+              .field
+                %label Код подразделения
+                = gi.input_field :old_pass_issued_code
+                = gi.error :borrower_person_pass_issued_code
+
+              .field
+                %label Дата выдачи
+                = gi.date_field :old_pass_issue_date
+                = gi.error :borrower_person_old_pass_issue_date
+
+
+            -# ПОРУЧИТЕЛЬ ЮРИДИЧЕСКОЕ ЛИЦО #
+
+            .guarantor_legal.hidden
+              %h4 Поручитель ЮЛ
+              = simple_fields_for :guarantor_legal do |gl|
+                .field-horizontal
+                  .field.inn
+                    %label ИНН
+                    = gl.input_field :inn
+                    = gl.error :inn
+                  .field.kpp
+                    %label КПП
+                    = gl.input_field :kpp
+                    = gl.error :kpp
+                .field
+                  %label Название организации
+                  = gl.input_field :name
+                  = gl.error :name
+                .field
+                  %label Полное название организации
+                  = gl.input_field :fullname
+                  = gl.error :fullname
+                .field
+                  %label ОГРН
+                  = gl.input_field :ogrn
+                  = gl.error :ogrn
+                .field
+                  %label Юридический адрес
+                  = gl.input_field :address_legal
+                  = gl.error :address_legal
+                .field
+                  %label Фактический адрес
+                  = gl.input_field :address_actual
+                  = gl.error :address_actual
+                .field
+                  %label Должность руководителя
+                  = gl.input_field :head_position
+                  = gl.error :head_position
+                .field
+                  %label Дата регистрации
+                  = gl.date_field :reg_date
+                  = gl.error :reg_date
+
+                .field-group
+                  %h5 Основной банковский счет
+
+                  = simple_fields_for :guarantor_legal_bank_account do |glba|
+                    .field
+                      %label Номер счета
+                      = glba.input_field :account_number
+                      = glba.error :account_number
+
+                  = simple_fields_for :guarantor_legal_bank_account_bank do |glbab|
+                    .field
+                      %label Бик
+                      = glbab.input_field :bik
+                      = glbab.error :bik
+                    .field
+                      %label Коррсчет
+                      = glbab.input_field :korr_number
+                      = glbab.error :korr_number
+                    .field
+                      %label ИНН
+                      = glbab.input_field :inn
+                      = glbab.error :inn
+                    .field
+                      %label Наименование банка
+                      = glbab.input_field :name
+                      = glbab.error :name
+                    .field
+                      %label Город
+                      = glbab.input_field :city
+                      = glbab.error :city
+                    .field
+                      %label Адрес
+                      = glbab.input_field :address
+                      = glbab.error :address
+
+                .field-group
+                  %h5 Персональные данные представителя поручителя
+
+                  = simple_fields_for :guarantor_legal_person do |glp|
+                    .field
+                      %label ФИО
+                      = glp.input_field :fullname
+                      = glp.error :borrower_person_fullname
+                    .field
+                      %label Дата рождения
+                      = glp.date_field :birthday
+                      = glp.error :borrower_person_birthday
+                    .field
+                      %label Место рождения
+                      = glp.input_field :birth_place
+                      = glp.error :borrower_person_birth_place
+                    .field
+                      %label Гражданство
+                      = glp.input_field :citizenship
+                      = glp.error :borrower_person_citizenship
+                    .field
+                      %label Телефон
+                      = glp.input_field :phone
+                      = glp.error :borrower_person_phone
+                    .field
+                      %label E-mail
+                      = glp.input_field :email
+                      = glp.error :borrower_person_email
+                    .field
+                      %label Место регистрации
+                      = glp.input_field :reg_place
+                      = glp.error :borrower_person_reg_place
+                    .field
+                      %label Место пребывания
+                      = glp.input_field :curr_place
+                      = glp.error :borrower_person_curr_place
+
+
+                    .field-group
+                      %h5 Паспортные данные
+
+                      .field
+                        %label Серия и номер паспорта
+                        = glp.input_field :pass_serial_number
+                        = glp.error :borrower_person_pass_serial_number
+
+                      .field
+                        %label Кем выдан
+                        = glp.input_field :pass_issued
+                        = glp.error :borrower_person_pass_issued
+
+                      .field
+                        %label Код подразделения
+                        = glp.input_field :pass_issued_code
+                        = glp.error :borrower_person_pass_issued_code
+
+                      .field
+                        %label Дата выдачи
+                        = glp.date_field :pass_issue_date
+                        = glp.error :borrower_person_pass_issue_date
+
+                    .field-group
+                      %h5 Данные о ранее выданных паспортах
+
+                      .field
+                        %label Серия и номер паспорта
+                        = glp.input_field :old_pass_serial_number
+                        = glp.error :borrower_person_old_pass_serial_number
+
+                      .field
+                        %label Кем выдан
+                        = glp.input_field :old_pass_issued
+                        = glp.error :borrower_person_old_pass_issued
+
+                      .field
+                        %label Код подразделения
+                        = glp.input_field :old_pass_issued_code
+                        = glp.error :borrower_person_pass_issued_code
+
+                      .field
+                        %label Дата выдачи
+                        = glp.date_field :old_pass_issue_date
+                        = glp.error :borrower_person_old_pass_issue_date
+
+
+      .tab-pane.fade{id:"documents"} Прикрепленные документы
+      = submit_tag "Отправить"

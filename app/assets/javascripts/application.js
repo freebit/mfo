@@ -13,12 +13,14 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require bootstrap/tab
 //= require turbolinks
 //= require_tree .
 
 ;(function($){
 
     'use strict';
+
 
     $("a[data-targetform]").on('click', function(){
         $("form[data-remote]").submit();
