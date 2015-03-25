@@ -11,6 +11,7 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :address_actual
       t.string :head_position
       t.date :reg_date
+      t.string :attachable_type
 
       t.references :order, index: true
 

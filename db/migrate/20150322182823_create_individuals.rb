@@ -10,7 +10,7 @@ class CreateIndividuals < ActiveRecord::Migration
       t.string :old_pass_serial_number
       t.date :old_pass_issue_date
       t.string :old_pass_issued
-      t.string :old_pass_isseud_code
+      t.string :old_pass_issued_code
       t.string :birth_place
       t.string :citizenship
       t.string :reg_place
@@ -19,7 +19,7 @@ class CreateIndividuals < ActiveRecord::Migration
       t.string :email
 
       t.references :organization, index: true
-      t.references :orders, index: true
+      t.references :order, index: true
 
       t.timestamps null: false
 

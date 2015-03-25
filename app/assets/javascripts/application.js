@@ -15,6 +15,7 @@
 //= require bootstrap
 //= require bootstrap/tab
 //= require turbolinks
+//= require jquery.cookie
 //= require_tree .
 
 ;(function($){
@@ -33,5 +34,10 @@
        console.log(data);
 
     });
+
+    //запоминаем выбранные табы заявки
+    $('a[data-toggle="tab"]').on('shown', function (e) {
+        alert("tab")
+    })
 
 })(jQuery);

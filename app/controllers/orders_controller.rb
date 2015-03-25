@@ -7,30 +7,37 @@ class OrdersController < ApplicationController
   def new
     @title = "Новая заявка"
     @order = Order.new
-    @borrower = Organization.new
 
-    # @borrower_founder = Founder.new
-    #
-    # @borrower_bank_account = BankAccount.new
-    # @borrower_bank_account_bank = Bank.new
+    @order.build_borrower
+    @order.borrower.build_founder
 
+    @order.borrower.build_bank_account
+    @order.borrower.bank_account.build_bank
+    @order.borrower.build_person
 
+    @order.build_guarantor_legal
+    @order.guarantor_legal.build_bank_account
+    @order.guarantor_legal.bank_account.build_bank
+
+    @order.guarantor_legal.build_person
+
+    @order.build_guarantor_individual
   end
 
   def create
 
     @order = Order.new order_params
-    @borrower = Organization.new borrower_params
 
-    @order_save =  @order.save
-    @borrower_save = @borrower.save
+    if order_params[:borrower_attributes][:type_o] == "ФЛ"
+      @order.borrower.skip_kpp_validation = true
+    end
 
-    if @borrower_save && @order_save
+
+    if @order.save
 
     else
       @title = "Новая заявка"
-      #@errors =  @borrower.errors
-      render 'new'
+      render action: "new"
     end
 
   end
@@ -42,7 +49,14 @@ class OrdersController < ApplicationController
   private
 
     def order_params
-      params.require(:order).permit()
+      params.require(:order).permit(:summa,
+
+                                    borrower_attributes:[ :type_o, :name, founder_attributes:[:name], bank_account_attributes:[ bank_attributes:[:bik]], person_attributes:[:fullname] ],
+
+                                    guarantor_legal_attributes:[:inn, bank_account_attributes:[ bank_attributes:[:bik]], person_attributes:[:fullname] ],
+
+                                    guarantor_individual_attributes:[:fullname]
+      )
     end
 
     def borrower_params

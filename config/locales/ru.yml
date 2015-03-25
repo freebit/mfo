@@ -17,3 +17,14 @@ ru:
               too_short: "Слишком короткий пароль"
             password_confirmation:
               confirmation: "Неверное подтверждение пароля"
+        order:
+          attributes:
+            summa:
+              blank: "Поле не может быть пустым"
+              greater_than: "Не может быть равна нулю"
+        organization:
+          attributes:
+            inn:
+              blank: "Поле не может быть пустым"
+            kpp:
+              blank: "Поле не может быть пустым"
