@@ -18,6 +18,8 @@
 //= require jquery.cookie
 //= require_tree .
 
+
+
 ;(function($){
 
     'use strict';
@@ -35,9 +37,69 @@
 
     });
 
+
+    //выбор электроннй площадки
+    $('#order_platform_number').on('change', function(){
+        var value = $(this).val()
+        $('#order_platform').val(value);
+    });
+
+    //установка площадки
+    var value_platform = $('#order_platform_number').val();
+    $('#order_platform').val(value_platform);
+
+    //смена типа заемщика при создании заявки
+    $('#order_borrower_attributes_type_o').on('change', function(){
+
+        var value = $(this).val(),
+            field = $("#order_borrower_attributes_kpp").parents('.field');
+
+        if(value == "ФЛ"){
+            field.hide(0);
+        }else{
+            field.show(0);
+        }
+
+    });
+
+    //проверяем выбранный тип заемщика и показываем/скрываем поля
+    var value = $('#order_borrower_attributes_type_o').val(),
+        field = $("#order_borrower_attributes_kpp").parents('.field');
+
+    if(value == "ФЛ"){
+        field.hide(0);
+    }else{
+        field.show(0);
+    }
+
+
+    //смена типа поручителя запоминаем в куках
+    $("input[name='service[guarantor_type]']").on('change', function(){
+        var value = $(this).val();
+        $('.guarantor').addClass('hidden');
+        $('.guarantor.' + value).removeClass('hidden');
+
+        $.cookie('guarantor_type', value, { path: '/' });
+    });
+
+    //проверяем при загрузке и показываем нужный
+    var guarantor_type = $.cookie('guarantor_type');
+    $("input[name='service[guarantor_type]'][value="+guarantor_type+"]").attr('checked',true);
+    $('.guarantor').addClass('hidden');
+    $('.guarantor.' + guarantor_type).removeClass('hidden');
+
+
     //запоминаем выбранные табы заявки
-    $('a[data-toggle="tab"]').on('shown', function (e) {
-        alert("tab")
-    })
+    $('#order-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+        var tab_index = $(e.target).parents('li').index();
+        $.cookie('order_tab', tab_index, { path: '/' });
+
+    });
+
+    //открываем запомненные табы
+    var tab_index = $.cookie('order_tab') || 0;
+    $("#order-tabs li:eq("+tab_index+") a").tab('show')
+
 
 })(jQuery);

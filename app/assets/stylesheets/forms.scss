@@ -10,6 +10,11 @@ form{
   position: relative;
   margin: 20px 0;
 
+  .tab-pane{
+    position: relative;
+    min-height: 300px;
+  }
+
   .field{
     position: relative;
     margin:0 auto 10px auto;
@@ -27,6 +32,15 @@ form{
     .title{
       font-size: 16px;
     }
+  }
+
+  .field-submit{
+
+  }
+
+  .radio-group{
+    position: relative;
+    margin-bottom: 30px;
   }
 
   label{

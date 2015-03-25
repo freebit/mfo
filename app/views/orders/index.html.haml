@@ -1,2 +1,30 @@
-%h1 Order#index
-%p Find me in app/views/order/index.html.haml
+%table.order-list
+  %thead
+    %tr
+      %th Дата создания
+      %th Сумма
+      %th Сумма\Ставка договора
+      %th Сумма\Ставка банка
+      %th Сумма\Ставка агента
+      %th Платформа
+      %th Статус
+      %th &nbsp;
+  %tbody
+    - @orders.each do |order|
+      %tr
+        %td
+          = order.created_at.to_formatted_s(:long)
+        %td
+          = order.summa
+        %td
+
+        %td
+
+        %td
+          = order.agent_summa
+        %td
+          = Platform.find_by_number(order.platform).name
+        %td
+          = order.status
+        %td.edit
+          = link_to "Изменить", edit_order_path(order)

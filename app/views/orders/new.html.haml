@@ -6,7 +6,7 @@
     %li
       %a{href:"#loan", data:{toggle:"tab"}} Займ
     %li
-      %a{href:"#borrower", data:{toggle:"tab"}} Организация заемщик
+      %a{href:"#borrower", data:{toggle:"tab"}} Заемщик
     %li
       %a{href:"#guarantors", data:{toggle:"tab"}} Поручители
     %li
@@ -14,7 +14,7 @@
 
 
 
-  = simple_form_for @order, validation: true do |f|
+  = simple_form_for @order, html:{multipart:true}, validation: true do |f|
     .tab-content{id:"tabs"}
 
       -# КАЛЬКУЛЯТОР #
@@ -256,14 +256,14 @@
 
       .tab-pane.fade{id:"guarantors"}
 
-        = simple_fields_for :guarantor_type do |g|
+        = simple_fields_for :service do |g|
           .field.radio-group
-            %label Укажите тип поручителя
-            = g.collection_radio_buttons :type, [['guarantor_individual', 'Физическое лицо'], ['guarantor_legal', 'Юридическое лицо']], :first, :last, checked:'guarantor_individual'
+            %label Выберите тип поручителя
+            = g.collection_radio_buttons :guarantor_type, [['guarantor_individual', 'Физическое лицо'], ['guarantor_legal', 'Юридическое лицо']], :first, :last, checked:'guarantor_individual'
 
         -# ПОРУЧИТЕЛЬ ФИЗИЧЕСКОЕ ЛИЦО #
 
-        .guarantor_individual
+        .guarantor.guarantor_individual
           %h4 Поручитель ФЛ
           = f.fields_for :guarantor_individual do |gi|
             .field
@@ -348,10 +348,14 @@
 
             -# ПОРУЧИТЕЛЬ ЮРИДИЧЕСКОЕ ЛИЦО #
 
-        .guarantor_legal
+        .guarantor.guarantor_legal
           %h4 Поручитель ЮЛ
 
           = f.fields_for :guarantor_legal do |gl|
+            .field
+              %label Тип организации поручителя
+              = gl.input_field :type_o, value:"ЮЛ"
+              = gl.error :type_o
             .field-horizontal
               .field.inn
                 %label ИНН
@@ -511,4 +515,6 @@
 
 
       .tab-pane.fade{id:"documents"} Прикрепленные документы
-      = submit_tag "Отправить"
+
+      .field-submit
+        = submit_tag "Отправить"

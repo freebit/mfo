@@ -73,6 +73,8 @@ group :development, :test do
 
   gem 'rb-inotify', '~> 0.9', :require => false
 
+  gem 'guard-livereload', require: false
+
 end
 
 group :test do

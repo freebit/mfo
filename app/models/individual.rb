@@ -23,6 +23,6 @@ class Individual < ActiveRecord::Base
 
   EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email,  format: {with:EMAIL_REGEX}
-
+  validates :phone, presence: true
 
 end

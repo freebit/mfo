@@ -48,3 +48,25 @@
 
   }
 }
+
+.order-list{
+  position: relative;
+  width:100%;
+  border-collapse: collapse;
+
+  thead th{
+    text-align: center;
+    padding: 5px 15px;
+    background-color: #DADADA;
+    border:1px solid #c0c0c0;
+  }
+
+  tbody{
+    td{
+      padding: 5px 15px;
+      text-align: center;
+      border:1px solid #c0c0c0;
+      border-top: none;
+    }
+  }
+}
