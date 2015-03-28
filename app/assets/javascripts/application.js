@@ -46,8 +46,9 @@
 
     //установка площадки
     var value_platform = $('#order_platform_number').val();
-    $('#order_platform').val(value_platform);
-
+    if($('#order_platform').length > 0) {
+        //$('#order_platform').val(value_platform);
+    }
     //смена типа заемщика при создании заявки
     $('#order_borrower_attributes_type_o').on('change', function(){
 
@@ -55,23 +56,12 @@
             field = $("#order_borrower_attributes_kpp").parents('.field');
 
         if(value == "ФЛ"){
-            field.hide(0);
+            field.addClass('hidden');
         }else{
-            field.show(0);
+            field.removeClass('hidden')
         }
 
     });
-
-    //проверяем выбранный тип заемщика и показываем/скрываем поля
-    var value = $('#order_borrower_attributes_type_o').val(),
-        field = $("#order_borrower_attributes_kpp").parents('.field');
-
-    if(value == "ФЛ"){
-        field.hide(0);
-    }else{
-        field.show(0);
-    }
-
 
     //смена типа поручителя запоминаем в куках
     $("input[name='service[guarantor_type]']").on('change', function(){
@@ -79,14 +69,14 @@
         $('.guarantor').addClass('hidden');
         $('.guarantor.' + value).removeClass('hidden');
 
-        $.cookie('guarantor_type', value, { path: '/' });
+        //$.cookie('guarantor_type', value, { path: '/' });
     });
 
     //проверяем при загрузке и показываем нужный
-    var guarantor_type = $.cookie('guarantor_type');
-    $("input[name='service[guarantor_type]'][value="+guarantor_type+"]").attr('checked',true);
-    $('.guarantor').addClass('hidden');
-    $('.guarantor.' + guarantor_type).removeClass('hidden');
+    //var guarantor_type = $.cookie('guarantor_type');
+    //$("input[name='service[guarantor_type]'][value="+guarantor_type+"]").attr('checked',true);
+    //$('.guarantor').addClass('hidden');
+    //$('.guarantor.' + guarantor_type).removeClass('hidden');
 
 
     //запоминаем выбранные табы заявки

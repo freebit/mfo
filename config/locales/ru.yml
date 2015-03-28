@@ -28,3 +28,7 @@ ru:
               blank: "Поле не может быть пустым"
             kpp:
               blank: "Поле не может быть пустым"
+        individual:
+          attributes:
+            email:
+              invalid: "Неверный e-mail"

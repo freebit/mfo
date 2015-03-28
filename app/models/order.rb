@@ -6,11 +6,19 @@ class Order < ActiveRecord::Base
 
   has_many :documents, dependent: :destroy
 
-  accepts_nested_attributes_for :borrower
-  accepts_nested_attributes_for :guarantor_legal
-  accepts_nested_attributes_for :guarantor_individual
+  has_attached_files
 
-  accepts_nested_attributes_for :documents
+
+  accepts_nested_attributes_for :borrower, allow_destroy: true
+  accepts_nested_attributes_for :guarantor_legal, allow_destroy: true
+  accepts_nested_attributes_for :guarantor_individual, allow_destroy: true
+
+  attr_accessor :documents_attributes
+  accepts_nested_attributes_for :documents, allow_destroy: true
+
+
+
+  #attr_accessor :guarantor_individual_attributes
 
   validates :summa, presence: true, numericality: {greater_than: 0}
   validates :platform, presence: true

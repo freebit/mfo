@@ -21,8 +21,7 @@ class Individual < ActiveRecord::Base
   validates :old_pass_issued, presence: true
   validates :old_pass_issued_code, presence: true
 
-  EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email,  format: {with:EMAIL_REGEX}
+  validates :email,  format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   validates :phone, presence: true
 
 end

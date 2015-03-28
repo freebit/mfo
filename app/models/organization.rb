@@ -2,9 +2,9 @@ class Organization < ActiveRecord::Base
 
   belongs_to :order, polymorphic: true
 
-  has_one :person, class_name: 'Individual'
-  has_one :bank_account
-  has_one :founder
+  has_one :person, class_name: 'Individual', dependent: :destroy
+  has_one :bank_account, dependent: :destroy
+  has_one :founder, dependent: :destroy
 
   accepts_nested_attributes_for :person
   accepts_nested_attributes_for :bank_account
