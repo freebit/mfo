@@ -1,5 +1,4 @@
 
-= @order.errors.messages
 .new-order
   %ul.nav.nav-tabs{id:"order-tabs"}
     %li.active
@@ -521,15 +520,24 @@
 
 
       .tab-pane.fade{ id:"documents" }
-        = f.fields_for :documents do |doc|
-          .field.files.hidden
-            = doc.hidden_field :type_d
-        .field.horizontal
-          %label Выберите тип файла
-          = simple_fields_for :files do |ff|
-            = ff.select :filetype, [["Паспорт представителя","2"],["Устав","3"], ["Свидетельство ОГРН","4"], ["Решение (приказ) о назначении Ген.дира","5"]]
-            %label Выберите файл
-            = ff.file_field :file
+        .documents
+          = f.fields_for :documents do |d|
+            %div{class:"field-horizontal#{' hidden' if !d.object.file?}"}
+              .field
+                %button.del{type:'button', title:"Удалить документ"} &times;
+                -#= d.check_box :remove_file if d.object.file?
+              .field
+                %label Укажите тип файла
+                = d.select :type_d , [["Паспорт представителя","2"],["Устав","3"], ["Свидетельство ОГРН","4"], ["Решение (приказ) о назначении Ген.дира","5"]]
+                = d.error :type_d
+              .field
+                = content_tag( :div, d.object.file.filename, class:"file-name") if d.object.file?
+              .field
+                = d.file_field :file
+                = d.hidden_field :file_cache
+                = d.hidden_field :_destroy
+                = d.error :file
+        %button.btn.btn-success{type:'button', id:"add-document"} Добавить документ
 
 
       .field-submit

@@ -43,7 +43,11 @@
     .field{
       display: inline-block;
       position: relative;
-      vertical-align: top;
+      vertical-align: bottom;
+    }
+
+    .file-name{
+      font-size: 12px;
     }
 
   }

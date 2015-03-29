@@ -28,7 +28,7 @@ class OrdersController < ApplicationController
 
     @order.build_guarantor_individual
 
-    @order.documents = [Document.new]
+    @order.documents.build
 
   end
 
@@ -36,22 +36,31 @@ class OrdersController < ApplicationController
 
     @order = Order.new order_params
 
-    # if service_params[:guarantor_type] == "guarantor_individual"
-    #   @order.guarantor_legal_attributes.merge( { _destroy: '1'} )
-    # elsif service_params[:guarantor_type] == "guarantor_legal"
-    #   @order.guarantor_individual_attributes.merge( { _destroy: '1'} )
-    # end
-
-
-
     if order_params[:borrower_attributes][:type_o] == "ФЛ"
       @order.borrower.skip_kpp_validation = true
     end
 
+
     if @order.save
 
+      if order_params[:documents_attributes].present?
+        order_params[:documents_attributes].each do |d|
+          if d.last[:file_cache].blank? || d.last[:_destroy] == 'true'
+            if @order.documents[d.first.to_i].present?
+              @order.documents[d.first.to_i].remove_file!
+              @order.documents[d.first.to_i].destroy
+            end
+          end
+        end
+      end
+
+      flash[:success] = "Заявка создана"
+      redirect_to orders_path
     else
       @title = "Новая заявка"
+      if @order.documents.blank?
+        @order.documents.build
+      end
       render action: "new"
     end
 
@@ -61,18 +70,10 @@ class OrdersController < ApplicationController
     @title = "Редактирование заявки"
     @order = Order.find params[:id]
 
-    #binding.pry
+    if @order.documents.blank?
+      @order.documents.build
+    end
 
-    # @order.build_borrower
-    # @order.borrower.build_founder
-    # @order.borrower.build_bank_account
-    # @order.borrower.bank_account.build_bank
-    # @order.borrower.build_person
-    # @order.build_guarantor_legal
-    # @order.guarantor_legal.build_bank_account
-    # @order.guarantor_legal.bank_account.build_bank
-    # @order.guarantor_legal.build_person
-    # @order.build_guarantor_individual
   end
 
   def update
@@ -125,7 +126,7 @@ class OrdersController < ApplicationController
 
                                     guarantor_individual_attributes: person_attributes,
 
-                                    documents_attributes:[:id, :type_d, :path]
+                                    documents_attributes:[:id, :order_id, :type_d, :file, :file_cache, :remove_file, :_destroy]
       )
     end
 

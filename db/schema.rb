@@ -41,13 +41,13 @@ ActiveRecord::Schema.define(version: 20150323125139) do
 
   create_table "documents", force: :cascade do |t|
     t.string   "type_d"
-    t.string   "path"
-    t.integer  "orders_id"
+    t.string   "file"
+    t.integer  "order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "documents", ["orders_id"], name: "index_documents_on_orders_id", using: :btree
+  add_index "documents", ["order_id"], name: "index_documents_on_order_id", using: :btree
 
   create_table "founders", force: :cascade do |t|
     t.string   "name"
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 20150323125139) do
 
   add_index "individuals", ["order_id"], name: "index_individuals_on_order_id", using: :btree
   add_index "individuals", ["organization_id"], name: "index_individuals_on_organization_id", using: :btree
-  add_index "individuals", ["pass_serial_number"], name: "index_individuals_on_pass_serial_number", unique: true, using: :btree
 
   create_table "orders", force: :cascade do |t|
     t.string   "platform"

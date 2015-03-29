@@ -6,14 +6,11 @@ class Order < ActiveRecord::Base
 
   has_many :documents, dependent: :destroy
 
-  has_attached_files
-
 
   accepts_nested_attributes_for :borrower, allow_destroy: true
   accepts_nested_attributes_for :guarantor_legal, allow_destroy: true
   accepts_nested_attributes_for :guarantor_individual, allow_destroy: true
 
-  attr_accessor :documents_attributes
   accepts_nested_attributes_for :documents, allow_destroy: true
 
 
@@ -32,10 +29,5 @@ class Order < ActiveRecord::Base
   validates :personal_number, presence: true
   validates :create_date, presence: true
   validates :status, presence: true
-
-
-  #validates :status, presence: true
-
-
 
 end

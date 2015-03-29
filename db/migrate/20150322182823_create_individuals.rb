@@ -25,7 +25,7 @@ class CreateIndividuals < ActiveRecord::Migration
 
     end
 
-    add_index :individuals, :pass_serial_number, unique: true
+    #add_index :individuals, :pass_serial_number, unique: true
 
   end
 end

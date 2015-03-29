@@ -2,8 +2,8 @@ class CreateDocuments < ActiveRecord::Migration
   def change
     create_table :documents do |t|
       t.string :type_d
-      t.string :path
-      t.references :orders, index: true
+      t.string :file
+      t.references :order, index: true
 
       t.timestamps null: false
     end

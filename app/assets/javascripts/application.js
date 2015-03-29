@@ -89,7 +89,42 @@
 
     //открываем запомненные табы
     var tab_index = $.cookie('order_tab') || 0;
-    $("#order-tabs li:eq("+tab_index+") a").tab('show')
+    $("#order-tabs li:eq("+tab_index+") a").tab('show');
+
+
+
+    //добавление файла
+    $("#add-document, .del").on('click', function(evt){
+        var button = $(this);
+
+        //если кнопка Добавить документ
+        if(button.attr('id') == "add-document") {
+            var block = $('.documents .field-horizontal:last');
+
+            if(block.hasClass('hidden')){
+                block.removeClass('hidden');
+            }else {
+                var document = $('.documents .field-horizontal:last').clone(true);
+                $('.file-name', document).empty();
+                $('.documents').append(document);
+            }
+
+        }else{
+            var block = button.parents('.field-horizontal');
+            block.find("input[name$='[_destroy]']").val('true');
+            block.addClass('hidden');
+        }
+
+        $('.documents .field-horizontal').each(function(i){
+
+            var select_name = $('select', document).attr('name');
+            var file_name = $('input[type=file]', document).attr('name');
+            $('select,input', $(this)).attr('name', function(){
+                return $(this).attr('name').replace(/(\d)/, i);
+            });
+
+        });
+    });
 
 
 })(jQuery);

@@ -50,6 +50,10 @@ gem 'thin'
 # Use Savon as the soap client
 gem 'savon', '~> 2.0'
 
+# загрузка файлов
+#gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+gem 'carrierwave'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
