@@ -22,6 +22,8 @@ ru:
             summa:
               blank: "Поле не может быть пустым"
               greater_than: "Не может быть равна нулю"
+            platform:
+              blank: "Укажите номер площадки"
         organization:
           attributes:
             inn:

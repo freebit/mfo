@@ -5,6 +5,6 @@ class BankAccount < ActiveRecord::Base
 
   accepts_nested_attributes_for :bank
 
-  validates :account_number, presence: true
+  #validates :account_number, presence: true
 
 end
