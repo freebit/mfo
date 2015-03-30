@@ -521,17 +521,16 @@
             %div{class:"field-horizontal#{' hidden' if !d.object.file?}"}
               .field
                 %button.del{type:'button', title:"Удалить документ"} &times;
-              -#= d.check_box :remove_file if d.object.file?
               .field
                 %label Укажите тип файла
-                = d.select :type_d , [["Паспорт представителя","2"],["Устав","3"], ["Свидетельство ОГРН","4"], ["Решение (приказ) о назначении Ген.дира","5"]]
+                = d.select :type_d , [['ЕГРЮЛ','1'],["Паспорт представителя","2"],["Устав","3"], ["Свидетельство ОГРН","4"], ["Решение (приказ) о назначении Ген.дира","5"]]
                 = d.error :type_d
               .field
                 = content_tag( :div, d.object.file.path.split('/').last, class:"file-name") if d.object.file?
               .field
                 = d.file_field :file
                 = d.hidden_field :file_cache
-                = d.hidden_field :_destroy
+                = d.hidden_field :_destroy, value: !d.object.file? ? 'true' : 'false'
                 = d.error :file
         %button.btn.btn-success{type:'button', id:"add-document"} Добавить документ
 

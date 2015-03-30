@@ -100,11 +100,14 @@
         //если кнопка Добавить документ
         if(button.attr('id') == "add-document") {
             var block = $('.documents .field-horizontal:last');
+            block.find("input[name$='[_destroy]']").val('false');
+            block.find('select').val('1')
 
-            if(block.hasClass('hidden')){
+            if(block.hasClass('hidden') && !block.hasClass('deleted')){
                 block.removeClass('hidden');
             }else {
-                var document = $('.documents .field-horizontal:last').clone(true);
+                var document = block.clone(true);
+                document.removeClass('hidden deleted');
                 $('.file-name', document).empty();
                 $('.documents').append(document);
             }
@@ -112,14 +115,12 @@
         }else{
             var block = button.parents('.field-horizontal');
             block.find("input[name$='[_destroy]']").val('true');
-            block.addClass('hidden');
+            block.addClass('hidden deleted');
         }
 
+        //проставляем индексы
         $('.documents .field-horizontal').each(function(i){
-
-            var select_name = $('select', document).attr('name');
-            var file_name = $('input[type=file]', document).attr('name');
-            $('select,input', $(this)).attr('name', function(){
+             $('select,input', $(this)).attr('name', function(){
                 return $(this).attr('name').replace(/(\d)/, i);
             });
 

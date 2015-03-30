@@ -93,6 +93,8 @@
               %label КПП
               = b.input_field :kpp, value:"13241234"
               = b.error :kpp
+            .field
+              %button.btn.btn-success.check{type:'button',data:{targetform:'check-borrower'}} Искать в существующих
           .field
             %label Название организации
             = b.input_field :name, value:"Строй-дом"
@@ -525,17 +527,16 @@
             %div{class:"field-horizontal#{' hidden' if !d.object.file?}"}
               .field
                 %button.del{type:'button', title:"Удалить документ"} &times;
-                -#= d.check_box :remove_file if d.object.file?
               .field
                 %label Укажите тип файла
-                = d.select :type_d , [["Паспорт представителя","2"],["Устав","3"], ["Свидетельство ОГРН","4"], ["Решение (приказ) о назначении Ген.дира","5"]]
+                = d.select :type_d , [['ЕГРЮЛ','1'],["Паспорт представителя","2"],["Устав","3"], ["Свидетельство ОГРН","4"], ["Решение (приказ) о назначении Ген.дира","5"]]
                 = d.error :type_d
               .field
                 = content_tag( :div, d.object.file.filename, class:"file-name") if d.object.file?
               .field
                 = d.file_field :file
                 = d.hidden_field :file_cache
-                = d.hidden_field :_destroy
+                = d.hidden_field :_destroy, value: !d.object.file? ? 'true' : 'false'
                 = d.error :file
         %button.btn.btn-success{type:'button', id:"add-document"} Добавить документ
 

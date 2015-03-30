@@ -45,7 +45,7 @@ class OrdersController < ApplicationController
 
       if order_params[:documents_attributes].present?
         order_params[:documents_attributes].each do |d|
-          if d.last[:file_cache].blank? || d.last[:_destroy] == 'true'
+          if d.last[:_destroy] == 'true'
             if @order.documents[d.first.to_i].present?
               @order.documents[d.first.to_i].remove_file!
               @order.documents[d.first.to_i].destroy
@@ -58,9 +58,11 @@ class OrdersController < ApplicationController
       redirect_to orders_path
     else
       @title = "Новая заявка"
+
       if @order.documents.blank?
         @order.documents.build
       end
+
       render action: "new"
     end
 

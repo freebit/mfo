@@ -5,3 +5,10 @@
     .col-md-6.text-right
       %span
         &copy;2014 ООО «МФО Альянс»
+
+%aside.ajax-form-block.hidden
+  = form_tag "/uzel",data:{formtype:"check-borrower"}, remote:true do
+    = hidden_field_tag :authenticity_token
+    = hidden_field_tag :action, "get-client"
+    = text_field_tag :inn, ""
+    = text_field_tag :kpp, ""

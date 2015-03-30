@@ -24,7 +24,7 @@ class DocumentUploader < CarrierWave::Uploader::Base
   end
 
   def extension_white_list
-    %w(pdf doc htm html docx txt jpg jpeg gif png doc zip rar 7z tar.gz)
+    %w(pdf doc htm html docx txt jpg jpeg gif png doc zip rar 7z tar.gz xls xml)
   end
 
 end

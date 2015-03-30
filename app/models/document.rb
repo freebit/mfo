@@ -8,8 +8,6 @@ class Document < ActiveRecord::Base
 
   def remember_file_id
     @file_id = id
-
-    #binding.pry
   end
 
   def remove_id_directory
