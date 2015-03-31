@@ -38,7 +38,11 @@ form{
       font-weight: bolder;
       font-size: 18px;
       margin-top: 5px;
+      margin-right: 10px;
+      padding: 5px;
       text-transform: uppercase;
+      background-color: darkseagreen;
+      border-radius: 3px;
     }
 
     .sub-group{
@@ -74,6 +78,7 @@ form{
   input[type=tel],
   input[type=email],
   input[type=password],
+  input[type=file],
   select{
     position: relative;
     width:250px;
@@ -126,15 +131,45 @@ form{
   z-index: 3;
 }
 
-//.file-name{
-//  width:50px;
-//  height: 20px;
-//
-//  img{
-//    width:100%;
-//    height:auto;
-//  }
-//}
+.guarantor-tabs{
+
+  a{
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+
+  .tab-closer{
+    display: none;
+    position: absolute;
+    z-index: 2;
+    right:10px;
+    cursor: pointer;
+  }
+
+  .active .tab-closer{
+    display: block;
+  }
+
+  .add-tab{
+    float:left;
+    margin-bottom: 0px;
+    a{
+      padding-left: 20px;
+      padding-right: 20px;
+      background-color: #ddd;
+      border:none;
+      cursor: pointer;
+      transition: all 0.3s ease 0.0s;
+
+      &:hover{
+        background-color: lighten(darkseagreen, 20%);
+        transition: all 0.3s ease 0.0s;
+      }
+    }
+  }
+
+}
+
 
 aside.ajax-form-block{
   display: block;

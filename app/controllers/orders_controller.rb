@@ -20,13 +20,9 @@ class OrdersController < ApplicationController
     @order.borrower.bank_account.build_bank
     @order.borrower.build_person
 
-    @order.build_guarantor_legal
-    @order.guarantor_legal.build_bank_account
-    @order.guarantor_legal.bank_account.build_bank
 
-    @order.guarantor_legal.build_person
-
-    @order.build_guarantor_individual
+    @order.guarantor_individuals << Individual.new(_destroy:true)
+    @order.guarantor_legals << Organization.new(_destroy:true)
 
     @order.documents.build
 
@@ -63,6 +59,14 @@ class OrdersController < ApplicationController
         @order.documents.build
       end
 
+      if @order.guarantor_individuals.blank?
+        @order.guarantor_individuals.build
+      end
+
+      if @order.guarantor_legals.blank?
+        @order.guarantor_legals.build
+      end
+
       render action: "new"
     end
 
@@ -81,8 +85,6 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find params[:id]
 
-    #@order.assign_attributes order_params
-
     if @order.update_attributes order_params
 
       flash[:success] = "Заявка обновлена"
@@ -99,8 +101,8 @@ class OrdersController < ApplicationController
 
     def order_params
 
-      organization_attributes = [:id, :type_o, :inn, :kpp, :name, :fullname, :ogrn, :address_legal, :address_actual, :head_position, :reg_date]
-      person_attributes = [:id, :fullname, :birthday, :birth_place, :citizenship, :phone, :email, :reg_place, :curr_place, :curr_place, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date]
+      organization_attributes = [:id, :type_o, :inn, :kpp, :name, :fullname, :ogrn, :address_legal, :address_actual, :head_position, :reg_date, :_destroy]
+      person_attributes = [:id, :fullname, :birthday, :birth_place, :citizenship, :phone, :email, :reg_place, :curr_place, :curr_place, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date, :_destroy]
       bank_attributes = [:id, :bik, :korr_number, :inn, :name, :city, :address]
 
       params.require(:order).permit(:summa, :platform, :submission_deadline, :agent, :agent_name, :agent_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :status,
@@ -116,7 +118,7 @@ class OrdersController < ApplicationController
                                         person_attributes:person_attributes
                                     ],
 
-                                    guarantor_legal_attributes:[
+                                    guarantor_legals_attributes:[
                                         organization_attributes,
                                         bank_account_attributes:[
                                             :id,
@@ -126,14 +128,14 @@ class OrdersController < ApplicationController
                                         person_attributes: person_attributes
                                     ],
 
-                                    guarantor_individual_attributes: person_attributes,
+                                    guarantor_individuals_attributes: person_attributes,
 
                                     documents_attributes:[:id, :order_id, :type_d, :file, :file_cache, :remove_file, :_destroy]
       )
     end
 
     def service_params
-      params.require(:service).permit(:guarantor_type)
+      params.require(:service).permit(:guarantor_type, :active_guarantor_individual)
     end
 
   def user_is_admin

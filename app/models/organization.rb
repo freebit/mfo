@@ -1,6 +1,9 @@
 class Organization < ActiveRecord::Base
 
-  belongs_to :order, polymorphic: true
+  attr_accessor :_destroy
+  attr_accessor :skip_kpp_validation
+
+  belongs_to :order
 
   has_one :person, class_name: 'Individual', dependent: :destroy
   has_one :bank_account, dependent: :destroy
@@ -15,7 +18,7 @@ class Organization < ActiveRecord::Base
   validates :inn, presence: true
 
   validates :kpp, presence: true, unless: :skip_kpp_validation
-  attr_accessor :skip_kpp_validation
+
 
   validates :name, presence: true
   validates :fullname, presence: true

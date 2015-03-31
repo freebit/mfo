@@ -1,0 +1,105 @@
+-#= params[:order][:guarantor_individuals_attributes] if params[:order]
+%ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-individuals-tabs"}
+  - if params[:order] && params[:order][:guarantor_individuals_attributes]
+    - params[:order][:guarantor_individuals_attributes].each.with_index do |gi, index|
+      %li{class:"tab#{' active' if params[:service][:active_guarantor_individual].to_i == index}#{' hidden' if params[:order] && !gi.last[:_destroy]}"}
+        %span.tab-closer &times;
+        %a{href:"#guarantor_individuals_#{gi.first}", data:{toggle:"tab"}} Поручитель ФЛ #{index + 1}
+  - else
+    %li.tab.active.hidden
+      %span.tab-closer &times;
+      %a{href:"#guarantor_individuals_0", data:{toggle:"tab"}} Поручитель ФЛ 1
+  %li.add-tab
+    %a.glyphicon.glyphicon-plus{title:"Добавить поручителя ФЛ"}
+
+
+.tab-content{id:"guarantor-individuals-content"}
+  - @order.guarantor_individuals.each.with_index do |gi, index|
+    = f.simple_fields_for :guarantor_individuals, gi do |gif|
+      %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if params[:service] && params[:service][:active_guarantor_individual].to_i == index}#{' hidden' if gif.object._destroy  }"}
+        = gif.hidden_field :_destroy, value: gif.object._destroy
+        .field-group
+          %h5.title Персональные данные
+          .field-horizontal
+            .field
+              %label ФИО
+              = gif.input_field :fullname
+              = gif.error :fullname
+            .field
+              %label Дата рождения
+              = gif.date_field :birthday
+              = gif.error :birthday
+            .field.long
+              %label Место рождения
+              = gif.input_field :birth_place
+              = gif.error :birth_place
+            .field.long
+              %label Место регистрации
+              = gif.input_field :reg_place
+              = gif.error :reg_place
+            .field.long
+              %label Место пребывания
+              = gif.input_field :curr_place
+              = gif.error :curr_place
+            .field
+              %label Гражданство
+              = gif.input_field :citizenship
+              = gif.error :citizenship
+          .field-horizontal
+            .field
+              %label Телефон
+              = gif.input_field :phone
+              = gif.error :phone
+            .field
+              %label E-mail
+              = gif.input_field :email
+              = gif.error :email
+
+
+            .sub-group
+              %h5.title Паспортные данные
+
+              .field
+                %label Серия и номер паспорта
+                = gif.input_field :pass_serial_number
+                = gif.error :pass_serial_number
+
+              .field.long
+                %label Кем выдан
+                = gif.input_field :pass_issued
+                = gif.error :pass_issued
+              .field-horizontal
+                .field
+                  %label Код подразделения
+                  = gif.input_field :pass_issued_code
+                  = gif.error :pass_issued_code
+
+                .field
+                  %label Дата выдачи
+                  = gif.date_field :pass_issue_date
+                  = gif.error :pass_issue_date
+
+            .sub-group
+              %h5.title Данные о ранее выданных паспортах
+              .field
+                %label Серия и номер паспорта
+                = gif.input_field :old_pass_serial_number
+                = gif.error :old_pass_serial_number
+
+              .field.long
+                %label Кем выдан
+                = gif.input_field :old_pass_issued
+                = gif.error :old_pass_issued
+              .field-horizontal
+                .field
+                  %label Код подразделения
+                  = gif.input_field :old_pass_issued_code
+                  = gif.error :old_pass_issued_code
+
+                .field
+                  %label Дата выдачи
+                  = gif.date_field :old_pass_issue_date
+                  = gif.error :old_pass_issue_date
+
+= simple_fields_for :service do |s|
+  = s.hidden_field :active_guarantor_individual, value: params[:service] ? params[:service][:active_guarantor_individual] : 0

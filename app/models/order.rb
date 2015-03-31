@@ -1,15 +1,15 @@
 class Order < ActiveRecord::Base
 
   has_one :borrower, ->{ where attachable_type: 'borrower'}, class_name: 'Organization', dependent: :destroy
-  has_one :guarantor_legal, ->{ where attachable_type: 'guarantor_legal'}, class_name: 'Organization', dependent: :destroy
-  has_one :guarantor_individual, class_name: 'Individual', dependent: :destroy
+  has_many :guarantor_legals, ->{ where attachable_type: 'guarantor_legal'}, class_name: 'Organization', dependent: :destroy
+  has_many :guarantor_individuals, class_name: 'Individual', dependent: :destroy
 
   has_many :documents, dependent: :destroy
 
 
   accepts_nested_attributes_for :borrower, allow_destroy: true
-  accepts_nested_attributes_for :guarantor_legal, allow_destroy: true
-  accepts_nested_attributes_for :guarantor_individual, allow_destroy: true
+  accepts_nested_attributes_for :guarantor_legals, allow_destroy: true
+  accepts_nested_attributes_for :guarantor_individuals, allow_destroy: true
 
   accepts_nested_attributes_for :documents, allow_destroy: true
 

@@ -4,6 +4,7 @@ class Individual < ActiveRecord::Base
 
   before_save { self.email = email.downcase }
 
+  attr_accessor :_destroy
 
   # validates :fullname, presence: true, length: {maximum: 250}
   # validates :birthday, presence: true

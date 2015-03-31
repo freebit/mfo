@@ -1,0 +1,186 @@
+%ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-legals-tabs"}
+  - if params[:order] && params[:order][:guarantor_legals_attributes]
+    - params[:order][:guarantor_legals_attributes].each.with_index do |gi, index|
+      %li{class:"tab#{' active' if params[:service][:active_guarantor_legal].to_i == index}#{' hidden' if params[:order] && !gi.last[:_destroy]}"}
+        %span.tab-closer &times;
+        %a{href:"#guarantor_legals_#{gi.first}", data:{toggle:"tab"}} Поручитель ЮЛ #{index + 1}
+  - else
+    %li.tab.active.hidden
+      %span.tab-closer &times;
+      %a{href:"#guarantor_legals_0", data:{toggle:"tab"}} Поручитель ЮЛ 1
+  %li.add-tab
+    %a.glyphicon.glyphicon-plus{title:"Добавить поручителя ЮЛ"}
+
+.tab-content{id:"guarantor-legals-content"}
+  - @order.guarantor_legals.each.with_index do |gl, index|
+    = gl._destroy
+    = f.simple_fields_for :guarantor_legals, gl do |glf|
+      %div{id:"guarantor_legals_#{index}", class:"tab-pane#{' active' if params[:service] && params[:service][:active_guarantor_legal].to_i == index}#{' hidden' if !gl._destroy  }"}
+        = glf.hidden_field :_destroy, value: gl._destroy
+        = glf.hidden_field :type_o, value:"ЮЛ"
+        .field-group
+          %h5.title Основные данные
+          .field-horizontal
+            .field.inn
+              %label ИНН
+              = glf.input_field :inn, value:"4325235234"
+              = glf.error :inn
+            .field.kpp
+              %label КПП
+              = glf.input_field :kpp, value:"4227752865"
+              = glf.error :kpp
+          .field.long
+            %label Название организации
+            = glf.input_field :name, value:"Силикон-патч"
+            = glf.error :name
+          .field.long
+            %label Полное название организации
+            = glf.input_field :fullname, value:"Силикон-патч уралочка"
+            = glf.error :fullname
+          .field.long
+            %label Юридический адрес
+            = glf.input_field :address_legal, value:"г. Москва ул.Печорка 32"
+            = glf.error :address_legal
+          .field.long
+            %label Фактический адрес
+            = glf.input_field :address_actual, value:"г. Москва ул.Салютная 7"
+            = glf.error :address_actual
+          .field-horizontal
+            .field
+              %label Дата регистрации
+              = glf.date_field :reg_date, value:"1999-07-21"
+              = glf.error :reg_date
+            .field
+              %label ОГРН
+              = glf.input_field :ogrn, value:"542353245"
+              = glf.error :ogrn
+          .field
+            %label Должность руководителя
+            = glf.input_field :head_position, value:"Генеральный деректор"
+            = glf.error :head_position
+
+
+        .field-group
+          %h5.title Основной банковский счет
+
+          = glf.fields_for BankAccount.new do |glba|
+            .field-horizontal
+              .field
+                %label Номер счета
+                = glba.input_field :account_number, value:"23452352452452"
+                = glba.error :account_number
+
+              = glba.fields_for Bank.new do |glbab|
+                .field
+                  %label Бик
+                  = glbab.input_field :bik, value:"23452352452452"
+                  = glbab.error :bik
+                .field-horizontal
+                  .field
+                    %label Коррсчет
+                    = glbab.input_field :korr_number, value:"23452352452452"
+                    = glbab.error :korr_number
+                  .field
+                    %label ИНН
+                    = glbab.input_field :inn, value:"23452352452452"
+                    = glbab.error :inn
+                  .field
+                    %label Наименование банка
+                    = glbab.input_field :name, value:"Банк-гора"
+                    = glbab.error :name
+                  .field
+                    %label Город
+                    = glbab.input_field :city, value:"г. Рубище"
+                    = glbab.error :city
+                  .field.long
+                    %label Адрес
+                    = glbab.input_field :address, value:"г. Рубище ул. Станочная 9"
+                    = glbab.error :address
+
+        .field-group
+          %h5.title Персональные данные представителя поручителя
+
+          = glf.fields_for Individual.new do |glp|
+            .field-horizontal
+              .field
+                %label ФИО
+                = glp.input_field :fullname, value:"Дудин Игорь Викторович"
+                = glp.error :fullname
+              .field
+                %label Дата рождения
+                = glp.date_field :birthday, value:"1966-12-10"
+                = glp.error :birthday
+            .field.long
+              %label Место рождения
+              = glp.input_field :birth_place, value:"г. Рубище ул. Станочная 9"
+              = glp.error :birth_place
+            .field.long
+              %label Место регистрации
+              = glp.input_field :reg_place, value:"г. Рубище ул. Станочная 9"
+              = glp.error :reg_place
+            .field.long
+              %label Место пребывания
+              = glp.input_field :curr_place, value:"г. Рубище ул. Станочная 9"
+              = glp.error :curr_place
+            .field
+              %label Гражданство
+              = glp.input_field :citizenship, value:"РФ"
+              = glp.error :citizenship
+            .field-horizontal
+              .field
+                %label Телефон
+                = glp.input_field :phone, value:"8 903 456 22 11"
+                = glp.error :phone
+              .field
+                %label E-mail
+                = glp.input_field :email, value:"fgart@mail.ru"
+                = glp.error :email
+
+            .sub-group
+              %h5.title Паспортные данные
+
+              .field
+                %label Серия и номер паспорта
+                = glp.input_field :pass_serial_number, value:"23534 43253"
+                = glp.error :pass_serial_number
+
+              .field.long
+                %label Кем выдан
+                = glp.input_field :pass_issued, value:"Дудинским ОВД"
+                = glp.error :pass_issued
+              .field-horizontal
+                .field
+                  %label Код подразделения
+                  = glp.input_field :pass_issued_code, value:"ф-2345"
+                  = glp.error :_pass_issued_code
+
+                .field
+                  %label Дата выдачи
+                  = glp.date_field :pass_issue_date, value:"2003-01-14"
+                  = glp.error :pass_issue_date
+
+            .sub-group
+              %h5.title Данные о ранее выданных паспортах
+
+              .field
+                %label Серия и номер паспорта
+                = glp.input_field :old_pass_serial_number, value:"23534 43253"
+                = glp.error :old_pass_serial_number
+
+              .field.long
+                %label Кем выдан
+                = glp.input_field :old_pass_issued, value:"Дудинским ОВД"
+                = glp.error :old_pass_issued
+              .field-horizontal
+                .field
+                  %label Код подразделения
+                  = glp.input_field :old_pass_issued_code, value:"ф-2345"
+                  = glp.error :old_pass_issued_code
+
+                .field
+                  %label Дата выдачи
+                  = glp.date_field :old_pass_issue_date, value:"2001-01-14"
+                  = glp.error :old_pass_issue_date
+
+= simple_fields_for :service do |s|
+  = s.hidden_field :active_guarantor_legal, value: params[:service] ? params[:service][:active_guarantor_individual] : 0

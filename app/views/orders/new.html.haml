@@ -1,5 +1,5 @@
 
-.order-form
+.order-form{data:{action:'test'}}
   %ul.nav.nav-tabs{id:"order-tabs"}
     %li.active
       %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
@@ -29,11 +29,11 @@
       .tab-pane.fade{id:"loan"}
         .field
           %label Электронная площадка
-          = f.input_field :platform
+          = f.input_field :platform, disabled: false
           = f.error :platform
         .field
           %label Сумма
-          = f.input_field :summa, value: 1700
+          = f.input_field :summa, value: 1700, disabled: false
           = f.error :summa
         .field
           %label Крайний срок предоставления
@@ -49,7 +49,7 @@
           = f.error :agent_name
         .field
           %label АгентВознаграждение
-          = f.input_field :agent_summa, value: 100
+          = f.input_field :agent_summa, value: 100, disabled: false
           = f.error :agent_summa
         .field
           %label Номер
@@ -73,7 +73,7 @@
           = f.error :create_date
         .field
           %label Статус
-          = f.input_field :status, value:"На заполнении"
+          = f.input_field :status, value:"На заполнении", disabled: false
           = f.error :status
 
 
@@ -217,14 +217,15 @@
                 %label Гражданство
                 = p.input_field :citizenship, value:"РФ"
                 = p.error :citizenship
-              .field
-                %label Телефон
-                = p.input_field :phone, value:"23 67 44"
-                = p.error :phone
-              .field
-                %label E-mail
-                = p.input_field :email, value:"ader@mail.ru"
-                = p.error :email
+              .field-horizontal
+                .field
+                  %label Телефон
+                  = p.input_field :phone, value:"23 67 44"
+                  = p.error :phone
+                .field
+                  %label E-mail
+                  = p.input_field :email, value:"ader@mail.ru"
+                  = p.error :email
 
               .sub-group
                 %h5.title Паспортные данные
@@ -277,284 +278,23 @@
       -# ПОРУЧИТЕЛИ #
 
       .tab-pane.fade{id:"guarantors"}
-
-        = simple_fields_for :service do |g|
+        = simple_fields_for :service do |s|
           .field.radio-group
             %label Выберите тип поручителя
-            = g.collection_radio_buttons :guarantor_type, [['guarantor_individual', 'Физическое лицо'], ['guarantor_legal', 'Юридическое лицо']], :first, :last,
-            checked: params[:service] ? params[:service][:guarantor_type] : 'guarantor_individual'
+            = s.collection_radio_buttons :guarantor_type, [['guarantor_individual', 'Физическое лицо'], ['guarantor_legal', 'Юридическое лицо']], :first, :last,
+            checked: params[:service] ? params[:service][:guarantor_type] : 'guarantor_legal'
 
-        -# ПОРУЧИТЕЛЬ ФИЗИЧЕСКОЕ ЛИЦО #
+        -# ПОРУЧИТЕЛИ ФИЗИЧЕСКОЕ ЛИЦО #
+        .guarantor{class:"guarantor_individual #{'hidden'}"}
+          = render partial: 'shared/guarantor_individual', locals: {f:f}
 
-        .guarantor{class:"guarantor_individual #{'hidden' if params[:service] && params[:service][:guarantor_type] == 'guarantor_legal'}"}
-          %h4 Поручитель ФЛ
-          = f.fields_for :guarantor_individual do |gi|
-            .field
-              %label ФИО
-              = gi.input_field :fullname, value:"Жариков Семен Павлович"
-              = gi.error :fullname
-            .field
-              %label Дата рождения
-              = gi.date_field :birthday, value:"1969-11-23"
-              = gi.error :birthday
-            .field
-              %label Место рождения
-              = gi.input_field :birth_place, value:"г. Луки"
-              = gi.error :birth_place
-            .field
-              %label Гражданство
-              = gi.input_field :citizenship, value:"РФ"
-              = gi.error :citizenship
-            .field
-              %label Телефон
-              = gi.input_field :phone, value:"45 77 88"
-              = gi.error :phone
-            .field
-              %label E-mail
-              = gi.input_field :email, value:"asdf@mail.ru"
-              = gi.error :email
-            .field
-              %label Место регистрации
-              = gi.input_field :reg_place, value:"г.Луки ул. Пахотная 34-11"
-              = gi.error :reg_place
-            .field
-              %label Место пребывания
-              = gi.input_field :curr_place, value:"г.Луки ул. Пахотная 35-12"
-              = gi.error :curr_place
-
-
-            .field-group
-              %h5 Паспортные данные
-
-              .field
-                %label Серия и номер паспорта
-                = gi.input_field :pass_serial_number, value:"34 11 34589"
-                = gi.error :pass_serial_number
-
-              .field
-                %label Кем выдан
-                = gi.input_field :pass_issued, value:"Гороловским ОВД"
-                = gi.error :pass_issued
-
-              .field
-                %label Код подразделения
-                = gi.input_field :pass_issued_code, value:"ук-3400"
-                = gi.error :pass_issued_code
-
-              .field
-                %label Дата выдачи
-                = gi.date_field :pass_issue_date, value:"2003-04-11"
-                = gi.error :pass_issue_date
-
-            .field-group
-              %h5 Данные о ранее выданных паспортах
-
-              .field
-                %label Серия и номер паспорта
-                = gi.input_field :old_pass_serial_number, value:"22 77 542865"
-                = gi.error :old_pass_serial_number
-
-              .field
-                %label Кем выдан
-                = gi.input_field :old_pass_issued, value:"Гороловским ОВД"
-                = gi.error :old_pass_issued
-
-              .field
-                %label Код подразделения
-                = gi.input_field :old_pass_issued_code, value:"ук-3400"
-                = gi.error :old_pass_issued_code
-
-              .field
-                %label Дата выдачи
-                = gi.date_field :old_pass_issue_date, value:"2000-10-01"
-                = gi.error :old_pass_issue_date
-
-            -# ПОРУЧИТЕЛЬ ЮРИДИЧЕСКОЕ ЛИЦО #
-
-        .guarantor{class:"guarantor_legal #{'hidden' if params[:service] && params[:service][:guarantor_type] == 'guarantor_individual'}"}
-          %h4 Поручитель ЮЛ
-
-          = f.fields_for :guarantor_legal do |gl|
-            .field
-              %label Тип организации поручителя
-              = gl.input_field :type_o, value:"ЮЛ"
-              = gl.error :type_o
-            .field-horizontal
-              .field.inn
-                %label ИНН
-                = gl.input_field :inn, value:"2277542865"
-                = gl.error :inn
-              .field.kpp
-                %label КПП
-                = gl.input_field :kpp, value:"4227752865"
-                = gl.error :kpp
-            .field
-              %label Название организации
-              = gl.input_field :name, value:"Силикон-патч"
-              = gl.error :name
-            .field
-              %label Полное название организации
-              = gl.input_field :fullname, value:"Силикон-патч уралочка"
-              = gl.error :fullname
-            .field
-              %label ОГРН
-              = gl.input_field :ogrn, value:"542353245"
-              = gl.error :ogrn
-            .field
-              %label Юридический адрес
-              = gl.input_field :address_legal, value:"г. Москва ул.Печорка 32"
-              = gl.error :address_legal
-            .field
-              %label Фактический адрес
-              = gl.input_field :address_actual, value:"г. Москва ул.Салютная 7"
-              = gl.error :address_actual
-            .field
-              %label Должность руководителя
-              = gl.input_field :head_position, value:"Генеральный деректор"
-              = gl.error :head_position
-            .field
-              %label Дата регистрации
-              = gl.date_field :reg_date, value:"1999-07-21"
-              = gl.error :reg_date
-
-            .field-group
-              %h5 Основной банковский счет
-
-              = gl.fields_for :bank_account do |glba|
-                .field
-                  %label Номер счета
-                  = glba.input_field :account_number, value:"23452352452452"
-                  = glba.error :account_number
-
-                = glba.fields_for :bank do |glbab|
-                  .field
-                    %label Бик
-                    = glbab.input_field :bik, value:"23452352452452"
-                    = glbab.error :bik
-                  .field
-                    %label Коррсчет
-                    = glbab.input_field :korr_number, value:"23452352452452"
-                    = glbab.error :korr_number
-                  .field
-                    %label ИНН
-                    = glbab.input_field :inn, value:"23452352452452"
-                    = glbab.error :inn
-                  .field
-                    %label Наименование банка
-                    = glbab.input_field :name, value:"Банк-гора"
-                    = glbab.error :name
-                  .field
-                    %label Город
-                    = glbab.input_field :city, value:"г. Рубище"
-                    = glbab.error :city
-                  .field
-                    %label Адрес
-                    = glbab.input_field :address, value:"г. Рубище ул. Станочная 9"
-                    = glbab.error :address
-
-            .field-group
-              %h5 Персональные данные представителя поручителя
-
-              = gl.fields_for :person do |glp|
-                .field
-                  %label ФИО
-                  = glp.input_field :fullname, value:"Дудин Игорь Викторович"
-                  = glp.error :fullname
-                .field
-                  %label Дата рождения
-                  = glp.date_field :birthday, value:"1966-12-10"
-                  = glp.error :birthday
-                .field
-                  %label Место рождения
-                  = glp.input_field :birth_place, value:"г. Рубище ул. Станочная 9"
-                  = glp.error :birth_place
-                .field
-                  %label Гражданство
-                  = glp.input_field :citizenship, value:"РФ"
-                  = glp.error :citizenship
-                .field
-                  %label Телефон
-                  = glp.input_field :phone, value:"8 903 456 22 11"
-                  = glp.error :phone
-                .field
-                  %label E-mail
-                  = glp.input_field :email, value:"fgart@mail.ru"
-                  = glp.error :email
-                .field
-                  %label Место регистрации
-                  = glp.input_field :reg_place, value:"г. Рубище ул. Станочная 9"
-                  = glp.error :reg_place
-                .field
-                  %label Место пребывания
-                  = glp.input_field :curr_place, value:"г. Рубище ул. Станочная 9"
-                  = glp.error :curr_place
-
-
-                .field-group
-                  %h5 Паспортные данные
-
-                  .field
-                    %label Серия и номер паспорта
-                    = glp.input_field :pass_serial_number, value:"23534 43253"
-                    = glp.error :pass_serial_number
-
-                  .field
-                    %label Кем выдан
-                    = glp.input_field :pass_issued, value:"Дудинским ОВД"
-                    = glp.error :pass_issued
-
-                  .field
-                    %label Код подразделения
-                    = glp.input_field :pass_issued_code, value:"ф-2345"
-                    = glp.error :_pass_issued_code
-
-                  .field
-                    %label Дата выдачи
-                    = glp.date_field :pass_issue_date, value:"2003-01-14"
-                    = glp.error :pass_issue_date
-
-                .field-group
-                  %h5 Данные о ранее выданных паспортах
-
-                  .field
-                    %label Серия и номер паспорта
-                    = glp.input_field :old_pass_serial_number, value:"23534 43253"
-                    = glp.error :old_pass_serial_number
-
-                  .field
-                    %label Кем выдан
-                    = glp.input_field :old_pass_issued, value:"Дудинским ОВД"
-                    = glp.error :old_pass_issued
-
-                  .field
-                    %label Код подразделения
-                    = glp.input_field :old_pass_issued_code, value:"ф-2345"
-                    = glp.error :old_pass_issued_code
-
-                  .field
-                    %label Дата выдачи
-                    = glp.date_field :old_pass_issue_date, value:"2001-01-14"
-                    = glp.error :old_pass_issue_date
+        -# ПОРУЧИТЕЛЬ ЮРИДИЧЕСКОЕ ЛИЦО #
+        .guarantor{class:"guarantor_legal"}
+          = render partial: 'shared/guarantor_legal', locals:{f:f}
 
 
       .tab-pane.fade{ id:"documents" }
-        .documents
-          = f.fields_for :documents do |d|
-            %div{class:"field-horizontal#{' hidden' if !d.object.file?}"}
-              .field
-                %button.del{type:'button', title:"Удалить документ"} &times;
-              .field
-                %label Укажите тип файла
-                = d.select :type_d , [['ЕГРЮЛ','1'],["Паспорт представителя","2"],["Устав","3"], ["Свидетельство ОГРН","4"], ["Решение (приказ) о назначении Ген.дира","5"]]
-                = d.error :type_d
-              .field
-                = content_tag( :div, d.object.file.filename, class:"file-name") if d.object.file?
-              .field
-                = d.file_field :file
-                = d.hidden_field :file_cache
-                = d.hidden_field :_destroy, value: !d.object.file? ? 'true' : 'false'
-                = d.error :file
-        %button.btn.btn-success{type:'button', id:"add-document"} Добавить документ
+        = render partial: 'shared/order_documents', locals:{f:f}
 
 
       .field-submit
