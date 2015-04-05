@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(version: 20150323125139) do
     t.string   "agent"
     t.string   "agent_name"
     t.float    "agent_summa"
+    t.float    "order_summa"
+    t.float    "mfo_summa"
     t.string   "status"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false

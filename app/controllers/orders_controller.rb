@@ -5,6 +5,7 @@ class OrdersController < ApplicationController
 
   def index
     @title = "История заявок"
+    fetch_orders_with_soap
     @orders = Order.all
   end
 
@@ -51,13 +52,20 @@ class OrdersController < ApplicationController
         end
       end
 
-      # if service_params[:send_mfo].to_b
-      #   send_mfo @order
-      # end
+      if service_params[:send_mfo].to_b
+        if send_mfo @order
+          flash[:success] = "Заявка создана <br/> Заявка отправлена в МФО"
+        else
+          flash[:warning] = "Заявка создана <br/> Не удалось отправить заявку в МФО"
+        end
+      else
+        flash[:success] = "Заявка создана"
+      end
 
-      flash[:success] = "Заявка создана"
       redirect_to orders_path
+
     else
+
       @title = "Новая заявка"
 
       if @order.documents.blank?
@@ -87,7 +95,12 @@ class OrdersController < ApplicationController
 
     if @order.guarantor_legals.blank?
       @order.guarantor_legals.build
+      @order.guarantor_legals[0].build_bank_account
+      @order.guarantor_legals[0].bank_account.build_bank
+      @order.guarantor_legals[0].build_person
     end
+
+
 
     if @order.documents.blank?
       @order.documents.build
@@ -102,12 +115,19 @@ class OrdersController < ApplicationController
 
     if @order.update_attributes order_params
 
+        @order.update_attribute :updated_at, Date.today
+
       if service_params[:send_mfo].to_b
-        send_mfo @order
-        @message = "<br/> Заявка отправлена в МФО"
+        if send_mfo @order
+          flash[:success] = "Заявка обновлена <br/> Заявка отправлена в МФО"
+        else
+          flash[:warning] = "<br/> Не удалось отправить заявку в МФО"
+        end
+      else
+        flash[:success] = "Заявка обновлена"
       end
 
-      flash[:success] = "Заявка обновлена" + @message.html_safe
+
       redirect_to orders_path
 
     else
@@ -125,7 +145,7 @@ class OrdersController < ApplicationController
       person_attributes = [:id, :fullname, :birthday, :birth_place, :citizenship, :phone, :email, :reg_place, :curr_place, :curr_place, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date, :_destroy]
       bank_attributes = [:id, :bik, :korr_number, :inn, :name, :city, :address]
 
-      params.require(:order).permit(:summa, :platform, :submission_deadline, :agent, :agent_name, :agent_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :status,
+      params.require(:order).permit(:summa, :platform, :submission_deadline, :agent, :agent_name, :agent_summa, :mfo_summa, :order_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :updated_at, :status,
 
                                     borrower_attributes:[
                                         organization_attributes,

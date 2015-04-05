@@ -2,24 +2,27 @@
   %thead
     %tr
       %th Дата создания
+      %th Дата обновления
       %th Сумма
       %th Сумма\Ставка договора
       %th Сумма\Ставка банка
       %th Сумма\Ставка агента
       %th Платформа
       %th Статус
-      %th &nbsp;
+      %th Edit
   %tbody
     - @orders.each do |order|
       %tr
-        %td
+        %td.date
           = order.created_at.to_formatted_s(:long)
+        %td.date
+          = order.updated_at.to_formatted_s(:long)
         %td
           = order.summa
         %td
-
+          = order.order_summa
         %td
-
+          = order.mfo_summa
         %td
           = order.agent_summa
         %td

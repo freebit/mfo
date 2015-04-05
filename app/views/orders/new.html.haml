@@ -23,58 +23,80 @@
           .field
             %label Площадка
             = p.select(:number, Platform.all.map {|platform| [platform.name, platform.id,data:{number:platform.number}]})
-
+        = f.fields_for :service do |s|
+          .field
+            %label Сумма займа
+            = s.input_field :order_summa
+          .field-horizontal
+            .field.short
+              %label Сумма Агента
+              = s.input_field :order_summa
+            .field.small
+              %label Ставка
+              = s.input_field :order_rate
+            .field.short
+              %label Сумма МФО
+              = s.input_field :order_rate
       -# ЗАЯВКА #
 
       .tab-pane.fade{id:"loan"}
-        .field
-          %label Электронная площадка
-          = f.input_field :platform, disabled: false
-          = f.error :platform
-        .field
-          %label Сумма
-          = f.input_field :summa, value: 1700, disabled: false
-          = f.error :summa
-        .field
-          %label Крайний срок предоставления
-          = f.date_field :submission_deadline, value: "2015-03-11"
-          = f.error :submission_deadline
-        .field
-          %label Агент
-          = f.input_field :agent, value: "agent@mail.ru"
-          = f.error :agent
-        .field
-          %label АгентНаименование
-          = f.input_field :agent_name, value: "Юра-агент"
-          = f.error :agent_name
-        .field
-          %label АгентВознаграждение
-          = f.input_field :agent_summa, value: 100, disabled: false
-          = f.error :agent_summa
-        .field
-          %label Номер
-          = f.input_field :number, value:"235"
-          = f.error :number
-        .field
-          %label НомерМФО
-          = f.input_field :number_mfo, value:"235-mfo"
-          = f.error :number_mfo
-        .field
-          %label НомерДатаПротокола
-          = f.input_field :number_data_protocol, value:"235-data-protocol"
-          = f.error :number_data_protocol
-        .field
-          %label Лицевой счет
-          = f.input_field :personal_number, value:"13241234"
-          = f.error :personal_number
-        .field
-          %label Дата создания
-          = f.date_field :create_date, value:"2015-03-27"
-          = f.error :create_date
-        .field
-          %label Статус
-          = f.input_field :status, value:"На заполнении", disabled: false
-          = f.error :status
+        .field-group
+          .field
+            %label Электронная площадка
+            = f.input_field :platform, value: f.object.platform || "1"
+            = f.error :platform
+          .field
+            %label Сумма
+            = f.input_field :summa, value: 1700, disabled: false
+            = f.error :summa
+          .field
+            %label Крайний срок предоставления
+            = f.date_field :submission_deadline
+            = f.error :submission_deadline
+          .field
+            %label Агент
+            = f.input_field :agent, value: current_user.email
+            = f.error :agent
+          .field
+            %label АгентНаименование
+            = f.input_field :agent_name, value: current_user.name
+            = f.error :agent_name
+          .field
+            %label АгентВознаграждение
+            = f.input_field :agent_summa
+            = f.error :agent_summa
+          .field
+            %label МфоВознаграждение
+            = f.input_field :mfo_summa
+            = f.error :mfo_summa
+          .field
+            %label ДоговорВознаграждение
+            = f.input_field :order_summa
+            = f.error :order_summa
+          .field.hidden
+            %label Номер
+            = f.input_field :number
+            = f.error :number
+          .field.hidden
+            %label НомерМФО
+            = f.input_field :number_mfo
+            = f.error :number_mfo
+          .field.hidden
+            %label НомерДатаПротокола
+            = f.input_field :number_data_protocol
+            = f.error :number_data_protocol
+          .field
+            %label Лицевой счет
+            = f.input_field :personal_number
+            = f.error :personal_number
+          .field
+            %label Дата создания
+            = f.date_field :create_date, value: f.object.create_date || Date.today
+            = f.error :create_date
+          .field
+            %label Статус
+            = f.input_field :status, value:"На заполнении", disabled: false
+            = f.error :status
 
 
       -# ОРГАНИЗАЦИЯ - ЗАЕМЩИК #
@@ -96,7 +118,7 @@
                 %label КПП
                 = b.input_field :kpp, value:"560901001"
                 = b.error :kpp
-            .field.text-right
+            .field.button-right
               .indicator.hidden{id:'borrower-indicator'}
               %button.btn.btn-primary.check{type:'button',data:{targetform:'check-borrower'}} Искать в базе
 

@@ -18,7 +18,46 @@ form{
 
   .field{
     position: relative;
-    margin:0 auto 10px auto;
+    box-sizing: border-box;
+    width:250px;
+    margin:0 0 10px 0;
+
+    &.but{
+      width:30px;
+      text-align: center;
+      input[type=text]{
+        text-align: inherit;
+      }
+    }
+
+    &.small{
+      width:70px;
+      text-align: center;
+      input[type=text]{
+        text-align: inherit;
+      }
+    }
+
+    &.short{
+      width:170px;
+      text-align: center;
+      input[type=text]{
+        text-align: inherit;
+      }
+    }
+
+    &.long{
+      width:505px;
+      text-align: left;
+      input[type=text]{
+        text-align: inherit;
+      }
+    }
+
+    &.button-right{
+      width:100%;
+      text-align: right;
+    }
 
     &.submit{
       margin-top: 30px;
@@ -81,12 +120,14 @@ form{
   input[type=file],
   select{
     position: relative;
-    width:250px;
+    width: 100%;
     height:28px;
     font-size: 13px;
-    padding: 0 5px;
+    padding: 0 7px;
     border:none;
     border-radius:3px;
+
+
 
     &.wait-data{
       color:#fff;
@@ -99,11 +140,6 @@ form{
     }
   }
 
-  .field.long{
-    input, select{
-      width:505px;
-    }
-  }
 
   .help-block{
     font-size: 13px;
@@ -136,7 +172,10 @@ form{
   a{
     padding-right: 30px;
     padding-left: 30px;
+
   }
+
+
 
   .tab-closer{
     display: none;

@@ -31,14 +31,14 @@
 
             //добавляем таб-пане
             if (!firstTabPane.hasClass('deleted') && firstTabPane.hasClass('hidden') && !isExist) {
-                clearFields(firstTabPane);
+                window.mfo.clearFields(firstTabPane);
                 firstTabPane.removeClass('hidden').addClass('active');
                 $("input[name$='[_destroy]']", firstTabPane).val('false');
             } else {
                 var newTabPane = firstTabPane.clone(true);
                 $('.tab-pane', tabContent).removeClass('active');
                 newTabPane.addClass('active').removeClass('deleted hidden');
-                clearFields(newTabPane.not('.hidden'));
+                window.mfo.clearFields(newTabPane.not('.hidden'));
 
                 $("input[name$='[id]']", newTabPane).remove();
 
@@ -125,8 +125,3 @@
     });
 
 })(jQuery);
-
-
-function clearFields(parent){
-    $('input', parent).val('')
-}

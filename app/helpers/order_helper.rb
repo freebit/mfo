@@ -23,15 +23,17 @@ module OrderHelper
 
     if @operations.include? :send_data
 
+    # @order.МассивАнкет
+
       @order = { МассивАнкет: [ АнкетаЗаявка: {
-                  Дата: order.create_date,
-                  Номер: "ДМЗ0320-002",
+                  Дата:  format_date_for_datetime( DateTime.now ),
+                  Номер: "",
                   Агент: order.agent,
                   АгентНаименование: order.agent_name,
                   СуммаВознагражденияАгента: order.agent_summa,
-                  СтатусСделки: "test",
-                  КрайнийСрокПредоставления: order.submission_deadline,
-                  НомерМФО: order.number_mfo,
+                  СтатусСделки: "На заполнении",
+                  КрайнийСрокПредоставления: format_date_for_datetime(order.submission_deadline),
+                  НомерМФО: nil,
                   НомерДатаПротокола: order.number_data_protocol,
                   СуммаГарантийногоВзноса: order.summa,
                   СуммаЗайма: order.summa,
@@ -57,9 +59,9 @@ module OrderHelper
                             ДатаГосРегистрации:order.borrower.reg_date,
                             ПерсональныеДанныеЗаявителя:{
                                 ФИО: order.borrower.person.fullname,
-                                ДатаРождения: order.borrower.person.birthday,
+                                ДатаРождения: format_date_for_datetime(order.borrower.person.birthday),
                                 СерияНомерПаспорта: order.borrower.person.pass_serial_number,
-                                ДатаВыдачи: order.borrower.person.pass_issue_date,
+                                ДатаВыдачи: format_date_for_datetime(order.borrower.person.pass_issue_date),
                                 КемВыдан: order.borrower.person.pass_issued,
                                 КодПодразделения: order.borrower.person.pass_issued_code,
                                 МестоРождения: order.borrower.person.birth_place,
@@ -69,9 +71,9 @@ module OrderHelper
                                 Телефон:order.borrower.person.phone,
                                 ЭлектроннаяПочта:order.borrower.person.email,
                                 СерияНомерСП:order.borrower.person.old_pass_serial_number,
-                                ДатаВыдачиСП:order.borrower.person.old_pass_issue_date,
-                                КемВыданСП:order.borrower.person.old_pass_issued,
-                                КодПодразделенияСП:order.borrower.person.old_pass_issued_code,
+                                ДатаВыдачиСП: format_date_for_datetime(order.borrower.person.old_pass_issue_date) ,
+                                КемВыданСП: order.borrower.person.old_pass_issued,
+                                КодПодразделенияСП: order.borrower.person.old_pass_issued_code,
                             },
                             Учередители:[{
                                              УчередительНаименование: order.borrower.founder.name,
@@ -80,12 +82,12 @@ module OrderHelper
                                          }]
 
                           },
-                  ПоручительЮЛ:{},
+                  ПоручительЮЛ:nil,
                   ПоручительФЛ:{
                       ФИО: order.borrower.person.fullname,
-                      ДатаРождения: order.borrower.person.birthday,
+                      ДатаРождения: format_date_for_datetime(order.borrower.person.birthday),
                       СерияНомерПаспорта: order.borrower.person.pass_serial_number,
-                      ДатаВыдачи: order.borrower.person.pass_issue_date,
+                      ДатаВыдачи: format_date_for_datetime(order.borrower.person.pass_issue_date),
                       КемВыдан: order.borrower.person.pass_issued,
                       КодПодразделения: order.borrower.person.pass_issued_code,
                       МестоРождения: order.borrower.person.birth_place,
@@ -95,32 +97,55 @@ module OrderHelper
                       Телефон:order.borrower.person.phone,
                       ЭлектроннаяПочта:order.borrower.person.email,
                       СерияНомерСП:order.borrower.person.old_pass_serial_number,
-                      ДатаВыдачиСП:order.borrower.person.old_pass_issue_date,
-                      КемВыданСП:order.borrower.person.old_pass_issued,
-                      КодПодразделенияСП:order.borrower.person.old_pass_issued_code,
+                      ДатаВыдачиСП: format_date_for_datetime(order.borrower.person.old_pass_issue_date) ,
+                      КемВыданСП: order.borrower.person.old_pass_issued,
+                      КодПодразделенияСП: order.borrower.person.old_pass_issued_code,
                   },
                   ДокументыИсполнителя:{
                       ТипДокументаИсполнителя: order.documents.first.type_d,
-                      Файл: Base64.encode64(order.documents.first.file.path),
+                      Файл: Base64.encode64( File.open(order.documents.first.file.path, "rb").read ),
                       Расширение: order.documents.first.file.path.split(".").last
                   }
 
                 }]
       }
 
+
+
       response = savon_client.call(:send_data, message: @order)
 
-      binding.pry
+      response.http.code == 200
+
+    else
 
     end
 
-  # rescue Savon::SOAPFault => error
-  #
-  #   logger.log error.http.code
-  #
-  # raise
+  end
+
+  def fetch_orders_with_soap
+
+    savon_client = Savon.client do
+      soap_version 2
+      wsdl "http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl"
+      env_namespace :soap
+      headers({})
+      namespaces(
+          "xmlns:soap" => "http://www.w3.org/2003/05/soap-envelope",
+          "xmlns:mfo" => 'Mfoalliance',
+          "xmlns:mfo1"=>"http://mfoalliance.ru"
+      )
+      #raise_errors false
+      pretty_print_xml true
+      log true
+    end
+
+    @operations = savon_client.operations
+
+
 
   end
+
+  private
 
   def logger
     logger = Logger.new(STDOUT)
@@ -128,4 +153,12 @@ module OrderHelper
     logger
   end
 
-end
+  def format_date_for_datetime(d)
+
+    #binding.pry
+
+    d.to_s.to_datetime;
+
+  end
+
+  end

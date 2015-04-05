@@ -28,6 +28,9 @@ RSpec.describe User, type: :model do
     let(:found_user) { User.find_by(email: @user.email) }
 
     it { should eq found_user.authenticate(@user.password) }
+
   end
+
+
 
 end

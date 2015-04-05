@@ -1,8 +1,8 @@
 = render partial: 'shared/order_menu'
 .order-form.edit
   %ul.nav.nav-tabs{id:"order-tabs"}
-    -#%li.active
-    -#  %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
+    %li.active
+      %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
     %li
       %a{href:"#loan", data:{toggle:"tab"}} Займ
     %li
@@ -18,12 +18,25 @@
     .tab-content{id:"tabs"}
 
       -# КАЛЬКУЛЯТОР #
-      -#.tab-pane.fade.active.in{id:"calc"}
-        -#= f.fields_for :platform do |p|
-        -#  .field
-        -#    %label Площадка
-        -#    = p.select(:number, Platform.all.map {|platform| [platform.name, platform.id,data:{number:platform.number}]})
-
+      .tab-pane.fade.active.in{id:"calc"}
+        = f.fields_for :platform do |p|
+          .field
+            %label Площадка
+            = p.select(:number, Platform.all.map {|platform| [platform.name, platform.id,data:{number:platform.number}]})
+        = f.fields_for :service do |s|
+          .field
+            %label Сумма займа
+            = s.input_field :order_summa
+          .field-horizontal
+            .field.short
+              %label Сумма Агента
+              = s.input_field :order_summa
+            .field.small
+              %label Ставка
+              = s.input_field :order_rate
+            .field.short
+              %label Сумма МФО
+              = s.input_field :order_rate
       -# ЗАЯВКА #
 
       .tab-pane.fade{id:"loan"}
@@ -52,14 +65,22 @@
           = f.input_field :agent_summa
           = f.error :agent_summa
         .field
+          %label МфоВознаграждение
+          = f.input_field :mfo_summa
+          = f.error :mfo_summa
+        .field
+          %label ДоговорВознаграждение
+          = f.input_field :order_summa
+          = f.error :order_summa
+        .field.hidden
           %label Номер
           = f.input_field :number
           = f.error :number
-        .field
+        .field.hidden
           %label НомерМФО
           = f.input_field :number_mfo
           = f.error :number_mfo
-        .field
+        .field.hidden
           %label НомерДатаПротокола
           = f.input_field :number_data_protocol
           = f.error :number_data_protocol
@@ -92,7 +113,7 @@
                 %label КПП
                 = b.input_field :kpp
                 = b.error :kpp
-            .field.text-right
+            .field.button-right
               .indicator.hidden{id:'borrower-indicator'}
               %button.btn.btn-primary.check{type:'button',data:{targetform:'check-borrower'}} Искать в базе
 

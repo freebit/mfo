@@ -9,7 +9,7 @@ class Organization < ActiveRecord::Base
   has_one :bank_account, dependent: :destroy
   has_one :founder, dependent: :destroy
 
-  accepts_nested_attributes_for :person, allow_destroy: true
+  accepts_nested_attributes_for :person, allow_destroy: true, reject_if: :all_blank
   accepts_nested_attributes_for :bank_account, allow_destroy: true
   accepts_nested_attributes_for :founder, allow_destroy: true
 

@@ -5,7 +5,7 @@ class BankAccount < ActiveRecord::Base
 
   accepts_nested_attributes_for :bank, allow_destroy: true
 
-  attr_accessor :_destroy, :account_number
+  attr_accessor :_destroy
 
   #validates :account_number, presence: true
 

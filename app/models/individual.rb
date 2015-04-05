@@ -1,6 +1,6 @@
 class Individual < ActiveRecord::Base
   belongs_to :organization
-  belongs_to :order
+  belongs_to :order, polymorphic: true
 
   #before_save { self.email = email.downcase }
 

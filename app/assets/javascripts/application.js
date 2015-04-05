@@ -88,4 +88,27 @@
     });
 
 
+
+    window.mfo = {
+
+        addGuarantors: function(list){
+            if( $.isArray(list) && $.isObject(list[0]) )
+            console.log(list)
+        },
+
+        formatDate: function(src){
+            var date = new Date(src),
+                y = date.getFullYear(),
+                m = date.getMonth() + 1,
+                d = date.getDate();
+
+            return y + "-" + (m >= 10 ? m : "0" + m) + "-" + (d >= 10 ? d : "0" + d)
+        },
+
+        clearFields: function(parent) {
+            $('input', parent).val('');
+        }
+    }
+
+
 })(jQuery);
