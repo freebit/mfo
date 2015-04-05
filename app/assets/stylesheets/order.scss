@@ -3,6 +3,42 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
+.order-menu{
+  display: block;
+  position: absolute;
+  right:15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0;
+
+  li{
+    position: relative;
+    display: inline-block;
+    *zoom:1;
+    vertical-align: top;
+  }
+
+  a{
+    display: block;
+    padding: 7px 15px;
+    margin-left: 1px;
+    background-color: darkslategrey;
+    color:#fff;
+    border-radius: 0 0 3px 3px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease 0.0s;
+
+    &:hover{
+      background-color: lighten(darkslategrey, 10%);
+      text-decoration: none;
+      transition: all 0.3s ease 0.0s;
+
+    }
+  }
+}
+
 .order-form{
   position: relative;
   margin-top: 30px;
@@ -50,27 +86,5 @@
       font-size: 12px;
     }
 
-  }
-}
-
-.order-list{
-  position: relative;
-  width:100%;
-  border-collapse: collapse;
-
-  thead th{
-    text-align: center;
-    padding: 5px 15px;
-    background-color: #DADADA;
-    border:1px solid #c0c0c0;
-  }
-
-  tbody{
-    td{
-      padding: 5px 15px;
-      text-align: center;
-      border:1px solid #e0e0e0;
-      border-top: none;
-    }
   }
 }

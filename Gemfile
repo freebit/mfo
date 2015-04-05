@@ -12,6 +12,7 @@ gem 'bootstrap-sass-rails'
 #gem 'compass-rails'
 
 gem 'simple_form'
+gem 'nested_form'
 
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
@@ -53,6 +54,9 @@ gem 'savon', '~> 2.0'
 # загрузка файлов
 #gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem 'carrierwave'
+
+# string to bool converter
+gem 'wannabe_bool'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

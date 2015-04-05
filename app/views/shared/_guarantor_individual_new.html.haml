@@ -1,8 +1,9 @@
 -#= params[:order][:guarantor_individuals_attributes] if params[:order]
-%ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-individuals-tabs"}
+%ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-individuals-tabs", data:{type:'individual'}}
   - if params[:order] && params[:order][:guarantor_individuals_attributes]
     - params[:order][:guarantor_individuals_attributes].each.with_index do |gi, index|
-      %li{class:"tab#{' active' if params[:service][:active_guarantor_individual].to_i == index}#{' hidden' if params[:order] && !gi.last[:_destroy]}"}
+      - @destroy = params[:action] == "new" ? true : gi.last[:_destroy].to_b
+      %li{class:"tab#{' active' if params[:service][:active_guarantor_individual].to_i == index}#{' hidden' if @destroy }"}
         %span.tab-closer &times;
         %a{href:"#guarantor_individuals_#{gi.first}", data:{toggle:"tab"}} Поручитель ФЛ #{index + 1}
   - else
@@ -16,8 +17,9 @@
 .tab-content{id:"guarantor-individuals-content"}
   - @order.guarantor_individuals.each.with_index do |gi, index|
     = f.simple_fields_for :guarantor_individuals, gi do |gif|
-      %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if params[:service] && params[:service][:active_guarantor_individual].to_i == index}#{' hidden' if gif.object._destroy  }"}
-        = gif.hidden_field :_destroy, value: gif.object._destroy
+      - @destroy = (params[:action] == "new" || params[:action] == "edit") ? true : params[:order][:guarantor_individuals_attributes][index.to_s][:_destroy].to_b
+      %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if params[:service] && params[:service][:active_guarantor_individual].to_i == index}#{' hidden' if @destroy  }"}
+        = gif.hidden_field :_destroy, value: @destroy
         .field-group
           %h5.title Персональные данные
           .field-horizontal

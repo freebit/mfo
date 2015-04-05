@@ -21,10 +21,12 @@
 
             $('#borrower-indicator').addClass('hidden');
 
-            if(!data['Тип']) {
+            if(!data['Клиент']['Тип']) {
 
                 return;
             }
+
+            var data = data['Клиент'];
 
             //организация
             //$('#order_borrower_attributes_type_o').val( data['Тип'] );

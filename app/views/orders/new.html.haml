@@ -1,5 +1,5 @@
-
-.order-form{data:{action:'test'}}
+= render partial: 'shared/order_menu'
+.order-form.new{data:{action:'test'}}
   %ul.nav.nav-tabs{id:"order-tabs"}
     %li.active
       %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
@@ -81,7 +81,6 @@
 
       .tab-pane.fade{id:"borrower"}
         = f.fields_for :borrower do |b|
-
           .field-group
             .field
               %label Укажите тип заемщика
@@ -91,11 +90,11 @@
             .field-horizontal
               .field.inn
                 %label ИНН
-                = b.input_field :inn, value:"7710948466"
+                = b.input_field :inn, value:"5609076848"
                 = b.error :inn
               .field{class:"kpp #{'hidden' if @order.borrower.type_o == 'ФЛ'}"}
                 %label КПП
-                = b.input_field :kpp, value:"771001001"
+                = b.input_field :kpp, value:"560901001"
                 = b.error :kpp
             .field.text-right
               .indicator.hidden{id:'borrower-indicator'}
@@ -286,11 +285,11 @@
 
         -# ПОРУЧИТЕЛИ ФИЗИЧЕСКОЕ ЛИЦО #
         .guarantor{class:"guarantor_individual #{'hidden'}"}
-          = render partial: 'shared/guarantor_individual', locals: {f:f}
+          = render partial: 'shared/guarantor_individual_new', locals: {f:f}
 
         -# ПОРУЧИТЕЛЬ ЮРИДИЧЕСКОЕ ЛИЦО #
         .guarantor{class:"guarantor_legal"}
-          = render partial: 'shared/guarantor_legal', locals:{f:f}
+          = render partial: 'shared/guarantor_legal_new', locals:{f:f}
 
 
       .tab-pane.fade{ id:"documents" }
@@ -298,4 +297,6 @@
 
 
       .field-submit
+        = simple_fields_for :service do |s|
+          = s.hidden_field :send_mfo, value: false
         = submit_tag "Сохранить", class:'btn btn-primary'

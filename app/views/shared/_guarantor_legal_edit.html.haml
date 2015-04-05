@@ -1,0 +1,184 @@
+%ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-legals-tabs",data:{type:'legal'}}
+  - @order.guarantor_legals.each.with_index do |gl, index|
+    - @destroy = gl[:_destroy].to_b || gl[:id].blank?
+    %li{class:"tab#{' active' if (params[:service] && params[:service][:active_guarantor_legal].to_i == index) || index == 0}#{' hidden' if @destroy}"}
+      %span.tab-closer &times;
+      %a{href:"#guarantor_legals_#{index}", data:{toggle:"tab"}} Поручитель ЮЛ #{index + 1}
+
+  %li.add-tab
+    %a.glyphicon.glyphicon-plus{title:"Добавить поручителя ЮЛ"}
+
+-#= @order.guarantor_legals
+.tab-content{id:"guarantor-legals-content"}
+  - @order.guarantor_legals.each.with_index do |gl, index|
+    %div{id:"guarantor_legals_#{index}", class:"tab-pane#{' active' if (params[:service] && params[:service][:active_guarantor_legal].to_i == index) || index == 0}#{' hidden' if @destroy  }"}
+      = f.simple_fields_for :guarantor_legals, gl do |glf|
+        - @destroy = gl[:_destroy].to_b || gl[:id].blank?
+        = glf.hidden_field :_destroy, value: @destroy
+        = glf.hidden_field :type_o
+        .field-group
+          %h5.title Основные данные
+          .field-horizontal
+            .field.inn
+              %label ИНН
+              = glf.input_field :inn
+              = glf.error :inn
+            .field.kpp
+              %label КПП
+              = glf.input_field :kpp
+              = glf.error :kpp
+          .field.long
+            %label Название организации
+            = glf.input_field :name
+            = glf.error :name
+          .field.long
+            %label Полное название организации
+            = glf.input_field :fullname
+            = glf.error :fullname
+          .field.long
+            %label Юридический адрес
+            = glf.input_field :address_legal
+            = glf.error :address_legal
+          .field.long
+            %label Фактический адрес
+            = glf.input_field :address_actual
+            = glf.error :address_actual
+          .field-horizontal
+            .field
+              %label Дата регистрации
+              = glf.date_field :reg_date
+              = glf.error :reg_date
+            .field
+              %label ОГРН
+              = glf.input_field :ogrn
+              = glf.error :ogrn
+          .field
+            %label Должность руководителя
+            = glf.input_field :head_position
+            = glf.error :head_position
+
+
+        .field-group
+          %h5.title Основной банковский счет
+
+          = glf.fields_for :bank_account do |glba|
+            .field-horizontal
+              .field
+                %label Номер счета
+                = glba.input_field :account_number
+                = glba.error :account_number
+
+              = glba.fields_for :bank do |glbab|
+                .field
+                  %label Бик
+                  = glbab.input_field :bik
+                  = glbab.error :bik
+                .field-horizontal
+                  .field
+                    %label Коррсчет
+                    = glbab.input_field :korr_number
+                    = glbab.error :korr_number
+                  .field
+                    %label ИНН
+                    = glbab.input_field :inn
+                    = glbab.error :inn
+                  .field
+                    %label Наименование банка
+                    = glbab.input_field :name
+                    = glbab.error :name
+                  .field
+                    %label Город
+                    = glbab.input_field :city
+                    = glbab.error :city
+                  .field.long
+                    %label Адрес
+                    = glbab.input_field :address
+                    = glbab.error :address
+
+        .field-group
+          %h5.title Персональные данные представителя поручителя
+
+          = glf.fields_for :person do |glp|
+            .field-horizontal
+              .field
+                %label ФИО
+                = glp.input_field :fullname
+                = glp.error :fullname
+              .field
+                %label Дата рождения
+                = glp.date_field :birthday
+                = glp.error :birthday
+            .field.long
+              %label Место рождения
+              = glp.input_field :birth_place
+              = glp.error :birth_place
+            .field.long
+              %label Место регистрации
+              = glp.input_field :reg_place
+              = glp.error :reg_place
+            .field.long
+              %label Место пребывания
+              = glp.input_field :curr_place
+              = glp.error :curr_place
+            .field
+              %label Гражданство
+              = glp.input_field :citizenship
+              = glp.error :citizenship
+            .field-horizontal
+              .field
+                %label Телефон
+                = glp.input_field :phone
+                = glp.error :phone
+              .field
+                %label E-mail
+                = glp.input_field :email
+                = glp.error :email
+
+            .sub-group
+              %h5.title Паспортные данные
+
+              .field
+                %label Серия и номер паспорта
+                = glp.input_field :pass_serial_number
+                = glp.error :pass_serial_number
+
+              .field.long
+                %label Кем выдан
+                = glp.input_field :pass_issued
+                = glp.error :pass_issued
+              .field-horizontal
+                .field
+                  %label Код подразделения
+                  = glp.input_field :pass_issued_code
+                  = glp.error :_pass_issued_code
+
+                .field
+                  %label Дата выдачи
+                  = glp.date_field :pass_issue_date
+                  = glp.error :pass_issue_date
+
+            .sub-group
+              %h5.title Данные о ранее выданных паспортах
+
+              .field
+                %label Серия и номер паспорта
+                = glp.input_field :old_pass_serial_number
+                = glp.error :old_pass_serial_number
+
+              .field.long
+                %label Кем выдан
+                = glp.input_field :old_pass_issued
+                = glp.error :old_pass_issued
+              .field-horizontal
+                .field
+                  %label Код подразделения
+                  = glp.input_field :old_pass_issued_code
+                  = glp.error :old_pass_issued_code
+
+                .field
+                  %label Дата выдачи
+                  = glp.date_field :old_pass_issue_date
+                  = glp.error :old_pass_issue_date
+
+= simple_fields_for :service do |s|
+  = s.hidden_field :active_guarantor_legal, value: params[:service] ? params[:service][:active_guarantor_legal] : 0

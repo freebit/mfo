@@ -5,14 +5,16 @@ $("#add-document, .del").on('click', function(evt){
 
     //если кнопка Добавить документ
     if(button.attr('id') == "add-document") {
+
         var block = $('.documents .field-horizontal:last');
         block.find("input[name$='[_destroy]']").val('false');
-        block.find('select').val('1')
+
 
         if(block.hasClass('hidden') && !block.hasClass('deleted')){
             block.removeClass('hidden');
         }else {
-            var document = block.clone(true);
+            var document = block.clone();
+            $('select', document).val('1');
             document.removeClass('hidden deleted');
             $('.file-name', document).empty();
             $('.documents').append(document);

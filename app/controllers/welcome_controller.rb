@@ -3,14 +3,15 @@ class WelcomeController < ApplicationController
     @title = "Начинаем юзать soap"
 
 
-    client = Savon.client(soap_version:2, namespace:"http://mfoalliance.ru", wsdl:"http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl")
+    savon_client = Savon.client(soap_version:2, namespace:"http://mfoalliance.ru", wsdl:"http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl")
 
-    @operations = client.operations
+    @operations = savon_client.operations
 
-    response = client.call(:get_data)
+    response = savon_client.call(:get_data)
     @order_data = response.body[:get_data_response][:return]
+    #
 
-    response = client.call(:get_client, message: {ИНН:"7710948466", КПП:"771001001"})
+    response = savon_client.call(:get_client, message: {ИНН:"5609076848", КПП:"560901001"})
     @client_data = response.body[:get_client_response][:return]
 
 

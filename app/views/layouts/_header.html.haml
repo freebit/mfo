@@ -5,9 +5,9 @@
     %nav.main-menu
       %ul
         - if signed_in? && current_user && current_user.is_admin?
-          %li= link_to "Все заявки", orders_path
-          %li= link_to "Новая заявка", new_order_path
-          %li= link_to "Пользователи", users_path
+          %li= link_to "Все заявки", orders_path, :class =>is_active?('orders/index')
+          %li= link_to "Новая заявка", new_order_path, :class => is_active?('orders/new')
+          %li= link_to "Пользователи", users_path, :class => is_active?('users/index')
         - if signed_in?
           %li= link_to "Выход", signout_path, method: "delete"
         - else

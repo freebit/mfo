@@ -21,8 +21,9 @@ class OrdersController < ApplicationController
     @order.borrower.build_person
 
 
-    @order.guarantor_individuals << Individual.new(_destroy:true)
-    @order.guarantor_legals << Organization.new(_destroy:true)
+    @order.guarantor_individuals.build
+
+    @order.guarantor_legals << Organization.new( bank_account:BankAccount.new(bank:Bank.new), person:Individual.new )
 
     @order.documents.build
 
@@ -50,6 +51,10 @@ class OrdersController < ApplicationController
         end
       end
 
+      # if service_params[:send_mfo].to_b
+      #   send_mfo @order
+      # end
+
       flash[:success] = "Заявка создана"
       redirect_to orders_path
     else
@@ -64,7 +69,7 @@ class OrdersController < ApplicationController
       end
 
       if @order.guarantor_legals.blank?
-        @order.guarantor_legals.build
+        @order.guarantor_legals << Organization.new( bank_account:BankAccount.new(bank:Bank.new), person:Individual.new )
       end
 
       render action: "new"
@@ -76,6 +81,14 @@ class OrdersController < ApplicationController
     @title = "Редактирование заявки"
     @order = Order.find params[:id]
 
+    if @order.guarantor_individuals.blank?
+      @order.guarantor_individuals.build
+    end
+
+    if @order.guarantor_legals.blank?
+      @order.guarantor_legals.build
+    end
+
     if @order.documents.blank?
       @order.documents.build
     end
@@ -85,9 +98,16 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find params[:id]
 
+    @message = "";
+
     if @order.update_attributes order_params
 
-      flash[:success] = "Заявка обновлена"
+      if service_params[:send_mfo].to_b
+        send_mfo @order
+        @message = "<br/> Заявка отправлена в МФО"
+      end
+
+      flash[:success] = "Заявка обновлена" + @message.html_safe
       redirect_to orders_path
 
     else
@@ -111,7 +131,7 @@ class OrdersController < ApplicationController
                                         organization_attributes,
                                         founder_attributes:[:name, :pass_data_ogrn, :share],
                                         bank_account_attributes:[
-                                            :id,
+                                            :id,:_destroy,
                                             :account_number,
                                             bank_attributes:bank_attributes
                                         ],
@@ -121,7 +141,7 @@ class OrdersController < ApplicationController
                                     guarantor_legals_attributes:[
                                         organization_attributes,
                                         bank_account_attributes:[
-                                            :id,
+                                            :id,:_destroy,
                                             :account_number,
                                             bank_attributes:bank_attributes
                                         ],
@@ -135,7 +155,7 @@ class OrdersController < ApplicationController
     end
 
     def service_params
-      params.require(:service).permit(:guarantor_type, :active_guarantor_individual)
+      params.require(:service).permit(:guarantor_type, :active_guarantor_individual, :active_guarantor_legal, :send_mfo)
     end
 
   def user_is_admin

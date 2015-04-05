@@ -75,6 +75,17 @@
     $("#order-tabs li:eq("+tab_index+") a").tab('show');
 
 
+    $('#order-menu').on('click','li', function(){
+        var button = $(this),
+            service_mfo_field = $('#service_send_mfo');
+        if(button.hasClass('send_mfo')){
+            service_mfo_field.val(true);
+            service_mfo_field.parents('form').submit();
+        }else if(button.hasClass('save')){
+            service_mfo_field.val(false);
+            service_mfo_field.parents('form').submit();
+        }
+    });
 
 
 })(jQuery);
