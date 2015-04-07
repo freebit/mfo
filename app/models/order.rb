@@ -3,7 +3,7 @@ class Order < ActiveRecord::Base
 
   has_one :borrower, ->{ where attachable_type: 'borrower'}, class_name: 'Organization', dependent: :destroy
 
-  has_many :guarantor_legals, ->{ where attachable_type: 'guarantor_legal'}, class_name: 'Organization',dependent: :destroy
+  has_many :guarantor_legals, ->{ where attachable_type: 'guarantor_legal'}, class_name: 'Organization', dependent: :destroy
   has_many :guarantor_individuals, class_name: 'Individual', dependent: :destroy
   has_many :documents, dependent: :destroy
 

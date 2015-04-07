@@ -11,10 +11,7 @@ class CreateIndividuals < ActiveRecord::Migration
       t.date :old_pass_issue_date
       t.string :old_pass_issued
       t.string :old_pass_issued_code
-      t.string :birth_place
       t.string :citizenship
-      t.string :reg_place
-      t.string :curr_place
       t.string :phone
       t.string :email
 
@@ -25,7 +22,6 @@ class CreateIndividuals < ActiveRecord::Migration
 
     end
 
-    #add_index :individuals, :pass_serial_number, unique: true
 
   end
 end

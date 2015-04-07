@@ -10,9 +10,14 @@ class Organization < ActiveRecord::Base
   has_one :bank_account, dependent: :destroy
   has_one :founder, dependent: :destroy
 
+  has_one :address_legal, ->{where type_a: 'legal'}, class_name:'Address', dependet: :destroy
+  has_one :address_actual, ->{where type_a: 'actual'}, class_name:'Address', dependet: :destroy
+
   accepts_nested_attributes_for :person, allow_destroy: true
   accepts_nested_attributes_for :bank_account, allow_destroy: true
   accepts_nested_attributes_for :founder, allow_destroy: true
+
+  accepts_nested_attributes_for :address_legal, allow_destroy: true
 
 
   #validates :type_o, presence: true

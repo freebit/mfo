@@ -7,8 +7,6 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :inn
       t.string :kpp
       t.string :ogrn
-      t.string :address_legal
-      t.string :address_actual
       t.string :head_position
       t.date :reg_date
       t.string :attachable_type

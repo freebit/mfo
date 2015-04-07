@@ -6,6 +6,15 @@ class Individual < ActiveRecord::Base
 
   attr_accessor :_destroy
 
+  has_one :birth_place, ->{where type_a: 'birth_place'}, class_name:'Address', dependet: :destroy
+  has_one :reg_place, ->{where type_a: 'reg_place'}, class_name:'Address', dependet: :destroy
+  has_one :curr_place, ->{where type_a: 'curr_place'}, class_name:'Address', dependet: :destroy
+
+  accepts_nested_attributes_for :birth_place, allow_destroy: true
+  accepts_nested_attributes_for :reg_place, allow_destroy: true
+  accepts_nested_attributes_for :curr_place, allow_destroy: true
+
+
   validates :fullname, presence: true, length: {maximum: 250}
   validates :birthday, presence: true
   # validates :birth_place, presence: true

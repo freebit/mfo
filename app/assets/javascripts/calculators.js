@@ -14,6 +14,7 @@
     }
 
 
+    //считаем при смене типа тарифа
     $('#order_platform_name, #order_tarif_name').on('change', function(){
         var platform = $('#order_platform_name').val(),
             type = $('#order_tarif_name').val(),

@@ -11,10 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150406175823) do
+ActiveRecord::Schema.define(version: 20150407200505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string   "indx"
+    t.string   "region"
+    t.string   "raion"
+    t.string   "punkt"
+    t.string   "street_code"
+    t.string   "street_name"
+    t.string   "house"
+    t.string   "corps"
+    t.string   "building"
+    t.string   "apart_number"
+    t.string   "type_a"
+    t.integer  "organization_id"
+    t.integer  "individual_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "addresses", ["individual_id"], name: "index_addresses_on_individual_id", using: :btree
+  add_index "addresses", ["organization_id"], name: "index_addresses_on_organization_id", using: :btree
 
   create_table "bank_accounts", force: :cascade do |t|
     t.string   "account_number"
@@ -71,10 +92,7 @@ ActiveRecord::Schema.define(version: 20150406175823) do
     t.date     "old_pass_issue_date"
     t.string   "old_pass_issued"
     t.string   "old_pass_issued_code"
-    t.string   "birth_place"
     t.string   "citizenship"
-    t.string   "reg_place"
-    t.string   "curr_place"
     t.string   "phone"
     t.string   "email"
     t.integer  "organization_id"
@@ -112,8 +130,6 @@ ActiveRecord::Schema.define(version: 20150406175823) do
     t.string   "inn"
     t.string   "kpp"
     t.string   "ogrn"
-    t.string   "address_legal"
-    t.string   "address_actual"
     t.string   "head_position"
     t.date     "reg_date"
     t.string   "attachable_type"
@@ -124,6 +140,15 @@ ActiveRecord::Schema.define(version: 20150406175823) do
 
   add_index "organizations", ["order_id"], name: "index_organizations_on_order_id", using: :btree
 
+  create_table "regions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "regions", ["name", "code"], name: "index_regions_on_name_and_code", unique: true, using: :btree
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.string   "title"
@@ -132,6 +157,15 @@ ActiveRecord::Schema.define(version: 20150406175823) do
   end
 
   add_index "roles", ["name"], name: "index_roles_on_name", unique: true, using: :btree
+
+  create_table "street_types", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "street_types", ["name", "code"], name: "index_street_types_on_name_and_code", unique: true, using: :btree
 
   create_table "tarifs", force: :cascade do |t|
     t.string   "type_t"
