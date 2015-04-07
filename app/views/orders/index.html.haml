@@ -3,10 +3,10 @@
     %tr
       %th Дата создания
       %th Дата обновления
-      %th Сумма
-      %th Сумма\Ставка договора
-      %th Сумма\Ставка банка
-      %th Сумма\Ставка агента
+      %th Сумма займа
+      %th Сумма договора
+      %th Сумма банка
+      %th Сумма агента
       %th Платформа
       %th Статус
       %th Edit
@@ -26,7 +26,7 @@
         %td
           = order.agent_summa
         %td
-          = Platform.find_by_number(order.platform).name
+          = order.platform
         %td
           = order.status
         %td.edit

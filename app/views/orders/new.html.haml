@@ -19,24 +19,61 @@
 
       -# КАЛЬКУЛЯТОР #
       .tab-pane.fade.active.in{id:"calc"}
-        = f.fields_for :platform do |p|
-          .field
-            %label Площадка
-            = p.select(:number, Platform.all.map {|platform| [platform.name, platform.id,data:{number:platform.number}]})
-        = f.fields_for :service do |s|
-          .field
-            %label Сумма займа
-            = s.input_field :order_summa
-          .field-horizontal
+        .field-horizontal
+          = f.fields_for :platform do |p|
+            .field
+              %label Площадка
+              = p.select(:name, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
+          = f.fields_for :tarif do |p|
             .field.short
-              %label Сумма Агента
-              = s.input_field :order_summa
-            .field.small
-              %label Ставка
-              = s.input_field :order_rate
-            .field.short
-              %label Сумма МФО
-              = s.input_field :order_rate
+              %label Тариф
+              = p.select(:name, Tarif.uniq.pluck(:type_t).map {|platform| [platform, platform, data:{number:platform}]})
+        .field-horizontal.tarif
+          %span.title.mfo_rate Ставка банка:
+          %span.value.mfo_rate
+          %span.title.agent_rate Ставка агента:
+          %span.value.agent_rate 0%
+
+        = simple_fields_for :service do |s|
+          .calc.tender
+            %h3 Тендерный
+            .field-horizontal
+              .field.short
+                %label Сумма займа
+                = s.number_field :order_summa, value: params[:service] && params[:service][:order_summa] ? params[:service][:order_summa] : "0"
+              .field.short
+                %label Доход договора
+                = s.input_field :dogovor_summa, value: params[:service] && params[:service][:dogovor_summa] ? params[:service][:dogovor_summa] : "0"
+            .field-horizontal
+              .field.short
+                %label Доход МФО
+                = s.input_field :mfo_summa, value: params[:service] && params[:service][:mfo_summa] ? params[:service][:mfo_summa] : "0"
+              .field.small
+                %label Ставка %
+                = s.number_field :order_rate, value: params[:service] && params[:service][:order_rate] ? params[:service][:order_rate] : "0"
+              .field.short
+                %label Доход Агента
+                = s.input_field :agent_summa, value: params[:service] && params[:service][:agent_summa] ? params[:service][:agent_summa] : "0"
+
+          .calc.business.hidden
+            %h3 Предпринимательский
+            .field-horizontal
+              .field
+                %label Сумма займа
+                = s.input_field :p_order_summa, value: params[:service] && params[:service][:p_order_summa] ? params[:service][:p_order_summa] : "0"
+              .field
+                %label Доход договора
+                = s.input_field :p_dogovor_summa, value: params[:service] && params[:service][:p_order_summa] ? params[:service][:p_dogovor_summa] : "0"
+            .field-horizontal
+              .field.short
+                %label Доход агента
+                = s.input_field :p_agent_summa, disabled: true, value: params[:service] && params[:service][:p_agent_summa] ? params[:service][:p_agent_summa] : "0"
+              .field.small
+                %label Ставка %
+                = s.input_field :p_order_rate, value: params[:service] && params[:service][:p_order_rate] ? params[:service][:p_order_rate] : "0"
+              .field.short
+                %label Доход МФО
+                = s.input_field :p_mfo_summa, disabled: true, value: params[:service] && params[:service][:p_mfo_summa] ? params[:service][:p_mfo_summa] : "0"
       -# ЗАЯВКА #
 
       .tab-pane.fade{id:"loan"}
@@ -47,7 +84,7 @@
             = f.error :platform
           .field
             %label Сумма
-            = f.input_field :summa, value: 1700, disabled: false
+            = f.input_field :summa
             = f.error :summa
           .field
             %label Крайний срок предоставления
@@ -71,8 +108,8 @@
             = f.error :mfo_summa
           .field
             %label ДоговорВознаграждение
-            = f.input_field :order_summa
-            = f.error :order_summa
+            = f.input_field :dogovor_summa
+            = f.error :dogovor_summa
           .field.hidden
             %label Номер
             = f.input_field :number
@@ -303,14 +340,14 @@
           .field.radio-group
             %label Выберите тип поручителя
             = s.collection_radio_buttons :guarantor_type, [['guarantor_individual', 'Физическое лицо'], ['guarantor_legal', 'Юридическое лицо']], :first, :last,
-            checked: params[:service] ? params[:service][:guarantor_type] : 'guarantor_legal'
+            checked: params[:service] ? params[:service][:guarantor_type] : 'guarantor_individual'
 
         -# ПОРУЧИТЕЛИ ФИЗИЧЕСКОЕ ЛИЦО #
-        .guarantor{class:"guarantor_individual #{'hidden'}"}
+        .guarantor{class:"guarantor_individual #{'hidden' if params[:service] && params[:service][:guarantor_type] == "guarantor_legal" }"}
           = render partial: 'shared/guarantor_individual_new', locals: {f:f}
 
         -# ПОРУЧИТЕЛЬ ЮРИДИЧЕСКОЕ ЛИЦО #
-        .guarantor{class:"guarantor_legal"}
+        .guarantor{class:"guarantor_legal #{'hidden' if (params[:service].present? && params[:service][:guarantor_type] == "guarantor_individual") || params[:service].blank? }"}
           = render partial: 'shared/guarantor_legal_new', locals:{f:f}
 
 
@@ -322,3 +359,8 @@
         = simple_fields_for :service do |s|
           = s.hidden_field :send_mfo, value: false
         = submit_tag "Сохранить", class:'btn btn-primary'
+
+
+%script
+  window.tarifs =
+  =raw @tarifs.to_json

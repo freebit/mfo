@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
     if @user.save
         create_user_role
-        redirect_to @user
+        redirect_to users_path
     else
 
       @title = "Создать пользователя"

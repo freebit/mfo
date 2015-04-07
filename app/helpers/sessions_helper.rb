@@ -6,6 +6,9 @@ module SessionsHelper
     user.update_attribute(:remember_token, User.encrypt(remember_token))
     user.update_attribute(:last_visit, Time.now)
     self.current_user = user
+
+    fetch_agent_data(user)
+
   end
 
   def sign_out

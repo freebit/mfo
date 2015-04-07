@@ -12,7 +12,7 @@ class CreateOrders < ActiveRecord::Migration
       t.string :agent
       t.string :agent_name
       t.float :agent_summa
-      t.float :order_summa
+      t.float :dogovor_summa
       t.float :mfo_summa
       t.string :status
 

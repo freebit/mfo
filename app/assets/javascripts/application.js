@@ -25,15 +25,15 @@
     'use strict';
 
     //выбор электроннй площадки
-    $('#order_platform_number').on('change', function(){
+    $('#order_platform_name').on('change', function(){
         var value = $(this).val()
         $('#order_platform').val(value);
     });
 
     //установка площадки
-    var value_platform = $('#order_platform_number').val();
+    var value_platform = $('#order_platform_name').val();
     if($('#order_platform').length > 0) {
-        //$('#order_platform').val(value_platform);
+        $('#order_platform').val(value_platform);
     }
     //смена типа заемщика при создании заявки
     $('#order_borrower_attributes_type_o').on('change', function(){
@@ -91,22 +91,31 @@
 
     window.mfo = {
 
-        addGuarantors: function(list){
-            if( $.isArray(list) && $.isObject(list[0]) )
-            console.log(list)
-        },
+        config:{
 
-        formatDate: function(src){
+            maxGuarantors_individual: 1
+            ,maxGuarantors_legal: 1
+        }
+
+        ,formatDate: function(src){
             var date = new Date(src),
                 y = date.getFullYear(),
                 m = date.getMonth() + 1,
                 d = date.getDate();
 
             return y + "-" + (m >= 10 ? m : "0" + m) + "-" + (d >= 10 ? d : "0" + d)
-        },
+        }
 
-        clearFields: function(parent) {
+        ,clearFields: function(parent) {
             $('input', parent).val('');
+        }
+
+        ,addGuarantors: function(list){
+            for(var i= 0, ln=arguments.length; i<ln; i++){
+                console.log(arguments[i]);
+            }
+
+            //alert(arguments.length)
         }
     }
 

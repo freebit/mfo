@@ -43,48 +43,23 @@
   position: relative;
   margin-top: 30px;
 
-  li a{
-    color: inherit;
+}
+
+.tarif{
+
+  .title{
+    font-size: 11px;
   }
 
-
-  .field{
-
-    &.radio-group{
-
-      span{
-        position: relative;
-        display: inline-block;
-        vertical-align: top;
-        min-width: 170px;
-      }
-
-      input[type=radio]{
-        display: inline-block;
-        position: relative;
-        width:20px;
-
-        + label{
-          display: inline-block;
-          position: relative;
-        }
-      }
-
-    }
-  }
-
-  .field-horizontal{
-    position: relative;
-
-    .field{
-      display: inline-block;
-      position: relative;
-      vertical-align: bottom;
-    }
-
-    .file-name{
-      font-size: 12px;
-    }
-
+  .value{
+    display: inline-block;
+    width:40px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #999;
+    font-size: 11px;
+    color:#fff;
+    text-align: center;
+    line-height: 30px;
   }
 }

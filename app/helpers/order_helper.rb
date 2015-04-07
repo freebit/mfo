@@ -4,22 +4,7 @@ module OrderHelper
 
     require 'base64'
 
-    savon_client = Savon.client do
-        soap_version 2
-        wsdl "http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl"
-        env_namespace :soap
-        headers({})
-        namespaces(
-            "xmlns:soap" => "http://www.w3.org/2003/05/soap-envelope",
-            "xmlns:mfo" => 'Mfoalliance',
-            "xmlns:mfo1"=>"http://mfoalliance.ru"
-        )
-        #raise_errors false
-        pretty_print_xml true
-        log true
-    end
-
-    @operations = savon_client.operations
+    @operations = Savon_client::CLIENT.operations
 
     if @operations.include? :send_data
 
@@ -82,8 +67,8 @@ module OrderHelper
                                          }]
 
                           },
-                  ПоручительЮЛ:nil,
-                  ПоручительФЛ:{
+                  ПоручителиЮЛ:nil,
+                  ПоручителиФЛ:{
                       ФИО: order.borrower.person.fullname,
                       ДатаРождения: format_date_for_datetime(order.borrower.person.birthday),
                       СерияНомерПаспорта: order.borrower.person.pass_serial_number,
@@ -124,22 +109,7 @@ module OrderHelper
 
   def fetch_orders_with_soap
 
-    savon_client = Savon.client do
-      soap_version 2
-      wsdl "http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl"
-      env_namespace :soap
-      headers({})
-      namespaces(
-          "xmlns:soap" => "http://www.w3.org/2003/05/soap-envelope",
-          "xmlns:mfo" => 'Mfoalliance',
-          "xmlns:mfo1"=>"http://mfoalliance.ru"
-      )
-      #raise_errors false
-      pretty_print_xml true
-      log true
-    end
-
-    @operations = savon_client.operations
+    @operations = Savon_client::CLIENT.operations
 
 
 

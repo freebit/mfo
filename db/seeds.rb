@@ -12,8 +12,8 @@
 Role.create(name: :admin, title:'Агент')
 Role.create(name: :client, title:'Клиент')
 
-Platform.create(name:"Сбербанк-АСТ",number:"1")
-Platform.create(name:"Росселторг",number:"2")
-Platform.create(name:"ММВБ",number:"3")
+# Platform.create(name:"Сбербанк-АСТ",number:"1")
+# Platform.create(name:"Росселторг",number:"2")
+# Platform.create(name:"ММВБ",number:"3")
 
 

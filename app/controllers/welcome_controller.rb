@@ -8,7 +8,7 @@ class WelcomeController < ApplicationController
     @operations = savon_client.operations
 
     response = savon_client.call(:get_data, message:{КодАгента:current_user.email})
-    @order_data = response.body[:get_data_response][:return][0..3]
+    @order_data = response.body[:get_data_response][:return][:АнкетаЗаявка][0..3]
     #
 
     response = savon_client.call(:get_client, message: {ИНН:"5609076848", КПП:"560901001"})

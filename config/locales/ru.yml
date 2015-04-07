@@ -24,6 +24,14 @@ ru:
               greater_than: "Не может быть равна нулю"
             platform:
               blank: "Укажите номер площадки"
+            submission_deadline:
+              blank: "Поле не может быть пустым"
+            agent_summa:
+              blank: "Поле не может быть пустым"
+            mfo_summa:
+              blank: "Поле не может быть пустым"
+            order_summa:
+              blank: "Поле не может быть пустым"
         organization:
           attributes:
             inn:
@@ -34,3 +42,15 @@ ru:
           attributes:
             email:
               invalid: "Неверный e-mail"
+            fullname:
+              blank: "Поле не может быть пустым"
+            birthday:
+              blank: "Поле не может быть пустым"
+            pass_serial_number:
+              blank: "Поле не может быть пустым"
+            pass_issued:
+              blank: "Поле не может быть пустым"
+            pass_issued_code:
+              blank: "Поле не может быть пустым"
+            pass_issue_date:
+              blank: "Поле не может быть пустым"

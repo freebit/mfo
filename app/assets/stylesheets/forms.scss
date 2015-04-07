@@ -7,6 +7,12 @@
   border-radius: 0 0 4px 4px;
 }
 
+.nav-tabs{
+  li a{
+    color: inherit;
+  }
+}
+
 form{
   position: relative;
   margin: 20px 0;
@@ -16,11 +22,18 @@ form{
     min-height: 300px;
   }
 
+
+
   .field{
     position: relative;
     box-sizing: border-box;
     width:250px;
     margin:0 0 10px 0;
+
+    &.radio-group{
+      width:400px;
+      margin-bottom: 30px;
+    }
 
     &.but{
       width:30px;
@@ -62,7 +75,69 @@ form{
     &.submit{
       margin-top: 30px;
     }
+
+    &.offset-right{
+      margin-right: 75px;
+    }
+
+    &.radio-group{
+
+      span{
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        min-width: 170px;
+      }
+
+      input[type=radio]{
+        display: inline-block;
+        position: relative;
+        width:20px;
+
+        + label{
+          display: inline-block;
+          position: relative;
+        }
+      }
+
+    }
   }
+
+  .field-horizontal{
+
+    position: relative;
+
+    .field{
+      display: inline-block;
+      position: relative;
+      vertical-align: top;
+    }
+
+  }
+
+  .documents .field-horizontal{
+
+    .field{
+      vertical-align: bottom;
+    }
+
+    .field.file-name{
+      max-width: 170px;
+      width: auto;
+      font-size: 12px;
+      padding:0 10px;
+    }
+
+    .field.file{
+
+      input{
+        height: auto;
+        padding:0;
+      }
+    }
+  }
+
+
 
   .field-group{
     position: relative;
@@ -90,14 +165,8 @@ form{
     }
   }
 
-  .field-submit{
 
-  }
 
-  .radio-group{
-    position: relative;
-    margin-bottom: 30px;
-  }
 
   label{
     display: block;

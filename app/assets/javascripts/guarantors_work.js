@@ -5,17 +5,22 @@
     $('.guarantor-tabs').on('click','.add-tab, .tab-closer', function(){
 
         var button = $(this),
-            tabs = button.parents('.nav-tabs'),
+            tabs = button.parents('.guarantor-tabs'),
             firstTab = $('.tab:first', tabs),
             tabContent = tabs.next('.tab-content'),
             firstTabPane = $('.tab-pane:first', tabContent),
-            isExist = !!$("input[name$='[id]']", firstTabPane).length, //если за паном cуществует и редактируется
+            countTabs = tabs.find('.tab').not('.hidden').length,
+            isExist = !!$("input[name$='[id]']", firstTabPane).length, //если есть такой hidden, значит в редактируемся
             action_new = button.parents('form').hasClass('new_order'),
             type = tabs.data('type');
-        
 
         //добавляем
-        if(button.hasClass('add-tab')) {
+        if( button.hasClass('add-tab') ) {
+
+            if(window.mfo.config["maxGuarantors_" + type] == countTabs) {
+                alert("Добавление нескольких поручителей одного типа временно отключено");
+                return;
+            }
 
             //если только это создание новой заявки
             if (!firstTab.hasClass('deleted') && firstTab.hasClass('hidden') && !isExist) {

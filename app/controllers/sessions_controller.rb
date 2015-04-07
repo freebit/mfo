@@ -8,8 +8,7 @@ class SessionsController < ApplicationController
     user = User.find_by email: params[:session][:email].downcase
     if user && user.authenticate(params[:session][:password])
       sign_in user
-      #redirect_to user
-      redirect_back_or user
+      redirect_back_or orders_path
     else
       @title = "Вход в личный кабинет"
       flash[:danger] = "Не верный логин или пароль"

@@ -18,7 +18,7 @@
   - @order.guarantor_individuals.each.with_index do |gi, index|
     = f.simple_fields_for :guarantor_individuals, gi do |gif|
       - @destroy = (params[:action] == "new" || params[:action] == "edit") ? true : params[:order][:guarantor_individuals_attributes][index.to_s][:_destroy].to_b
-      %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if params[:service] && params[:service][:active_guarantor_individual].to_i == index}#{' hidden' if @destroy  }"}
+      %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if (params[:service] && params[:service][:active_guarantor_individual].to_i == index) || index==0}#{' hidden' if @destroy  }"}
         = gif.hidden_field :_destroy, value: @destroy
         .field-group
           %h5.title Персональные данные

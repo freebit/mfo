@@ -17,9 +17,8 @@
     = f.simple_fields_for :guarantor_legals, gl do |glf|
       - @destroy = (params[:action] == "new" || params[:action] == "edit") ? true : params[:order][:guarantor_legals_attributes][index.to_s][:_destroy].to_b
       %div{id:"guarantor_legals_#{index}", class:"tab-pane#{' active' if params[:service] && params[:service][:active_guarantor_legal].to_i == index}#{' hidden' if @destroy  }"}
-        -#= params[:order][:guarantor_legals_attributes][index.to_s][:_destroy]
         = glf.hidden_field :_destroy, value: @destroy
-        = glf.hidden_field :type_o, value:"ЮЛ"
+        = glf.hidden_field :type_o, value: "ЮЛ"
         .field-group
           %h5.title Основные данные
           .field-horizontal
@@ -106,11 +105,11 @@
             .field-horizontal
               .field
                 %label ФИО
-                = glp.input_field :fullname, value:"Дудин Игорь Викторович"
+                = glp.input_field :fullname
                 = glp.error :fullname
               .field
                 %label Дата рождения
-                = glp.date_field :birthday, value:"1966-12-10"
+                = glp.date_field :birthday
                 = glp.error :birthday
             .field.long
               %label Место рождения
@@ -143,22 +142,22 @@
 
               .field
                 %label Серия и номер паспорта
-                = glp.input_field :pass_serial_number, value:"23534 43253"
+                = glp.input_field :pass_serial_number
                 = glp.error :pass_serial_number
 
               .field.long
                 %label Кем выдан
-                = glp.input_field :pass_issued, value:"Дудинским ОВД"
+                = glp.input_field :pass_issued
                 = glp.error :pass_issued
               .field-horizontal
                 .field
                   %label Код подразделения
-                  = glp.input_field :pass_issued_code, value:"ф-2345"
+                  = glp.input_field :pass_issued_code
                   = glp.error :_pass_issued_code
 
                 .field
                   %label Дата выдачи
-                  = glp.date_field :pass_issue_date, value:"2003-01-14"
+                  = glp.date_field :pass_issue_date
                   = glp.error :pass_issue_date
 
             .sub-group

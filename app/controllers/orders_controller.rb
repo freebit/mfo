@@ -1,11 +1,12 @@
 class OrdersController < ApplicationController
 
+
   before_action :signed_in_user, only: [:index, :edit, :new, :update]
   before_action :user_is_admin, only:[:index, :new, :edit, :update]
 
   def index
     @title = "История заявок"
-    fetch_orders_with_soap
+    #fetch_orders_with_soap
     @orders = Order.all
   end
 
@@ -24,9 +25,16 @@ class OrdersController < ApplicationController
 
     @order.guarantor_individuals.build
 
-    @order.guarantor_legals << Organization.new( bank_account:BankAccount.new(bank:Bank.new), person:Individual.new )
+
+    @order.guarantor_legals.build
+    @order.guarantor_legals[0].build_bank_account
+    @order.guarantor_legals[0].bank_account.build_bank
+    @order.guarantor_legals[0].build_person
 
     @order.documents.build
+
+
+    @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
 
   end
 
@@ -37,7 +45,6 @@ class OrdersController < ApplicationController
     if order_params[:borrower_attributes][:type_o] == "ФЛ"
       @order.borrower.skip_kpp_validation = true
     end
-
 
     if @order.save
 
@@ -62,6 +69,7 @@ class OrdersController < ApplicationController
         flash[:success] = "Заявка создана"
       end
 
+
       redirect_to orders_path
 
     else
@@ -79,6 +87,8 @@ class OrdersController < ApplicationController
       if @order.guarantor_legals.blank?
         @order.guarantor_legals << Organization.new( bank_account:BankAccount.new(bank:Bank.new), person:Individual.new )
       end
+
+      @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
 
       render action: "new"
     end
@@ -100,29 +110,36 @@ class OrdersController < ApplicationController
       @order.guarantor_legals[0].build_person
     end
 
-
-
     if @order.documents.blank?
       @order.documents.build
     end
+
+    @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
 
   end
 
   def update
     @order = Order.find params[:id]
 
-    @message = "";
+    @message = ""
 
     if @order.update_attributes order_params
 
-        @order.update_attribute :updated_at, Date.today
+        @order.update_attribute :updated_at, DateTime.now
 
       if service_params[:send_mfo].to_b
         if send_mfo @order
+
+          @order.update_attribute :status, "Отправлена в МФО"
+
           flash[:success] = "Заявка обновлена <br/> Заявка отправлена в МФО"
+
         else
-          flash[:warning] = "<br/> Не удалось отправить заявку в МФО"
+
+          flash[:warning] = "Заявка обновлена <br/> Не удалось отправить заявку в МФО"
+
         end
+
       else
         flash[:success] = "Заявка обновлена"
       end
@@ -132,6 +149,22 @@ class OrdersController < ApplicationController
 
     else
       @title = "Редактирование заявки"
+
+      if @order.guarantor_individuals.blank?
+        @order.guarantor_individuals.build
+      end
+
+      if @order.guarantor_legals.blank?
+        @order.guarantor_legals.build
+        @order.guarantor_legals[0].build_bank_account
+        @order.guarantor_legals[0].bank_account.build_bank
+        @order.guarantor_legals[0].build_person
+      end
+
+      if @order.documents.blank?
+        @order.documents.build
+      end
+
       render 'edit'
     end
 
@@ -175,7 +208,7 @@ class OrdersController < ApplicationController
     end
 
     def service_params
-      params.require(:service).permit(:guarantor_type, :active_guarantor_individual, :active_guarantor_legal, :send_mfo)
+      params.require(:service).permit(:guarantor_type, :active_guarantor_individual, :active_guarantor_legal, :send_mfo, :order_rate)
     end
 
   def user_is_admin

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150323125139) do
+ActiveRecord::Schema.define(version: 20150406175823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20150323125139) do
     t.string   "agent"
     t.string   "agent_name"
     t.float    "agent_summa"
-    t.float    "order_summa"
+    t.float    "dogovor_summa"
     t.float    "mfo_summa"
     t.string   "status"
     t.datetime "created_at",           null: false
@@ -124,23 +124,6 @@ ActiveRecord::Schema.define(version: 20150323125139) do
 
   add_index "organizations", ["order_id"], name: "index_organizations_on_order_id", using: :btree
 
-  create_table "platforms", force: :cascade do |t|
-    t.string   "name"
-    t.float    "rate_1"
-    t.float    "rate_2"
-    t.float    "ast_rate_1"
-    t.float    "ast_rate_2"
-    t.float    "max"
-    t.float    "min"
-    t.boolean  "active"
-    t.integer  "orders_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "number"
-  end
-
-  add_index "platforms", ["orders_id"], name: "index_platforms_on_orders_id", using: :btree
-
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.string   "title"
@@ -149,6 +132,18 @@ ActiveRecord::Schema.define(version: 20150323125139) do
   end
 
   add_index "roles", ["name"], name: "index_roles_on_name", unique: true, using: :btree
+
+  create_table "tarifs", force: :cascade do |t|
+    t.string   "type_t"
+    t.string   "platform"
+    t.float    "rate"
+    t.float    "dop_rate"
+    t.float    "minimum"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tarifs", ["type_t", "platform"], name: "index_tarifs_on_type_t_and_platform", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

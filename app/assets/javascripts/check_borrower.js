@@ -27,7 +27,7 @@
 
             var client = data['Клиент'],
                 guarantors_individual = data['ПоручителиФЛ'],
-                guarantors_legal = data['ПоручителиФЛ'];
+                guarantors_legal = data['ПоручителиЮЛ'];
 
             //организация
             //$('#order_borrower_attributes_type_o').val( data['Тип'] );

@@ -1,6 +1,6 @@
 
 //добавление\удаление файла
-$("#add-document, .del").on('click', function(evt){
+$("#documents").on('click','.btn, .del', function(evt){
     var button = $(this);
 
     //если кнопка Добавить документ
