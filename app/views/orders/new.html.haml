@@ -1,15 +1,16 @@
 = render partial: 'shared/order_menu'
+- @active_tab = params[:service] && params[:service][:new_order_active_tab] ? params[:service][:new_order_active_tab] : 'calc'
 .order-form.new{data:{action:'test'}}
   %ul.nav.nav-tabs{id:"order-tabs"}
-    %li.active
+    %li{class:"#{'active' if @active_tab == 'calc'}"}
       %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
-    %li
+    %li{class:"#{'active' if @active_tab == 'loan'}"}
       %a{href:"#loan", data:{toggle:"tab"}} Займ
-    %li
+    %li{class:"#{'active' if @active_tab == 'borrower'}"}
       %a{href:"#borrower", data:{toggle:"tab"}} Заемщик
-    %li
+    %li{class:"#{'active' if @active_tab == 'guarantors'}"}
       %a{href:"#guarantors", data:{toggle:"tab"}} Поручители
-    %li
+    %li{class:"#{'active' if @active_tab == 'documents'}"}
       %a{href:"#documents", data:{toggle:"tab"}} Прикрепленные документы
 
 
@@ -18,69 +19,17 @@
     .tab-content{id:"tabs"}
 
       -# КАЛЬКУЛЯТОР #
-      .tab-pane.fade.active.in{id:"calc"}
-        .field-horizontal
-          = f.fields_for :platform do |p|
-            .field
-              %label Площадка
-              = p.select(:name, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
-          = f.fields_for :tarif do |p|
-            .field.short
-              %label Тариф
-              = p.select(:name, Tarif.uniq.pluck(:type_t).map {|platform| [platform, platform, data:{number:platform}]})
-        .field-horizontal.tarif
-          %span.title.mfo_rate Ставка банка:
-          %span.value.mfo_rate
-          %span.title.agent_rate Ставка агента:
-          %span.value.agent_rate 0%
+      .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}"}
+        = render partial: 'shared/platform_tarif', locals: {f:f}
+        = render partial: 'shared/calcs'
 
-        = simple_fields_for :service do |s|
-          .calc.tender
-            %h3 Тендерный
-            .field-horizontal
-              .field.short
-                %label Сумма займа
-                = s.number_field :order_summa, value: params[:service] && params[:service][:order_summa] ? params[:service][:order_summa] : "0"
-              .field.short
-                %label Доход договора
-                = s.input_field :dogovor_summa, value: params[:service] && params[:service][:dogovor_summa] ? params[:service][:dogovor_summa] : "0"
-            .field-horizontal
-              .field.short
-                %label Доход МФО
-                = s.input_field :mfo_summa, value: params[:service] && params[:service][:mfo_summa] ? params[:service][:mfo_summa] : "0"
-              .field.small
-                %label Ставка %
-                = s.number_field :order_rate, value: params[:service] && params[:service][:order_rate] ? params[:service][:order_rate] : "0"
-              .field.short
-                %label Доход Агента
-                = s.input_field :agent_summa, value: params[:service] && params[:service][:agent_summa] ? params[:service][:agent_summa] : "0"
-
-          .calc.business.hidden
-            %h3 Предпринимательский
-            .field-horizontal
-              .field
-                %label Сумма займа
-                = s.input_field :p_order_summa, value: params[:service] && params[:service][:p_order_summa] ? params[:service][:p_order_summa] : "0"
-              .field
-                %label Доход договора
-                = s.input_field :p_dogovor_summa, value: params[:service] && params[:service][:p_order_summa] ? params[:service][:p_dogovor_summa] : "0"
-            .field-horizontal
-              .field.short
-                %label Доход агента
-                = s.input_field :p_agent_summa, disabled: true, value: params[:service] && params[:service][:p_agent_summa] ? params[:service][:p_agent_summa] : "0"
-              .field.small
-                %label Ставка %
-                = s.input_field :p_order_rate, value: params[:service] && params[:service][:p_order_rate] ? params[:service][:p_order_rate] : "0"
-              .field.short
-                %label Доход МФО
-                = s.input_field :p_mfo_summa, disabled: true, value: params[:service] && params[:service][:p_mfo_summa] ? params[:service][:p_mfo_summa] : "0"
       -# ЗАЯВКА #
 
-      .tab-pane.fade{id:"loan"}
+      .tab-pane.fade{id:"loan", class:"#{' in active' if @active_tab == 'loan'}"}
         .field-group
           .field
             %label Электронная площадка
-            = f.input_field :platform, value: f.object.platform || "1"
+            = f.input_field :platform
             = f.error :platform
           .field
             %label Сумма
@@ -90,24 +39,24 @@
             %label Крайний срок предоставления
             = f.date_field :submission_deadline
             = f.error :submission_deadline
-          .field
+          .field.hidden
             %label Агент
             = f.input_field :agent, value: current_user.email
             = f.error :agent
-          .field
+          .field.hidden
             %label АгентНаименование
             = f.input_field :agent_name, value: current_user.name
             = f.error :agent_name
           .field
-            %label АгентВознаграждение
+            %label Агент Вознаграждение
             = f.input_field :agent_summa
             = f.error :agent_summa
           .field
-            %label МфоВознаграждение
+            %label Мфо Вознаграждение
             = f.input_field :mfo_summa
             = f.error :mfo_summa
           .field
-            %label ДоговорВознаграждение
+            %label Договор Вознаграждение
             = f.input_field :dogovor_summa
             = f.error :dogovor_summa
           .field.hidden
@@ -122,7 +71,7 @@
             %label НомерДатаПротокола
             = f.input_field :number_data_protocol
             = f.error :number_data_protocol
-          .field
+          .field.hidden
             %label Лицевой счет
             = f.input_field :personal_number
             = f.error :personal_number
@@ -130,7 +79,7 @@
             %label Дата создания
             = f.date_field :create_date, value: f.object.create_date || Date.today
             = f.error :create_date
-          .field
+          .field.hidden
             %label Статус
             = f.input_field :status, value:"На заполнении", disabled: false
             = f.error :status
@@ -138,7 +87,7 @@
 
       -# ОРГАНИЗАЦИЯ - ЗАЕМЩИК #
 
-      .tab-pane.fade{id:"borrower"}
+      .tab-pane.fade{id:"borrower", class:"#{' in active' if @active_tab == 'borrower'}"}
         = f.fields_for :borrower do |b|
           .field-group
             .field
@@ -169,14 +118,7 @@
               %label Полное название организации
               = b.input_field :fullname, value:"Строй-дом компания"
               = b.error :fullname
-            .field.long
-              %label Юридический адрес
-              = b.input_field :address_legal, value:"Москва 34/2"
-              = b.error :address_legal
-            .field.long
-              %label Фактический адрес
-              = b.input_field :address_actual, value:"Чебоксары 34/2"
-              = b.error :address_actual
+
             .field-horizontal
               .field
                 %label Дата регистрации
@@ -190,6 +132,17 @@
               %label Должность руководителя
               = b.input_field :head_position, value:"Генеральный деректор"
               = b.error :head_position
+
+            .sub-group
+              %h5.title Юридический адрес
+              = b.fields_for :address_legal do |al|
+                = render partial: 'shared/address', locals: {a:al}
+
+            .sub-group
+              %h5.title Фактический адрес
+              = b.fields_for :address_actual do |aa|
+                = render partial: 'shared/address', locals: {a:aa}
+
 
           .field-group
             %h5.title Учредитель
@@ -241,10 +194,10 @@
                       %label Город
                       = bank.input_field :city, value:"Москва"
                       = bank.error :city
-                  .field.long
-                    %label Адрес
-                    = bank.input_field :address, value:"Москва ул.Дятлова 21/34"
-                    = bank.error :address
+                    .field.long
+                      %label Адрес
+                      = bank.input_field :address
+                      = bank.error :address
 
           .field-group
             %h5.title Персональные данные заемщика
@@ -259,22 +212,17 @@
                   %label Дата рождения
                   = p.date_field :birthday, value:"1977-12-01"
                   = p.error :birthday
-              .field.long
-                %label Место рождения
-                = p.input_field :birth_place, value:"г.Уренгой"
-                = p.error :birth_place
-              .field.long
-                %label Место регистрации
-                = p.input_field :reg_place, value:"г. Уренгой ул. Пашутина 21"
-                = p.error :reg_place
-              .field.long
-                %label Место пребывания
-                = p.input_field :curr_place, value:"г. Уренгой ул. Пашутина 22"
-                = p.error :curr_place
-              .field
-                %label Гражданство
-                = p.input_field :citizenship, value:"РФ"
-                = p.error :citizenship
+
+              .field-horizontal
+                .field
+                  %label Место рождения
+                  = p.input_field :birth_place
+                  = p.error :birth_place
+                .field
+                  %label Гражданство
+                  = p.input_field :citizenship, value:"РФ"
+                  = p.error :citizenship
+
               .field-horizontal
                 .field
                   %label Телефон
@@ -284,6 +232,16 @@
                   %label E-mail
                   = p.input_field :email, value:"ader@mail.ru"
                   = p.error :email
+
+              .sub-group
+                %h5.title Место регистрации
+                = p.fields_for :reg_place do |rp|
+                  = render partial: 'shared/address', locals: {a:rp}
+
+              .sub-group
+                %h5.title Место пребывания
+                = p.fields_for :curr_place do |cp|
+                  = render partial: 'shared/address', locals: {a:cp}
 
               .sub-group
                 %h5.title Паспортные данные
@@ -335,7 +293,7 @@
 
       -# ПОРУЧИТЕЛИ #
 
-      .tab-pane.fade{id:"guarantors"}
+      .tab-pane.fade{id:"guarantors", class:"#{' in active' if @active_tab == 'guarantors'}"}
         = simple_fields_for :service do |s|
           .field.radio-group
             %label Выберите тип поручителя
@@ -351,13 +309,15 @@
           = render partial: 'shared/guarantor_legal_new', locals:{f:f}
 
 
-      .tab-pane.fade{ id:"documents" }
+      .tab-pane.fade{ id:"documents", class:"#{' in active' if @active_tab == 'documents'}"}
         = render partial: 'shared/order_documents', locals:{f:f}
 
 
       .field-submit
         = simple_fields_for :service do |s|
           = s.hidden_field :send_mfo, value: false
+          = s.hidden_field :new_order_active_tab
+
         = submit_tag "Сохранить", class:'btn btn-primary'
 
 

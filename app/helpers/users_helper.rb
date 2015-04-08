@@ -5,20 +5,24 @@ module UsersHelper
 
     response = Savon_client::CLIENT.call(:get_tarifs)
 
-    @tarifs = response.body[:get_tarifs_response][:return][:Тариф]
 
 
-    @tarifs.each do |tarif|
+      @tarifs = response.body[:get_tarifs_response][:return][:Тариф]
 
-      t = Tarif.find_or_create_by(type_t:tarif[:ТипТарифа], platform:tarif[:Площадка])
 
-      t.update  type_t:    tarif[:ТипТарифа],
-                platform:  tarif[:Площадка],
-                rate:      tarif[:Ставка],
-                dop_rate:  tarif[:СтавкаДополнительная],
-                minimum:   tarif[:Минималка]
+      @tarifs.each do |tarif|
 
-    end
+        t = Tarif.find_or_create_by(type_t:tarif[:ТипТарифа], platform:tarif[:Площадка])
+
+        t.update  type_t:    tarif[:ТипТарифа],
+                  platform:  tarif[:Площадка],
+                  rate:      tarif[:Ставка],
+                  dop_rate:  tarif[:СтавкаДополнительная],
+                  minimum:   tarif[:Минималка]
+
+      end
+
+
 
     #binding.pry
 

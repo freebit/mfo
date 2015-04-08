@@ -7,7 +7,7 @@ module SessionsHelper
     user.update_attribute(:last_visit, Time.now)
     self.current_user = user
 
-    #fetch_agent_data(user)
+    fetch_agent_data(user)
 
   end
 

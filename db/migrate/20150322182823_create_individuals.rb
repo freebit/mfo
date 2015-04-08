@@ -3,6 +3,7 @@ class CreateIndividuals < ActiveRecord::Migration
     create_table :individuals do |t|
       t.string :fullname
       t.date :birthday
+      t.string :birth_place
       t.string :pass_serial_number
       t.date :pass_issue_date
       t.string :pass_issued

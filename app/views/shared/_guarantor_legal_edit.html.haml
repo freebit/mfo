@@ -37,14 +37,6 @@
             %label Полное название организации
             = glf.input_field :fullname
             = glf.error :fullname
-          .field.long
-            %label Юридический адрес
-            = glf.input_field :address_legal
-            = glf.error :address_legal
-          .field.long
-            %label Фактический адрес
-            = glf.input_field :address_actual
-            = glf.error :address_actual
           .field-horizontal
             .field
               %label Дата регистрации
@@ -58,6 +50,17 @@
             %label Должность руководителя
             = glf.input_field :head_position
             = glf.error :head_position
+
+          .sub-group
+            %h5.title Юридический адрес
+            = glf.fields_for :address_legal do |al|
+              = render partial: 'shared/address', locals: {a:al}
+
+          .sub-group
+            %h5.title Фактический адрес
+            = glf.fields_for :address_actual do |aa|
+              = render partial: 'shared/address', locals: {a:aa}
+
 
 
         .field-group
@@ -110,31 +113,35 @@
                 %label Дата рождения
                 = glp.date_field :birthday
                 = glp.error :birthday
-            .field.long
-              %label Место рождения
-              = glp.input_field :birth_place
-              = glp.error :birth_place
-            .field.long
-              %label Место регистрации
-              = glp.input_field :reg_place
-              = glp.error :reg_place
-            .field.long
-              %label Место пребывания
-              = glp.input_field :curr_place
-              = glp.error :curr_place
-            .field
-              %label Гражданство
-              = glp.input_field :citizenship
-              = glp.error :citizenship
             .field-horizontal
               .field
-                %label Телефон
-                = glp.input_field :phone
-                = glp.error :phone
+                %label Место рождения
+                = glp.input_field :birth_place
+                = glp.error :birth_place
               .field
-                %label E-mail
-                = glp.input_field :email
-                = glp.error :email
+                %label Гражданство
+                = glp.input_field :citizenship, value:"РФ"
+                = glp.error :citizenship
+              .field-horizontal
+                .field
+                  %label Телефон
+                  = glp.input_field :phone
+                  = glp.error :phone
+                .field
+                  %label E-mail
+                  = glp.input_field :email
+                  = glp.error :email
+
+            .sub-group
+              %h5.title Место регистрации
+              = glp.fields_for :reg_place do |rp|
+                = render partial: 'shared/address', locals: {a:rp}
+
+            .sub-group
+              %h5.title Место пребывания
+              = glp.fields_for :curr_place do |cp|
+                = render partial: 'shared/address', locals: {a:cp}
+
 
             .sub-group
               %h5.title Паспортные данные

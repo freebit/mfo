@@ -1,0 +1,44 @@
+.field-horizontal
+  .field
+    %label Индекс
+    = a.input_field :indx
+    = a.error :indx
+  .field
+    %label Регион
+    = a.select(:region, Region.all.map{|region| [region.name, region.code, data:{code:region.code}]})
+    = a.error :region
+.field-horizontal
+  .field
+    %label Район
+    = a.input_field :raion
+    = a.error :raion
+  .field
+    %label Населенный пункт
+    = a.input_field :punkt
+    = a.error :punkt
+.field-horizontal
+  .field
+    %label Тип улицы
+    = a.select(:street_code, StreetType.all.map{|type| [type.name, type.code, data:{code:type.code}]})
+    = a.error :region
+  .field
+    %label Название улицы
+    = a.input_field :street_name
+    = a.error :street_name
+.field-horizontal
+  .field.quarter
+    %label Дом
+    = a.input_field :house
+    = a.error :house
+  .field.quarter
+    %label Корпус
+    = a.input_field :corps
+    = a.error :corps
+  .field.quarter
+    %label Строение
+    = a.input_field :building
+    = a.error :building
+  .field.quarter
+    %label Квартира
+    = a.input_field :apart_number
+    = a.error :apart_number

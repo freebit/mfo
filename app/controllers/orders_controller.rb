@@ -4,6 +4,8 @@ class OrdersController < ApplicationController
   before_action :signed_in_user, only: [:index, :edit, :new, :update]
   before_action :user_is_admin, only:[:index, :new, :edit, :update]
 
+  TARIFS = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
+
   def index
     @title = "История заявок"
     #fetch_orders_with_soap
@@ -16,25 +18,40 @@ class OrdersController < ApplicationController
 
     @order.build_borrower
 
-    @order.borrower.build_founder
+    @order.borrower.build_address_legal
+    @order.borrower.build_address_actual
 
+    @order.borrower.build_founder
     @order.borrower.build_bank_account
     @order.borrower.bank_account.build_bank
-    @order.borrower.build_person
 
+
+
+    @order.borrower.build_person
+    @order.borrower.person.build_reg_place
+    @order.borrower.person.build_curr_place
 
     @order.guarantor_individuals.build
 
+    @order.guarantor_individuals[0].build_reg_place
+    @order.guarantor_individuals[0].build_curr_place
+
 
     @order.guarantor_legals.build
+    @order.guarantor_legals[0].build_address_legal
+    @order.guarantor_legals[0].build_address_actual
     @order.guarantor_legals[0].build_bank_account
+
     @order.guarantor_legals[0].bank_account.build_bank
+
     @order.guarantor_legals[0].build_person
+    @order.guarantor_legals[0].person.build_reg_place
+    @order.guarantor_legals[0].person.build_curr_place
 
     @order.documents.build
 
 
-    @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
+    @tarifs = TARIFS
 
   end
 
@@ -82,13 +99,15 @@ class OrdersController < ApplicationController
 
       if @order.guarantor_individuals.blank?
         @order.guarantor_individuals.build
+        @order.guarantor_individuals[0].build_reg_place
+        @order.guarantor_individuals[0].build_curr_place
       end
 
       if @order.guarantor_legals.blank?
         @order.guarantor_legals << Organization.new( bank_account:BankAccount.new(bank:Bank.new), person:Individual.new )
       end
 
-      @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
+      @tarifs = TARIFS
 
       render action: "new"
     end
@@ -101,10 +120,14 @@ class OrdersController < ApplicationController
 
     if @order.guarantor_individuals.blank?
       @order.guarantor_individuals.build
+      @order.guarantor_individuals[0].build_reg_place
+      @order.guarantor_individuals[0].build_curr_place
     end
 
     if @order.guarantor_legals.blank?
       @order.guarantor_legals.build
+      @order.guarantor_legals[0].build_address_legal
+      @order.guarantor_legals[0].build_address_actual
       @order.guarantor_legals[0].build_bank_account
       @order.guarantor_legals[0].bank_account.build_bank
       @order.guarantor_legals[0].build_person
@@ -114,7 +137,7 @@ class OrdersController < ApplicationController
       @order.documents.build
     end
 
-    @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
+    @tarifs = TARIFS
 
   end
 
@@ -165,6 +188,8 @@ class OrdersController < ApplicationController
         @order.documents.build
       end
 
+      @tarifs = TARIFS
+
       render 'edit'
     end
 
@@ -174,11 +199,12 @@ class OrdersController < ApplicationController
 
     def order_params
 
-      organization_attributes = [:id, :type_o, :inn, :kpp, :name, :fullname, :ogrn, :address_legal, :address_actual, :head_position, :reg_date, :_destroy]
-      person_attributes = [:id, :fullname, :birthday, :birth_place, :citizenship, :phone, :email, :reg_place, :curr_place, :curr_place, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date, :_destroy]
-      bank_attributes = [:id, :bik, :korr_number, :inn, :name, :city, :address]
+      address_attributes = [:id, :indx, :region, :raion, :punkt, :street_code, :street_name, :house, :corps, :building, :apart_number, :_destroy]
+      organization_attributes = [:id, :type_o, :inn, :kpp, :name, :fullname, :ogrn, :head_position, :reg_date, :_destroy, address_legal_attributes: address_attributes, address_actual_attributes: address_attributes]
+      person_attributes = [:id, :fullname, :birthday, :citizenship, :phone, :email, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date, :_destroy, :birth_place, reg_place_attributes: address_attributes, curr_place_attributes: address_attributes]
+      bank_attributes = [:id, :bik, :korr_number, :inn, :name, :city, :address, :_destroy]
 
-      params.require(:order).permit(:summa, :platform, :submission_deadline, :agent, :agent_name, :agent_summa, :mfo_summa, :order_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :updated_at, :status,
+      params.require(:order).permit(:summa, :platform, :submission_deadline, :agent, :agent_name, :agent_summa, :mfo_summa, :dogovor_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :updated_at, :status,
 
                                     borrower_attributes:[
                                         organization_attributes,
@@ -186,9 +212,9 @@ class OrdersController < ApplicationController
                                         bank_account_attributes:[
                                             :id,:_destroy,
                                             :account_number,
-                                            bank_attributes:bank_attributes
+                                            bank_attributes: bank_attributes
                                         ],
-                                        person_attributes:person_attributes
+                                        person_attributes: person_attributes
                                     ],
 
                                     guarantor_legals_attributes:[
@@ -196,7 +222,7 @@ class OrdersController < ApplicationController
                                         bank_account_attributes:[
                                             :id,:_destroy,
                                             :account_number,
-                                            bank_attributes:bank_attributes
+                                            bank_attributes: bank_attributes
                                         ],
                                         person_attributes: person_attributes
                                     ],
@@ -208,7 +234,14 @@ class OrdersController < ApplicationController
     end
 
     def service_params
-      params.require(:service).permit(:guarantor_type, :active_guarantor_individual, :active_guarantor_legal, :send_mfo, :order_rate)
+      params.require(:service).permit(:guarantor_type,
+                                      :active_guarantor_individual,
+                                      :active_guarantor_legal,
+                                      :send_mfo,
+                                      :new_order_active_tab,
+                                      :edit_order_active_tab,
+                                      :order_rate
+      )
     end
 
   def user_is_admin

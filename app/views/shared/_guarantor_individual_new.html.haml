@@ -31,32 +31,36 @@
               %label Дата рождения
               = gif.date_field :birthday
               = gif.error :birthday
-            .field.long
-              %label Место рождения
-              = gif.input_field :birth_place
-              = gif.error :birth_place
-            .field.long
-              %label Место регистрации
-              = gif.input_field :reg_place
-              = gif.error :reg_place
-            .field.long
-              %label Место пребывания
-              = gif.input_field :curr_place
-              = gif.error :curr_place
-            .field
-              %label Гражданство
-              = gif.input_field :citizenship
-              = gif.error :citizenship
-          .field-horizontal
-            .field
-              %label Телефон
-              = gif.input_field :phone
-              = gif.error :phone
-            .field
-              %label E-mail
-              = gif.input_field :email
-              = gif.error :email
 
+            .field-horizontal
+              .field
+                %label Место рождения
+                = gif.input_field :birth_place
+                = gif.error :birth_place
+              .field
+                %label Гражданство
+                = gif.input_field :citizenship
+                = gif.error :citizenship
+
+            .field-horizontal
+              .field
+                %label Телефон
+                = gif.input_field :phone
+                = gif.error :phone
+              .field
+                %label E-mail
+                = gif.input_field :email
+                = gif.error :email
+
+            .sub-group
+              %h5.title Место регистрации
+              = gif.fields_for :reg_place do |rp|
+                = render partial: 'shared/address', locals: {a:rp}
+
+            .sub-group
+              %h5.title Место пребывания
+              = gif.fields_for :curr_place do |cp|
+                = render partial: 'shared/address', locals: {a:cp}
 
             .sub-group
               %h5.title Паспортные данные

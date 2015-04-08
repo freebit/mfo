@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20150407200505) do
   create_table "individuals", force: :cascade do |t|
     t.string   "fullname"
     t.date     "birthday"
+    t.string   "birth_place"
     t.string   "pass_serial_number"
     t.date     "pass_issue_date"
     t.string   "pass_issued"

@@ -22,7 +22,7 @@ class Order < ActiveRecord::Base
   #validates :agent_name, presence: true
   validates :agent_summa, presence: true
   validates :mfo_summa, presence: true
-  validates :order_summa, presence: true
+  validates :dogovor_summa, presence: true
   #validates :number
   #validates :number_mfo
   #validates :number_data_protocol

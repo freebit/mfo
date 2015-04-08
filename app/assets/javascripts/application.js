@@ -62,19 +62,21 @@
     });
 
 
-    //запоминаем выбранные табы заявки
+    //запоминаем выбранные табы заявки в hidden полях
     $('#order-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
-        var tab_index = $(e.target).parents('li').index();
-        $.cookie('order_tab', tab_index, { path: '/' });
+        var tab_name = $(e.target).attr('href').replace(/#/, "");
+
+        $("#service_new_order_active_tab").val(tab_name);
+        $("#service_edit_order_active_tab").val(tab_name);
+
 
     });
 
-    //открываем запомненные табы
-    var tab_index = $.cookie('order_tab') || 0;
-    $("#order-tabs li:eq("+tab_index+") a").tab('show');
 
 
+
+    //обработка нажатия пунктов меню при создании/редактировании заявок
     $('#order-menu').on('click','li', function(){
         var button = $(this),
             service_mfo_field = $('#service_send_mfo');

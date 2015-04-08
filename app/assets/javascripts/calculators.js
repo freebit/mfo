@@ -127,7 +127,7 @@
 
         //выставляем значения в заявке
         $('#order_summa').val(summa);
-        $('#order_order_summa').val(order_summa);
+        $('#order_dogovor_summa').val(order_summa);
         $('#order_mfo_summa').val(full_mfo_summa);
         $('#order_agent_summa').val(full_agent_summa);
 

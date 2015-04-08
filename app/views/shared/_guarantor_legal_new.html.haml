@@ -38,14 +38,7 @@
             %label Полное название организации
             = glf.input_field :fullname
             = glf.error :fullname
-          .field.long
-            %label Юридический адрес
-            = glf.input_field :address_legal, value:"г. Москва ул.Печорка 32"
-            = glf.error :address_legal
-          .field.long
-            %label Фактический адрес
-            = glf.input_field :address_actual, value:"г. Москва ул.Салютная 7"
-            = glf.error :address_actual
+
           .field-horizontal
             .field
               %label Дата регистрации
@@ -59,6 +52,17 @@
             %label Должность руководителя
             = glf.input_field :head_position, value:"Генеральный деректор"
             = glf.error :head_position
+
+          .sub-group
+            %h5.title Юридический адрес
+            = glf.fields_for :address_legal do |al|
+              = render partial: 'shared/address', locals: {a:al}
+
+          .sub-group
+            %h5.title Фактический адрес
+            = glf.fields_for :address_actual do |aa|
+              = render partial: 'shared/address', locals: {a:aa}
+
 
 
         .field-group
@@ -95,7 +99,7 @@
                     = glbab.error :city
                   .field.long
                     %label Адрес
-                    = glbab.input_field :address, value:"г. Рубище ул. Станочная 9"
+                    = glbab.input_field :address
                     = glbab.error :address
 
         .field-group
@@ -111,22 +115,17 @@
                 %label Дата рождения
                 = glp.date_field :birthday
                 = glp.error :birthday
-            .field.long
-              %label Место рождения
-              = glp.input_field :birth_place, value:"г. Рубище ул. Станочная 9"
-              = glp.error :birth_place
-            .field.long
-              %label Место регистрации
-              = glp.input_field :reg_place, value:"г. Рубище ул. Станочная 9"
-              = glp.error :reg_place
-            .field.long
-              %label Место пребывания
-              = glp.input_field :curr_place, value:"г. Рубище ул. Станочная 9"
-              = glp.error :curr_place
-            .field
-              %label Гражданство
-              = glp.input_field :citizenship, value:"РФ"
-              = glp.error :citizenship
+
+            .field-horizontal
+              .field
+                %label Место рождения
+                = glp.input_field :birth_place
+                = glp.error :birth_place
+              .field
+                %label Гражданство
+                = glp.input_field :citizenship, value:"РФ"
+                = glp.error :citizenship
+
             .field-horizontal
               .field
                 %label Телефон
@@ -136,6 +135,17 @@
                 %label E-mail
                 = glp.input_field :email, value:"fgart@mail.ru"
                 = glp.error :email
+
+            .sub-group
+              %h5.title Место регистрации
+              = glp.fields_for :reg_place do |rp|
+                = render partial: 'shared/address', locals: {a:rp}
+
+            .sub-group
+              %h5.title Место пребывания
+              = glp.fields_for :curr_place do |cp|
+                = render partial: 'shared/address', locals: {a:cp}
+
 
             .sub-group
               %h5.title Паспортные данные

@@ -11,6 +11,18 @@
   li a{
     color: inherit;
   }
+
+  li.active{
+    a,
+    a:hover,
+    a:focus{
+      border-right: none;
+      border-left: none;
+      border-top: none;
+
+    }
+
+  }
 }
 
 form{
@@ -57,6 +69,10 @@ form{
       input[type=text]{
         text-align: inherit;
       }
+    }
+
+    &.quarter{
+      width:123px;
     }
 
     &.long{
@@ -162,6 +178,11 @@ form{
     .sub-group{
       position: relative;
       margin-top: 30px;
+
+      .title{
+        font-size: 12px;
+        background-color: darken(#bbbbbb, 10%);
+      }
     }
   }
 

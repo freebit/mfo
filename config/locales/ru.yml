@@ -32,6 +32,8 @@ ru:
               blank: "Поле не может быть пустым"
             order_summa:
               blank: "Поле не может быть пустым"
+            dogovor_summa:
+              blank: "Поле не может быть пустым"
         organization:
           attributes:
             inn:

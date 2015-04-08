@@ -6,11 +6,9 @@ class Individual < ActiveRecord::Base
 
   attr_accessor :_destroy
 
-  has_one :birth_place, ->{where type_a: 'birth_place'}, class_name:'Address', dependet: :destroy
-  has_one :reg_place, ->{where type_a: 'reg_place'}, class_name:'Address', dependet: :destroy
-  has_one :curr_place, ->{where type_a: 'curr_place'}, class_name:'Address', dependet: :destroy
+  has_one :reg_place, ->{where type_a: 'reg_place'}, class_name:'Address', dependent: :destroy
+  has_one :curr_place, ->{where type_a: 'curr_place'}, class_name:'Address', dependent: :destroy
 
-  accepts_nested_attributes_for :birth_place, allow_destroy: true
   accepts_nested_attributes_for :reg_place, allow_destroy: true
   accepts_nested_attributes_for :curr_place, allow_destroy: true
 
