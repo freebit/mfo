@@ -4,20 +4,20 @@
     .field-horizontal
       .field.short.offset-right
         %label Сумма займа
-        = s.number_field :order_summa, value: params[:service] && params[:service][:order_summa] ? params[:service][:order_summa] : "0"
+        = s.number_field :order_summa, value: f.object.summa || "0"
       .field.short
         %label Доход договора
-        = s.input_field :dogovor_summa, value: params[:service] && params[:service][:dogovor_summa] ? params[:service][:dogovor_summa] : "0"
+        = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0"
     .field-horizontal
       .field.short
         %label Доход МФО
-        = s.input_field :mfo_summa, value: params[:service] && params[:service][:mfo_summa] ? params[:service][:mfo_summa] : "0"
+        = s.input_field :mfo_summa, value: f.object.mfo_summa || "0"
       .field.small
         %label Ставка %
-        = s.number_field :order_rate, value: params[:service] && params[:service][:order_rate] ? params[:service][:order_rate] : "0"
+        = s.number_field :order_rate, value: f.object.base_rate || "0"
       .field.short
         %label Доход Агента
-        = s.input_field :agent_summa, value: params[:service] && params[:service][:agent_summa] ? params[:service][:agent_summa] : "0"
+        = s.input_field :agent_summa, value: f.object.agent_summa || "0"
 
   .calc.business.hidden
     %h3.title Предпринимательский

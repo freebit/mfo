@@ -107,7 +107,11 @@
             //плавно отображаем данные
             activeFields.removeClass('wait-data').addClass('fill-data');
 
-            window.mfo.addGuarantors( [guarantors_individual], [guarantors_legal] );
+            //window.mfo.addGuarantors( guarantors_individual, guarantors_legal );
+            addGuarantor('individual', guarantors_individual[0]);
+            addGuarantor('legal', guarantors_legal[0]);
+
+
         });
 
         targetForm.submit();

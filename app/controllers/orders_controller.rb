@@ -81,6 +81,7 @@ class OrdersController < ApplicationController
       if service_params[:send_mfo].to_b
         if send_mfo @order
           @order.update_attribute :status, "заявка в МФО"
+          @order.destroy
           flash[:success] = "Заявка создана <br/> Заявка отправлена в МФО"
         else
           flash[:warning] = "Заявка создана <br/> Не удалось отправить заявку в МФО"
@@ -96,10 +97,6 @@ class OrdersController < ApplicationController
 
       @title = "Новая заявка"
 
-      if @order.documents.blank?
-        @order.documents.build
-      end
-
       if @order.guarantor_individuals.blank?
         @order.guarantor_individuals.build
         @order.guarantor_individuals[0].build_reg_place
@@ -108,6 +105,10 @@ class OrdersController < ApplicationController
 
       if @order.guarantor_legals.blank?
         @order.guarantor_legals << Organization.new( bank_account:BankAccount.new(bank:Bank.new), person:Individual.new )
+      end
+
+      if @order.documents.blank?
+        @order.documents.build
       end
 
       @tarifs = TARIFS
@@ -160,6 +161,7 @@ class OrdersController < ApplicationController
         if send_mfo @order
 
           @order.update_attribute :status, "Отправлена в МФО"
+          @order.destroy
 
           flash[:success] = "Заявка обновлена <br/> Заявка отправлена в МФО"
 

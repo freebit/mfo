@@ -21,7 +21,7 @@
       -# КАЛЬКУЛЯТОР #
       .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}"}
         = render partial: 'shared/platform_tarif', locals: {f:f}
-        = render partial: 'shared/calcs'
+        = render partial: 'shared/calcs', locals: {f:f}
 
       -# ЗАЯВКА #
 
@@ -35,7 +35,7 @@
             %label Тариф
             = f.input_field :tarif
             = f.error :tarif
-          .field
+          .field.hidden
             %label Ставка
             = f.input_field :base_rate
             = f.error :base_rate
@@ -83,7 +83,7 @@
             %label Лицевой счет
             = f.input_field :personal_number
             = f.error :personal_number
-          .field
+          .field.hidden
             %label Дата создания
             = f.date_field :create_date, value: f.object.create_date || Date.today
             = f.error :create_date

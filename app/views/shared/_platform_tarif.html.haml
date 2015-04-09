@@ -2,11 +2,11 @@
   = f.fields_for :platform do |p|
     .field
       %label Площадка
-      = p.select(:name, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
+      = p.select(:name, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]}, selected:f.object.platform)
   = f.fields_for :tarif do |p|
     .field.short
       %label Тариф
-      = p.select(:name, Tarif.uniq.pluck(:type_t).map {|platform| [platform, platform, data:{number:platform}]})
+      = p.select(:name, Tarif.uniq.pluck(:type_t).map {|platform| [platform, platform, data:{number:platform}]}, selected:f.object.tarif)
   .field-horizontal.tarif
     %span.title.mfo_rate Ставка банка:
     %span.value.mfo_rate

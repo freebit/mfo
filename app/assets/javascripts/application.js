@@ -114,7 +114,11 @@
 
         ,addGuarantors: function(list){
             for(var i= 0, ln=arguments.length; i<ln; i++){
-                console.log(arguments[i]);
+                //if (!$.isArray(arguments[i])) continue;
+                var arg = arguments[i],
+                    type = arg[0]["Тип"] ? 'legal' : 'individual';
+
+                console.log(arg[0]);
             }
 
             //alert(arguments.length)

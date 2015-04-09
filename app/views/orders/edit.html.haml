@@ -22,7 +22,7 @@
       -# КАЛЬКУЛЯТОР #
       .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}"}
         = render partial: 'shared/platform_tarif', locals: {f:f}
-        = render partial: 'shared/calcs'
+        = render partial: 'shared/calcs', locals:{f:f}
 
 
       -# ЗАЯВКА #
@@ -36,7 +36,7 @@
             %label Тариф
             = f.input_field :tarif
             = f.error :tarif
-          .field
+          .field.hidden
             %label Ставка
             = f.input_field :base_rate
             = f.error :base_rate
@@ -48,11 +48,11 @@
             %label Крайний срок предоставления
             = f.date_field :submission_deadline
             = f.error :submission_deadline
-          .field
+          .field.hidden
             %label Агент
             = f.input_field :agent
             = f.error :agent
-          .field
+          .field.hidden
             %label АгентНаименование
             = f.input_field :agent_name
             = f.error :agent_name
@@ -68,23 +68,23 @@
             %label ДоговорВознаграждение
             = f.input_field :dogovor_summa
             = f.error :dogovor_summa
-          .field
+          .field.hidden
             %label Номер
             = f.input_field :number
             = f.error :number
-          .field
+          .field.hidden
             %label НомерМФО
             = f.input_field :number_mfo
             = f.error :number_mfo
-          .field
+          .field.hidden
             %label НомерДатаПротокола
             = f.input_field :number_data_protocol
             = f.error :number_data_protocol
-          .field
+          .field.hidden
             %label Лицевой счет
             = f.input_field :personal_number
             = f.error :personal_number
-          .field
+          .field.hidden
             %label Дата создания
             = f.date_field :create_date, value: f.object.create_date || Date.today
             = f.error :create_date
