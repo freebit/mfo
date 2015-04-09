@@ -17,6 +17,8 @@ gem 'nested_form'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
 
+gem "rails_12factor"
+
 # Use postgresql as the database for Active Record
 gem 'pg'
 
@@ -92,3 +94,4 @@ group :test do
   gem 'database_cleaner'
 end
 
+ruby "2.1.5"
