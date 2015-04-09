@@ -129,6 +129,10 @@ form{
       vertical-align: top;
     }
 
+    &.order-filter{
+      //text-align: right;
+    }
+
   }
 
   .documents .field-horizontal{
@@ -299,6 +303,29 @@ form{
 
 }
 
+.report-form{
+  .field{
+    margin: 0;
+  }
+
+  label{
+    text-align: left;
+  }
+
+  .btn{
+    display: inline-block;
+    vertical-align: bottom;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  select{
+    display: inline-block;
+    width: 250px;
+    vertical-align: bottom;
+    margin-left: 30px;
+  }
+}
 
 aside.ajax-form-block{
   display: block;

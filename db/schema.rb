@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 20150407200505) do
 
   create_table "orders", force: :cascade do |t|
     t.string   "platform"
+    t.string   "tarif"
     t.string   "number"
     t.string   "number_mfo"
     t.date     "create_date"
@@ -119,6 +120,7 @@ ActiveRecord::Schema.define(version: 20150407200505) do
     t.float    "agent_summa"
     t.float    "dogovor_summa"
     t.float    "mfo_summa"
+    t.float    "base_rate"
     t.string   "status"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false

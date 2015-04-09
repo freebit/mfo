@@ -125,11 +125,19 @@ header{
 
 .indicator{
   position: absolute;
-  width:43px;
+  width:143px;
   height: 11px;
   bottom:10px;
   left:2px;
   background-image: asset_url('ajax-loader.gif');
+  background-repeat: no-repeat;
+
+  &.message{
+    font-size: 12px;
+    text-align: left;
+    background-image: none;
+    width:300px;
+  }
 }
 
 .simple-list{
@@ -145,6 +153,12 @@ header{
   }
 
   tbody{
+
+    .in-mfo{
+      background-color: darkseagreen;
+
+    }
+
     td{
       padding: 5px 15px;
       text-align: center;

@@ -19,10 +19,10 @@ class Individual < ActiveRecord::Base
   # validates :citizenship, presence: true
   # validates :reg_place, presence: true
   # validates :curr_place, presence: true
-  validates :pass_serial_number, presence: true
-  validates :pass_issue_date, presence: true
-  validates :pass_issued, presence: true
-  validates :pass_issued_code, presence: true
+  # validates :pass_serial_number, presence: true
+  # validates :pass_issue_date, presence: true
+  # validates :pass_issued, presence: true
+  # validates :pass_issued_code, presence: true
 
   #validates :old_pass_serial_number, presence: true
   #validates :old_pass_issue_date, presence: true

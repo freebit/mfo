@@ -2,7 +2,7 @@
 %ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-legals-tabs",data:{type:'legal'}}
   - items.each.with_index do |gl, index|
     - item = gl.kind_of?(Array) ? gl.last : gl
-    - @destroy = item[:_destroy].to_b #|| item[:id].blank?
+    - @destroy = params[:order].present? && params[:order][:guarantor_legals_attributes].present? ? params[:order][:guarantor_legals_attributes][index.to_s][:_destroy].to_b : true
     %li{class:"tab#{' active' if (params[:service] && params[:service][:active_guarantor_legal].to_i == index) || index == 0}#{' hidden' if @destroy}"}
       %span.tab-closer &times;
       %a{href:"#guarantor_legals_#{index}", data:{toggle:"tab"}} Поручитель ЮЛ #{index + 1}
@@ -15,7 +15,6 @@
   - @order.guarantor_legals.each.with_index do |gl, index|
     %div{id:"guarantor_legals_#{index}", class:"tab-pane#{' active' if (params[:service] && params[:service][:active_guarantor_legal].to_i == index) || index == 0}#{' hidden' if @destroy  }"}
       = f.simple_fields_for :guarantor_legals, gl do |glf|
-        - @destroy = gl[:_destroy].to_b || gl[:id].blank?
         = glf.hidden_field :_destroy, value: @destroy
         = glf.hidden_field :type_o, value:"ЮЛ"
         .field-group
@@ -61,7 +60,22 @@
             = glf.fields_for :address_actual do |aa|
               = render partial: 'shared/address', locals: {a:aa}
 
-
+        .field-group
+          %h5.title Учредитель
+          = glf.fields_for :founder do |bf|
+            .field-horizontal
+              .field
+                %label Имя учредитель
+                = bf.input_field :name
+                = bf.error :name
+              .field
+                %label Доля в компании
+                = bf.input_field :share
+                = bf.error :share
+            .field.long
+              %label Паспортные данные ОГРН
+              = bf.input_field :pass_data_ogrn
+              = bf.error :pass_data_ogrn
 
         .field-group
           %h5.title Основной банковский счет

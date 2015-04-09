@@ -1,7 +1,6 @@
--#= params[:order][:guarantor_individuals_attributes] if params[:order]
 %ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-individuals-tabs", data:{type:'individual'}}
   - @order.guarantor_individuals.each.with_index do |gi, index|
-    - @destroy = gi[:_destroy].to_b || gi[:id].blank?
+    - @destroy = params[:order].present? && params[:order][:guarantor_individuals_attributes].present? ? params[:order][:guarantor_individuals_attributes][index.to_s][:_destroy].to_b : true
     %li{class:"tab#{' active' if (params[:service] && params[:service][:active_guarantor_individual].to_i == index) || index == 0}#{' hidden' if @destroy }"}
       %span.tab-closer &times;
       %a{href:"#guarantor_individuals_#{index}", data:{toggle:"tab"}} Поручитель ФЛ #{index + 1}
@@ -14,7 +13,6 @@
   - @order.guarantor_individuals.each.with_index do |gi, index|
     %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if (params[:service] && params[:service][:active_guarantor_individual].to_i == index) || index == 0}#{' hidden' if @destroy  }"}
       = f.simple_fields_for :guarantor_individuals, gi do |gif|
-        - @destroy = gi[:_destroy].to_b || gi[:id].blank?
         = gif.hidden_field :_destroy, value: @destroy
         .field-group
           %h5.title Персональные данные

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'reports/fetch_report'
+
   # get 'order/index'
   # get 'order/new'
   # get 'order/edit'
@@ -25,7 +27,15 @@ Rails.application.routes.draw do
   match '/uzel', to:"users#ajax_uzel",          via: 'post'
 
 
+
   resources :sessions, only: [:new, :create, :destroy]
+
+
+  #get 'reports/index'
+
+  resources :reports
+
+  match '/report', to:"reports#fetch_report",   via: 'post'
 
   root 'welcome#index'
 

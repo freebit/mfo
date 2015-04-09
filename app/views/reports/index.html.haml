@@ -1,0 +1,26 @@
+.report-form.text-right
+  = form_tag "/report", method: :post, id: "fetch-report-form", remote:true do |f|
+    .field-horizontal.order-filter
+      .indicator.hidden{id:"report-indicator"}
+      .field
+        %label C
+        = date_field_tag 'shift[date_from]', "2015-04-06"
+      .field
+        %label ПО
+        = date_field_tag 'shift[date_to]', Date.today
+      = hidden_field_tag :authenticity_token
+      = submit_tag "Получить отчет", class:'btn btn-success'
+      = select_tag "order-status", options_for_select(["оформление", "согласование","к выдаче", "выдан", "закрыт", "отклонена", "отказ клиента"]), prompt: "Отфильтруйте по статусу"
+
+%table.fade.simple-list{id:"reports-list"}
+  %thead
+    %tr
+      %th
+      %th Дата создания
+      %th Дата выдачи
+      %th Заемщик
+      %th Сумма займа
+      %th Сумма агента
+      %th Статус
+  %tbody
+

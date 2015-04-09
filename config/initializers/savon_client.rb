@@ -10,7 +10,7 @@ class Savon_client
         "xmlns:mfo" => 'Mfoalliance',
         "xmlns:mfo1"=>"http://mfoalliance.ru"
     )
-    #raise_errors false
+    raise_errors false
     pretty_print_xml true
     log true
   end

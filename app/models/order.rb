@@ -23,11 +23,14 @@ class Order < ActiveRecord::Base
   validates :agent_summa, presence: true
   validates :mfo_summa, presence: true
   validates :dogovor_summa, presence: true
+  validates :tarif, presence: true
   #validates :number
   #validates :number_mfo
   #validates :number_data_protocol
   #validates :personal_number
   validates :create_date, presence: true
   validates :status, presence: true
+
+  validates_presence_of :documents
 
 end

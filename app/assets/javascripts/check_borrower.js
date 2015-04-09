@@ -10,7 +10,7 @@
         $('[name=inn]', targetForm).val( $('#order_borrower_attributes_inn').val() );
         $('[name=kpp]', targetForm).val( $('#order_borrower_attributes_kpp').val() );
 
-        $('#borrower-indicator').removeClass('hidden');
+        $('#borrower-indicator').removeClass('message').removeClass('hidden');
 
         activeFields.removeClass('fill-data').addClass('wait-data');
 
@@ -19,23 +19,54 @@
 
             console.log(data);
 
+
             $('#borrower-indicator').addClass('hidden');
 
-            if(!data['Клиент']['Тип']) {
+            if(!data['Клиент']) {
+                $('#borrower-indicator').removeClass('hidden').addClass('message').text('Не найдено!');
                 return;
             }
 
             var client = data['Клиент'],
                 guarantors_individual = data['ПоручителиФЛ'],
-                guarantors_legal = data['ПоручителиЮЛ'];
+                guarantors_legal = data['ПоручителиЮЛ'],
+                legal_addres = client['ЮридическийАдрес'],
+                actual_addres = client['ФактическийАдрес'];
 
             //организация
             //$('#order_borrower_attributes_type_o').val( data['Тип'] );
+
             $('#order_borrower_attributes_name').val( client['Наименование'] );
             $('#order_borrower_attributes_fullname').val( client['ПолноеНаименование'] );
             $('#order_borrower_attributes_ogrn').val( client['ОГРН'] );
-            $('#order_borrower_attributes_address_legal').val( client['ЮридическийАдрес'] );
-            $('#order_borrower_attributes_address_actual').val( client['ФактическийАдрес'] );
+
+            //адрес, блин, юридический
+            $('#order_borrower_attributes_address_legal_attributes_indx').val( legal_addres['ПочтовыйИндекс'] );
+            $('#order_borrower_attributes_address_legal_attributes_region').val( legal_addres['Регион'] );
+            $('order_borrower_attributes_address_legal_attributes_raion').val( legal_addres['Район'] );
+            $('order_borrower_attributes_address_legal_attributes_punkt').val( legal_addres['НаселенныйПункт'] );
+            $('#order_borrower_attributes_address_legal_attributes_street_code').val( legal_addres['КодУлицы'] );
+            $('#order_borrower_attributes_address_legal_attributes_street_name').val( legal_addres['Улица'] );
+            $('#order_borrower_attributes_address_legal_attributes_house').val( legal_addres['НомерДома'] );
+            $('#order_borrower_attributes_address_legal_attributes_corps').val( legal_addres['Корпус'] );
+            $('#order_borrower_attributes_address_legal_attributes_building').val( legal_addres['Строение'] );
+            $('#order_borrower_attributes_address_legal_attributes_apart_number').val( legal_addres['НомерКвартиры'] );
+
+            //хошь тебе фактический
+            $('#order_borrower_attributes_address_actual_attributes_indx').val( actual_addres['ПочтовыйИндекс'] );
+            $('#order_borrower_attributes_address_actual_attributes_region').val( actual_addres['Регион'] );
+            $('order_borrower_attributes_address_actual_attributes_raion').val( actual_addres['Район'] );
+            $('order_borrower_attributes_address_actual_attributes_punkt').val( actual_addres['НаселенныйПункт'] );
+            $('#order_borrower_attributes_address_actual_attributes_street_code').val( actual_addres['КодУлицы'] );
+            $('#order_borrower_attributes_address_actual_attributes_street_name').val( actual_addres['Улица'] );
+            $('#order_borrower_attributes_address_actual_attributes_house').val( actual_addres['НомерДома'] );
+            $('#order_borrower_attributes_address_actual_attributes_corps').val( actual_addres['Корпус'] );
+            $('#order_borrower_attributes_address_actual_attributes_building').val( actual_addres['Строение'] );
+            $('#order_borrower_attributes_address_actual_attributes_apart_number').val( actual_addres['НомерКвартиры'] );
+
+
+
+
             $('#order_borrower_attributes_head_position').val( client['ДолжностьРуководителя'] );
             $('#order_borrower_attributes_reg_date').val( window.mfo.formatDate(client['ДатаГосРегистрации']) );
 

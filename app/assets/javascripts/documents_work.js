@@ -20,6 +20,8 @@ $("#documents").on('click','.btn, .del', function(evt){
             $('.documents').append(document);
         }
 
+        $('#documents .help-block').addClass('hidden');
+
     }else{
         var block = button.parents('.field-horizontal');
         block.find("input[name$='[_destroy]']").val('true');

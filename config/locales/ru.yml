@@ -34,6 +34,8 @@ ru:
               blank: "Поле не может быть пустым"
             dogovor_summa:
               blank: "Поле не может быть пустым"
+            documents:
+              blank: "Должен быть прикреплен минимум 1 документ"
         organization:
           attributes:
             inn:

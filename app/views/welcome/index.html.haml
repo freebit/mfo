@@ -1,6 +1,9 @@
 .to_ajax
   %a{data: {targetform:"get-client-form"}} Проверить клиента
 
+%div
+  operations
+  %span= @operations
 
 %h1
   Contact
@@ -9,9 +12,7 @@
       = hidden_field_tag :action, "get-client"
       = text_field_tag :inn, "7710948466"
       = text_field_tag :kpp, "771001001"
-%div
-  operations
-  %span= @operations
+
 %h3 Заявка
 %pre.json-data
   = JSON.pretty_generate @order_data

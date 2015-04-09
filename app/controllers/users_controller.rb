@@ -61,7 +61,7 @@ class UsersController < ApplicationController
 
   def ajax_uzel
 
-    client = Savon.client(soap_version:2, namespace:"http://mfoalliance.ru", wsdl:"http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl")
+    client = Savon_client::CLIENT
 
     response = client.call(:get_client, message: {ИНН:params[:inn], КПП:params[:kpp]})
 

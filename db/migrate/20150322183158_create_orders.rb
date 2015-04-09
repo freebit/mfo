@@ -2,6 +2,7 @@ class CreateOrders < ActiveRecord::Migration
   def change
     create_table :orders do |t|
       t.string :platform
+      t.string :tarif
       t.string :number
       t.string :number_mfo
       t.date :create_date
@@ -14,6 +15,7 @@ class CreateOrders < ActiveRecord::Migration
       t.float :agent_summa
       t.float :dogovor_summa
       t.float :mfo_summa
+      t.float :base_rate
       t.string :status
 
       t.timestamps null: false

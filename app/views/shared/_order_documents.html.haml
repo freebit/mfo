@@ -14,4 +14,6 @@
         = d.hidden_field :file_cache
         = d.hidden_field :_destroy, value: !d.object.file? ? 'true' : 'false'
         = d.error :file
+
+= f.error :documents
 %button.btn.btn-success{type:'button', id:"add-document"} Добавить документ

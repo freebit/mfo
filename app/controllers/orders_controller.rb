@@ -8,8 +8,9 @@ class OrdersController < ApplicationController
 
   def index
     @title = "История заявок"
-    #fetch_orders_with_soap
-    @orders = Order.all
+
+    @orders = Order.where(status: "На заполнении")
+
   end
 
   def new
@@ -38,6 +39,7 @@ class OrdersController < ApplicationController
 
 
     @order.guarantor_legals.build
+    @order.guarantor_legals[0].build_founder
     @order.guarantor_legals[0].build_address_legal
     @order.guarantor_legals[0].build_address_actual
     @order.guarantor_legals[0].build_bank_account
@@ -78,6 +80,7 @@ class OrdersController < ApplicationController
 
       if service_params[:send_mfo].to_b
         if send_mfo @order
+          @order.update_attribute :status, "заявка в МФО"
           flash[:success] = "Заявка создана <br/> Заявка отправлена в МФО"
         else
           flash[:warning] = "Заявка создана <br/> Не удалось отправить заявку в МФО"
@@ -128,9 +131,12 @@ class OrdersController < ApplicationController
       @order.guarantor_legals.build
       @order.guarantor_legals[0].build_address_legal
       @order.guarantor_legals[0].build_address_actual
+      @order.guarantor_legals[0].build_founder
       @order.guarantor_legals[0].build_bank_account
       @order.guarantor_legals[0].bank_account.build_bank
       @order.guarantor_legals[0].build_person
+      @order.guarantor_legals[0].person.build_reg_place
+      @order.guarantor_legals[0].person.build_curr_place
     end
 
     if @order.documents.blank?
@@ -175,14 +181,19 @@ class OrdersController < ApplicationController
 
       if @order.guarantor_individuals.blank?
         @order.guarantor_individuals.build
+        @order.guarantor_individuals[0].build_reg_place
+        @order.guarantor_individuals[0].build_curr_place
       end
 
       if @order.guarantor_legals.blank?
-        @order.guarantor_legals.build
-        @order.guarantor_legals[0].build_bank_account
-        @order.guarantor_legals[0].bank_account.build_bank
-        @order.guarantor_legals[0].build_person
+          @order.guarantor_legals.build
+          @order.guarantor_legals[0].build_founder
+          @order.guarantor_legals[0].build_bank_account
+          @order.guarantor_legals[0].bank_account.build_bank
+          @order.guarantor_legals[0].build_person
       end
+
+
 
       if @order.documents.blank?
         @order.documents.build
@@ -204,11 +215,11 @@ class OrdersController < ApplicationController
       person_attributes = [:id, :fullname, :birthday, :citizenship, :phone, :email, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date, :_destroy, :birth_place, reg_place_attributes: address_attributes, curr_place_attributes: address_attributes]
       bank_attributes = [:id, :bik, :korr_number, :inn, :name, :city, :address, :_destroy]
 
-      params.require(:order).permit(:summa, :platform, :submission_deadline, :agent, :agent_name, :agent_summa, :mfo_summa, :dogovor_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :updated_at, :status,
+      params.require(:order).permit(:summa, :platform, :tarif, :base_rate, :submission_deadline, :agent, :agent_name, :agent_summa, :mfo_summa, :dogovor_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :updated_at, :status,
 
                                     borrower_attributes:[
                                         organization_attributes,
-                                        founder_attributes:[:name, :pass_data_ogrn, :share],
+                                        founder_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
                                         bank_account_attributes:[
                                             :id,:_destroy,
                                             :account_number,
@@ -219,6 +230,7 @@ class OrdersController < ApplicationController
 
                                     guarantor_legals_attributes:[
                                         organization_attributes,
+                                        founder_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
                                         bank_account_attributes:[
                                             :id,:_destroy,
                                             :account_number,
@@ -243,6 +255,8 @@ class OrdersController < ApplicationController
                                       :order_rate
       )
     end
+
+
 
   def user_is_admin
     unless current_user.is_admin?

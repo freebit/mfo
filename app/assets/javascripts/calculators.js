@@ -71,6 +71,7 @@
 
 
     function setTarif(platform, type){
+        //alert('setTarif')
         var platform = platform || $('#order_platform_name').val(),
             type = type || $('#order_tarif_name').val(),
             base_rate = parseInt($('#service_order_rate').val(), 10) || 0,
@@ -126,6 +127,8 @@
         $('#service_agent_summa').val(full_agent_summa);
 
         //выставляем значения в заявке
+        $('#order_tarif').val( $('#order_tarif_name').val() );
+        $('#order_base_rate').val(base_rate);
         $('#order_summa').val(summa);
         $('#order_dogovor_summa').val(order_summa);
         $('#order_mfo_summa').val(full_mfo_summa);
