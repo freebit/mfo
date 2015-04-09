@@ -14,10 +14,34 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap/tab
-//= require turbolinks
-//= require jquery.cookie
+//#= require turbolinks
 //= require_tree .
 
+window.mfo = {
+
+    config:{
+
+        maxGuarantors_individual: 1
+        ,maxGuarantors_legal: 1
+    }
+
+    ,formatDate: function(src){
+        var date = new Date(src),
+            y = date.getFullYear(),
+            m = date.getMonth() + 1,
+            d = date.getDate();
+
+        return y + "-" + (m >= 10 ? m : "0" + m) + "-" + (d >= 10 ? d : "0" + d)
+    }
+
+    ,clearFields: function(parent) {
+        $('input', parent).val('');
+    }
+
+    ,addGuarantors: function(list){
+
+    }
+}
 
 
 ;(function($){
@@ -89,41 +113,5 @@
         }
     });
 
-
-
-    window.mfo = {
-
-        config:{
-
-            maxGuarantors_individual: 1
-            ,maxGuarantors_legal: 1
-        }
-
-        ,formatDate: function(src){
-            var date = new Date(src),
-                y = date.getFullYear(),
-                m = date.getMonth() + 1,
-                d = date.getDate();
-
-            return y + "-" + (m >= 10 ? m : "0" + m) + "-" + (d >= 10 ? d : "0" + d)
-        }
-
-        ,clearFields: function(parent) {
-            $('input', parent).val('');
-        }
-
-        ,addGuarantors: function(list){
-            for(var i= 0, ln=arguments.length; i<ln; i++){
-                //if (!$.isArray(arguments[i])) continue;
-                var arg = arguments[i],
-                    type = arg[0]["Тип"] ? 'legal' : 'individual';
-
-                console.log(arg[0]);
-            }
-
-            //alert(arguments.length)
-        }
-    }
-
-
 })(jQuery);
+

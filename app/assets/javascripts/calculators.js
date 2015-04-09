@@ -3,16 +3,18 @@
     'use strict';
 
     //выставляем тариф по умолчанию
-    setTarif();
+    if ($('#order_tarif_name').length) {
+        setTarif();
 
-    var summa = parseFloat($('#service_order_summa').val(), 10) || 0,
-        base_rate = parseFloat($('#service_order_rate').val(), 10) || 0;
+        var summa = parseFloat($('#service_order_summa').val(), 10) || 0,
+            base_rate = parseFloat($('#service_order_rate').val(), 10) || 0;
 
-    //считаем, если указана ставка
-    if(base_rate > 0) {
-        calcTender(summa, base_rate);
+        //считаем, если указана ставка
+        if (base_rate > 0) {
+            calcTender(summa, base_rate);
+        }
+
     }
-
 
     //считаем при смене типа тарифа
     $('#order_platform_name, #order_tarif_name').on('change', function(){

@@ -32,3 +32,6 @@
         %td.edit
           - if order.status != "Отправлено в МФО"
             = link_to "Изменить", edit_order_path(order)
+%script
+  window.tarifs =
+  =raw @tarifs.to_json

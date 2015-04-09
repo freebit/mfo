@@ -1,6 +1,8 @@
 class ReportsController < ApplicationController
   def index
     @title = "Отчет по договорам"
+
+    @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
   end
 
   def fetch_report

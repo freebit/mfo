@@ -9,6 +9,8 @@ class OrdersController < ApplicationController
   def index
     @title = "История заявок"
 
+    @tarifs = TARIFS
+
     @orders = Order.where(status: "На заполнении")
 
   end
