@@ -37,6 +37,6 @@ Rails.application.routes.draw do
 
   match '/report', to:"reports#fetch_report",   via: 'post'
 
-  root 'welcome#index'
+  root 'orders#index'
 
 end
