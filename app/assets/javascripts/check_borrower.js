@@ -17,6 +17,8 @@
             return;
         }
 
+        $('#borrower-indicator').text('');
+
         var client = data.data['Клиент'],
             guarantors_individual = data.data['ПоручителиФЛ'],
             guarantors_legal = data.data['ПоручителиЮЛ'],
