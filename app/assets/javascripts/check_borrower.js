@@ -3,21 +3,23 @@
     var targetForm = $("[data-formtype=check-borrower]"),
         activeFields = $('#borrower input:not(#order_borrower_attributes_inn,#order_borrower_attributes_kpp)');
 
-    targetForm.one('ajax:success', function(e, data, status, xhr){
+    targetForm.on('ajax:success', function(e, data, status, xhr){
 
-        console.log("ajax success borrower form - ",data);
-
+        console.log(data);
 
         $('#borrower-indicator').addClass('hidden');
 
-        if(!data['Клиент']) {
-            $('#borrower-indicator').removeClass('hidden').addClass('message').text('Не найдено!');
+        if(data['status'] == "error") {
+            $('#borrower-indicator').removeClass('hidden').addClass('message').text(data['message']);
+            return;
+        }else if(!data.data['Клиент']){
+            $('#borrower-indicator').removeClass('hidden').addClass('message').text('Не найдено');
             return;
         }
 
-        var client = data['Клиент'],
-            guarantors_individual = data['ПоручителиФЛ'],
-            guarantors_legal = data['ПоручителиЮЛ'],
+        var client = data.data['Клиент'],
+            guarantors_individual = data.data['ПоручителиФЛ'],
+            guarantors_legal = data.data['ПоручителиЮЛ'],
             legal_addres = client['ЮридическийАдрес'],
             actual_addres = client['ФактическийАдрес'];
 

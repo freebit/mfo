@@ -67,9 +67,17 @@ class UsersController < ApplicationController
 
     #binding.pry
 
-    @data = response.body[:get_client_response][:return]
+    if response.body[:fault].present?
 
-    render json: @data
+      @response = {status:"error",message:response.body[:fault][:reason][:text]}
+
+    else
+
+      @response = {status:"ok", message:"", data:response.body[:get_client_response][:return]}
+
+    end
+
+    render json: @response
 
   end
 
