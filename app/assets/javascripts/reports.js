@@ -9,6 +9,8 @@
     reportForm.on('ajax:success', function(e, data, status, xhr){
         $('.indicator').addClass('hidden');
 
+        console.log(data.data);
+
         if(data.status == "error"){
             $('.indicator').removeClass('hidden').addClass('message').text(data.message);
         }else if(!data.data){
@@ -16,7 +18,7 @@
         }else{
             $('.indicator').addClass('hidden').removeClass('message').text("");
 
-            console.log(data.data);
+
 
             var table = $('#reports-list'),
                 html = "";
