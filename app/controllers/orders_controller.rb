@@ -191,10 +191,14 @@ class OrdersController < ApplicationController
 
       if @order.guarantor_legals.blank?
           @order.guarantor_legals.build
+          @order.guarantor_legals[0].build_address_legal
+          @order.guarantor_legals[0].build_address_actual
           @order.guarantor_legals[0].build_founder
           @order.guarantor_legals[0].build_bank_account
           @order.guarantor_legals[0].bank_account.build_bank
           @order.guarantor_legals[0].build_person
+          @order.guarantor_legals[0].person.build_reg_place
+          @order.guarantor_legals[0].person.build_curr_place
       end
 
 

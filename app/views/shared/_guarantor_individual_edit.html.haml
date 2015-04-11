@@ -1,7 +1,13 @@
 %ul.nav.nav-tabs.guarantor-tabs{id:"guarantor-individuals-tabs", data:{type:'individual'}}
+  -#= @order.guarantor_individuals
   - @order.guarantor_individuals.each.with_index do |gi, index|
-    - @destroy = params[:order].present? && params[:order][:guarantor_individuals_attributes].present? ? params[:order][:guarantor_individuals_attributes][index.to_s][:_destroy].to_b : true
-    %li{class:"tab#{' active' if (params[:service] && params[:service][:active_guarantor_individual].to_i == index) || index == 0}#{' hidden' if @destroy }"}
+    -#= gi.new_record?
+    - if params[:order].present? && params[:order][:guarantor_individuals_attributes].present?
+      - @destroy = params[:order][:guarantor_individuals_attributes][index.to_s][:_destroy].to_b
+    - else
+      - @destroy = gi.new_record?
+
+    %li{class:"tab#{' active' if (params[:service] && params[:service][:active_guarantor_individual].to_i == index && !@destroy) || index == 0}#{' hidden' if @destroy }"}
       %span.tab-closer &times;
       %a{href:"#guarantor_individuals_#{index}", data:{toggle:"tab"}} Поручитель ФЛ #{index + 1}
 
@@ -11,7 +17,11 @@
 
 .tab-content{id:"guarantor-individuals-content"}
   - @order.guarantor_individuals.each.with_index do |gi, index|
-    %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if (params[:service] && params[:service][:active_guarantor_individual].to_i == index) || index == 0}#{' hidden' if @destroy  }"}
+    - if params[:order].present? && params[:order][:guarantor_individuals_attributes].present?
+      - @destroy = params[:order][:guarantor_individuals_attributes][index.to_s][:_destroy].to_b
+    - else
+      - @destroy = gi.new_record?
+    %div{id:"guarantor_individuals_#{index}", class:"tab-pane#{' active' if (params[:service] && (params[:service][:active_guarantor_individual].to_i == index) && !@destroy) || index == 0}#{' hidden' if @destroy  }"}
       = f.simple_fields_for :guarantor_individuals, gi do |gif|
         = gif.hidden_field :_destroy, value: @destroy
         .field-group

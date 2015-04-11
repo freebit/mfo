@@ -7,7 +7,7 @@
 
         console.log(data);
 
-        $('#borrower-indicator').addClass('hidden');
+        $('#borrower-indicator').addClass('hidden')
 
         if(data['status'] == "error") {
             $('#borrower-indicator').removeClass('hidden').addClass('message').text(data['message']);
@@ -17,7 +17,7 @@
             return;
         }
 
-        $('#borrower-indicator').text('');
+
 
         var client = data.data['Клиент'],
             guarantors_individual = data.data['ПоручителиФЛ'],
@@ -113,7 +113,7 @@
         $('[name=inn]', targetForm).val( $('#order_borrower_attributes_inn').val() );
         $('[name=kpp]', targetForm).val( $('#order_borrower_attributes_kpp').val() );
 
-        $('#borrower-indicator').removeClass('message').removeClass('hidden');
+        $('#borrower-indicator').text('').removeClass('message').removeClass('hidden');
 
         activeFields.removeClass('fill-data').addClass('wait-data');
 

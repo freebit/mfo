@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap/tab
-//#= require turbolinks
+//= require turbolinks
 //= require_tree .
 
 window.mfo = {
