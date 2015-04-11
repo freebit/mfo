@@ -308,11 +308,15 @@
             checked: params[:service] ? params[:service][:guarantor_type] : 'guarantor_individual'
 
         -# ПОРУЧИТЕЛИ ФИЗИЧЕСКОЕ ЛИЦО #
-        .guarantor{class:"guarantor_individual #{'hidden' if (params[:service] && params[:service][:guarantor_type] == 'guarantor_legal')}"}
+        - @hidden = params[:service] ? params[:service][:guarantor_type] == 'guarantor_legal' : false
+
+        .guarantor{class:"guarantor_individual #{'hidden' if @hidden}"}
           = render partial: 'shared/guarantor_individual_edit', locals: {f:f}
 
         -# ПОРУЧИТЕЛЬ ЮРИДИЧЕСКОЕ ЛИЦО #
-        .guarantor{class:"guarantor_legal #{ 'hidden' if (params[:service] && params[:service][:guarantor_type] == 'guarantor_individual')}"}
+        - @hidden = params[:service] ? params[:service][:guarantor_type] == 'guarantor_individual' : true
+
+        .guarantor{class:"guarantor_legal #{ 'hidden' if @hidden}"}
           = render partial: 'shared/guarantor_legal_edit', locals:{f:f}
 
 
