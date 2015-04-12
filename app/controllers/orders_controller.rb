@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
 
     @tarifs = TARIFS
 
-    @orders = Order.where(status: "На заполнении")
+    @orders = Order.where(agent:current_user.email, status: "На заполнении")
 
   end
 
