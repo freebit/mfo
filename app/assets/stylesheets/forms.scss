@@ -7,24 +7,6 @@
   border-radius: 0 0 4px 4px;
 }
 
-.nav-tabs{
-  li a{
-    color: inherit;
-  }
-
-  li.active{
-    a,
-    a:hover,
-    a:focus{
-      border-right: none;
-      border-left: none;
-      border-top: none;
-
-    }
-
-  }
-}
-
 form{
   position: relative;
   margin: 20px 0;

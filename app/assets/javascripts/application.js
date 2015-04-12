@@ -38,9 +38,6 @@ window.mfo = {
         $('input', parent).val('');
     }
 
-    ,addGuarantors: function(list){
-
-    }
 }
 
 
@@ -98,8 +95,6 @@ window.mfo = {
     });
 
 
-
-
     //обработка нажатия пунктов меню при создании/редактировании заявок
     $('#order-menu').on('click','li', function(){
         var button = $(this),
@@ -111,6 +106,14 @@ window.mfo = {
             service_mfo_field.val(false);
             service_mfo_field.parents('form').submit();
         }
+    });
+
+    //показываем валидационные сообщения в табах
+    $('#tabs.tab-content > .tab-pane').each(function(i){
+        var pane = $(this),
+            errors_length = $('.help-block', pane).length;
+        errors_length && $('#order-tabs > li:eq('+i+') .badge').addClass('in').text(errors_length)
+        console.log( $('#order-tabs > li:eq('+i+') .badge'))
     });
 
 })(jQuery);

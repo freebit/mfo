@@ -5,14 +5,19 @@
   %ul.nav.nav-tabs{id:"order-tabs"}
     %li{class:"#{'active' if @active_tab == 'calc'}"}
       %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'loan'}"}
       %a{href:"#loan", data:{toggle:"tab"}} Займ
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'borrower'}"}
       %a{href:"#borrower", data:{toggle:"tab"}} Заемщик
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'guarantors'}"}
       %a{href:"#guarantors", data:{toggle:"tab"}} Поручители
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'documents'}"}
       %a{href:"#documents", data:{toggle:"tab"}} Прикрепленные документы
+      %span.badge.fade
 
 
 

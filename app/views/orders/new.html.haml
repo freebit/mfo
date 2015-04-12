@@ -1,17 +1,23 @@
 = render partial: 'shared/order_menu'
-- @active_tab = params[:service] && params[:service][:new_order_active_tab] ? params[:service][:new_order_active_tab] : 'calc'
+
+- @active_tab = params[:service].present? && params[:service][:new_order_active_tab].present? ? params[:service][:new_order_active_tab] : 'calc'
 .order-form.new{data:{action:'test'}}
   %ul.nav.nav-tabs{id:"order-tabs"}
     %li{class:"#{'active' if @active_tab == 'calc'}"}
       %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'loan'}"}
       %a{href:"#loan", data:{toggle:"tab"}} Займ
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'borrower'}"}
       %a{href:"#borrower", data:{toggle:"tab"}} Заемщик
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'guarantors'}"}
       %a{href:"#guarantors", data:{toggle:"tab"}} Поручители
+      %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'documents'}"}
       %a{href:"#documents", data:{toggle:"tab"}} Прикрепленные документы
+      %span.badge.fade
 
 
 
@@ -120,25 +126,25 @@
             %h5.title Основные данные
             .field.long
               %label Название организации
-              = b.input_field :name, value:"Строй-дом"
+              = b.input_field :name
               = b.error :name
             .field.long
               %label Полное название организации
-              = b.input_field :fullname, value:"Строй-дом компания"
+              = b.input_field :fullname
               = b.error :fullname
 
             .field-horizontal
               .field
                 %label Дата регистрации
-                = b.date_field :reg_date, value:"2001-03-02"
+                = b.date_field :reg_date
                 = b.error :reg_date
               .field
                 %label ОГРН
-                = b.input_field :ogrn, value:"3242135235"
+                = b.input_field :ogrn
                 = b.error :ogrn
             .field
               %label Должность руководителя
-              = b.input_field :head_position, value:"Генеральный деректор"
+              = b.input_field :head_position
               = b.error :head_position
 
             .sub-group
@@ -158,15 +164,15 @@
               .field-horizontal
                 .field
                   %label Имя учредитель
-                  = bf.input_field :name, value:"Смирнов Игорь Валерьевич"
+                  = bf.input_field :name
                   = bf.error :name
                 .field
                   %label Доля в компании
-                  = bf.input_field :share, value:"100"
+                  = bf.input_field :share
                   = bf.error :share
               .field.long
                 %label Паспортные данные ОГРН
-                = bf.input_field :pass_data_ogrn, value:"2345234-ogrn"
+                = bf.input_field :pass_data_ogrn
                 = bf.error :pass_data_ogrn
 
           .field-group
@@ -176,31 +182,31 @@
               .field-horizontal
                 .field
                   %label Номер счета
-                  = ba.input_field :account_number, value:"32235324542327242222"
+                  = ba.input_field :account_number
                   = ba.error :account_number
 
                 = ba.fields_for :bank do |bank|
                   .field
                     %label Бик
-                    = bank.input_field :bik, value:"32235324542327242222"
+                    = bank.input_field :bik
                     = bank.error :bik
                   .field-horizontal
                     .field
                       %label Коррсчет
-                      = bank.input_field :korr_number, value:"32235324542327242222"
+                      = bank.input_field :korr_number
                       = bank.error :korr_number
                     .field
                       %label ИНН
-                      = bank.input_field :inn, value:"32235324542327242222"
+                      = bank.input_field :inn
                       = bank.error :inn
                   .field-horizontal
                     .field
                       %label Наименование банка
-                      = bank.input_field :name, value:"Банк-фагот"
+                      = bank.input_field :name
                       = bank.error :name
                     .field
                       %label Город
-                      = bank.input_field :city, value:"Москва"
+                      = bank.input_field :city
                       = bank.error :city
                     .field.long
                       %label Адрес
@@ -214,11 +220,11 @@
               .field-horizontal
                 .field
                   %label ФИО
-                  = p.input_field :fullname, value:"Мушкин Карен Федорович"
+                  = p.input_field :fullname
                   = p.error :fullname
                 .field
                   %label Дата рождения
-                  = p.date_field :birthday, value:"1977-12-01"
+                  = p.date_field :birthday
                   = p.error :birthday
 
               .field-horizontal
@@ -228,17 +234,17 @@
                   = p.error :birth_place
                 .field
                   %label Гражданство
-                  = p.input_field :citizenship, value:"РФ"
+                  = p.input_field :citizenship
                   = p.error :citizenship
 
               .field-horizontal
                 .field
                   %label Телефон
-                  = p.input_field :phone, value:"23 67 44"
+                  = p.input_field :phone
                   = p.error :phone
                 .field
                   %label E-mail
-                  = p.input_field :email, value:"ader@mail.ru"
+                  = p.input_field :email
                   = p.error :email
 
               .sub-group
@@ -256,22 +262,22 @@
 
                 .field
                   %label Серия и номер паспорта
-                  = p.input_field :pass_serial_number, value:"34 11 78954"
+                  = p.input_field :pass_serial_number
                   = p.error :pass_serial_number
 
                 .field.long
                   %label Кем выдан
-                  = p.input_field :pass_issued, value:"Калининский ОВД"
+                  = p.input_field :pass_issued
                   = p.error :pass_issued
                 .field-horizontal
                   .field
                     %label Код подразделения
-                    = p.input_field :pass_issued_code, value:"цк-1295"
+                    = p.input_field :pass_issued_code
                     = p.error :pass_issued_code
 
                   .field
                     %label Дата выдачи
-                    = p.date_field :pass_issue_date, value:"2006-11-23"
+                    = p.date_field :pass_issue_date
                     = p.error :pass_issue_date
 
 
@@ -281,22 +287,22 @@
 
                   .field
                     %label Серия и номер паспорта
-                    = p.input_field :old_pass_serial_number, value:"77 22 32789"
+                    = p.input_field :old_pass_serial_number
                     = p.error :old_pass_serial_number
 
                   .field.long
                     %label Кем выдан
-                    = p.input_field :old_pass_issued, value:"Калининский ОВД"
+                    = p.input_field :old_pass_issued
                     = p.error :old_pass_issued
                   .field-horizontal
                     .field
                       %label Код подразделения
-                      = p.input_field :old_pass_issued_code, value:"цк-1295"
+                      = p.input_field :old_pass_issued_code
                       = p.error :old_pass_issued_code
 
                     .field
                       %label Дата выдачи
-                      = p.date_field :old_pass_issue_date, value:"2001-02-10"
+                      = p.date_field :old_pass_issue_date
                       = p.error :old_pass_issue_date
 
       -# ПОРУЧИТЕЛИ #

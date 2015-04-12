@@ -29,7 +29,7 @@ class Order < ActiveRecord::Base
   #validates :number_data_protocol
   #validates :personal_number
   validates :create_date, presence: true
-  validates :status, presence: true
+  #validates :status, presence: true
 
   validates_presence_of :documents
 

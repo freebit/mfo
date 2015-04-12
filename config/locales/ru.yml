@@ -24,6 +24,8 @@ ru:
               greater_than: "Не может быть равна нулю"
             platform:
               blank: "Укажите номер площадки"
+            tarif:
+              blank: "Поле не может быть пустым"
             submission_deadline:
               blank: "Поле не может быть пустым"
             agent_summa:
@@ -35,13 +37,27 @@ ru:
             dogovor_summa:
               blank: "Поле не может быть пустым"
             documents:
-              blank: "Должен быть прикреплен минимум 1 документ"
+              blank: "Должен быть прикреплен хотя бы один документ"
         organization:
           attributes:
+            name:
+              blank: "Поле не может быть пустым"
+            fullname:
+              blank: "Поле не может быть пустым"
             inn:
               blank: "Поле не может быть пустым"
             kpp:
               blank: "Поле не может быть пустым"
+            ogrn:
+              blank: "Поле не может быть пустым"
+            reg_date:
+              blank: "Поле не может быть пустым"
+            head_position:
+              blank: "Поле не может быть пустым"
+        founder:
+            attributes:
+              name:
+                blank: "Поле не может быть пустым"
         individual:
           attributes:
             email:
