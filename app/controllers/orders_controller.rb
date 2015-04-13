@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
 
 
-  before_action :signed_in_user, only: [:index, :edit, :new, :update]
-  before_action :user_is_admin, only:[:index, :new, :edit, :update]
+  before_action :signed_in_user, only: [:index, :new]
+  before_action :user_is_admin, only:[:index, :new]
 
   TARIFS = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
 
@@ -67,7 +67,10 @@ class OrdersController < ApplicationController
       @order.borrower.skip_kpp_validation = true
     end
 
+
     if @order.save
+
+      @order.update_attribute :editkey , SecureRandom.urlsafe_base64
 
       if order_params[:documents_attributes].present?
         order_params[:documents_attributes].each do |d|
@@ -122,6 +125,9 @@ class OrdersController < ApplicationController
 
   def edit
     @title = "Редактирование заявки"
+
+    #binding.pry
+
     @order = Order.find params[:id]
 
     if @order.guarantor_individuals.blank?
@@ -264,16 +270,18 @@ class OrdersController < ApplicationController
       )
     end
 
-
+  def check_order_by_key
+    Order.where(editkey:params.keys.first).blank?
+  end
 
   def user_is_admin
-    unless current_user.is_admin?
+    unless current_user.is_admin? && check_order_by_key
       redirect_to signin_url, notice: "Войдите как администратор"
     end
   end
 
   def signed_in_user
-    unless signed_in?
+    unless signed_in? && check_order_by_key
       store_location
       redirect_to signin_url, notice: "Для выполнения этого действия нужна авторизация"
     end

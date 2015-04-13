@@ -1,5 +1,6 @@
 %ul.order-menu{id:"order-menu"}
   %li.save
     %a Cохранить
-  %li.send_mfo
-    %a Отправить в МФО
+  - if signed_in? && current_user && current_user.is_admin?
+    %li.send_mfo
+      %a Отправить в МФО

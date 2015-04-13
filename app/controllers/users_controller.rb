@@ -40,7 +40,6 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-
     if params[:user][:password].blank?
       @user.skip_password_validation = true
       cur_params = user_params_without_pass
@@ -62,19 +61,12 @@ class UsersController < ApplicationController
   def ajax_uzel
 
     client = Savon_client::CLIENT
-
     response = client.call(:get_client, message: {ИНН:params[:inn], КПП:params[:kpp]})
 
-    #binding.pry
-
     if response.body[:fault].present?
-
       @response = {status:"error",message:response.body[:fault][:reason][:text]}
-
     else
-
       @response = {status:"ok", message:"", data:response.body[:get_client_response][:return]}
-
     end
 
     render json: @response

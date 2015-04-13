@@ -9,6 +9,7 @@
       %th Сумма агента
       %th Платформа
       %th Статус
+      %th Ссылка для клиента
       %th Edit
   %tbody
     - @orders.each do |order|
@@ -29,9 +30,12 @@
           = order.platform
         %td
           = order.status
+        %td
+          = "#{request.host}#{':'+request.port.to_s if request.port != '80'}#{orders_path}/#{order.id.to_s}/edit?#{order.editkey}"
         %td.edit
           - if order.status != "Отправлено в МФО"
             = link_to "Изменить", edit_order_path(order)
+
 %script
   window.tarifs =
   =raw @tarifs.to_json
