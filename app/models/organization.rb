@@ -30,9 +30,9 @@ class Organization < ActiveRecord::Base
   validates :name, presence: true
   validates :fullname, presence: true
 
-  validates :ogrn, presence: true
-
   validates :head_position, presence: true
+
   validates :reg_date, presence: true
+  validates :ogrn, presence: true
 
 end
