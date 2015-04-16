@@ -11,9 +11,11 @@
 
         if(data['status'] == "error") {
             $('#borrower-indicator').removeClass('hidden').addClass('message').text(data['message']);
+            activeFields.removeClass('wait-data').addClass('fill-data');
             return;
         }else if(!data.data['Клиент']){
             $('#borrower-indicator').removeClass('hidden').addClass('message').text('Не найдено');
+            activeFields.removeClass('wait-data').addClass('fill-data');
             return;
         }
 
@@ -63,9 +65,11 @@
         $('#order_borrower_attributes_reg_date').val( window.mfo.formatDate(client['ДатаГосРегистрации']) );
 
         //учредитель
-        $('#order_borrower_attributes_founder_attributes_name').val( client['Учередители']['УчередительНаименование'] );
-        $('#order_borrower_attributes_founder_attributes_pass_data_ogrn').val( client['Учередители']['ПаспортныеДанныеОГРН'] );
-        $('#order_borrower_attributes_founder_attributes_share').val( client['Учередители']['Доля'] );
+        if(client['Учередители']) {
+            $('#order_borrower_attributes_founder_attributes_name').val(client['Учередители']['УчередительНаименование']);
+            $('#order_borrower_attributes_founder_attributes_pass_data_ogrn').val(client['Учередители']['ПаспортныеДанныеОГРН']);
+            $('#order_borrower_attributes_founder_attributes_share').val(client['Учередители']['Доля']);
+        }
 
         //Банковский счет
         $('#order_borrower_attributes_bank_account_attributes_account_number').val( client['ОсновнойБанковскийСчет']['НомерСчета'] );
@@ -75,26 +79,29 @@
         $('#order_borrower_attributes_bank_account_attributes_bank_attributes_name').val( client['ОсновнойБанковскийСчет']['БанкНаименование'] );
 
         //Персональные данные заемщика
-        $('#order_borrower_attributes_person_attributes_fullname').val( client['ПерсональныеДанныеЗаявителя']['ФИО'] );
-        $('#order_borrower_attributes_person_attributes_birthday').val( window.mfo.formatDate(client['ПерсональныеДанныеЗаявителя']['ДатаРождения']) );
-        $('#order_borrower_attributes_person_attributes_birth_place').val( client['ПерсональныеДанныеЗаявителя']['МестоРождения'] );
-        $('#order_borrower_attributes_person_attributes_citizenship').val( client['ПерсональныеДанныеЗаявителя']['Гражданство'] );
-        $('#order_borrower_attributes_person_attributes_phone').val( client['ПерсональныеДанныеЗаявителя']['Телефон'] );
-        $('#order_borrower_attributes_person_attributes_email').val( client['ПерсональныеДанныеЗаявителя']['ЭлектроннаяПочта'] );
-        $('#order_borrower_attributes_person_attributes_reg_place').val( client['ПерсональныеДанныеЗаявителя']['АдресРегистрации'] );
-        $('#order_borrower_attributes_person_attributes_curr_place').val( client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания'] );
+        if(client['ПерсональныеДанныеЗаявителя']) {
+            $('#order_borrower_attributes_person_attributes_fullname').val(client['ПерсональныеДанныеЗаявителя']['ФИО']);
+            $('#order_borrower_attributes_person_attributes_birthday').val(window.mfo.formatDate(client['ПерсональныеДанныеЗаявителя']['ДатаРождения']));
+            $('#order_borrower_attributes_person_attributes_birth_place').val(client['ПерсональныеДанныеЗаявителя']['МестоРождения']);
+            $('#order_borrower_attributes_person_attributes_citizenship').val(client['ПерсональныеДанныеЗаявителя']['Гражданство']);
+            $('#order_borrower_attributes_person_attributes_phone').val(client['ПерсональныеДанныеЗаявителя']['Телефон']);
+            $('#order_borrower_attributes_person_attributes_email').val(client['ПерсональныеДанныеЗаявителя']['ЭлектроннаяПочта']);
+            $('#order_borrower_attributes_person_attributes_reg_place').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']);
+            $('#order_borrower_attributes_person_attributes_curr_place').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']);
 
-        //Паспортные данные
-        $('#order_borrower_attributes_person_attributes_pass_serial_number').val( client['ПерсональныеДанныеЗаявителя']['СерияНомерПаспорта'] );
-        $('#order_borrower_attributes_person_attributes_pass_issued').val( client['ПерсональныеДанныеЗаявителя']['КемВыдан'] );
-        $('#order_borrower_attributes_person_attributes_pass_issued_code').val( client['ПерсональныеДанныеЗаявителя']['КодПодразделения'] );
-        $('#order_borrower_attributes_person_attributes_pass_issue_date').val( window.mfo.formatDate(client['ПерсональныеДанныеЗаявителя']['ДатаВыдачи']) );
 
-        //Ранее выданные паспорта
-        $('#order_borrower_attributes_person_attributes_old_pass_serial_number').val( client['ПерсональныеДанныеЗаявителя']['СерияНомерСП'] );
-        $('#order_borrower_attributes_person_attributes_old_pass_issued').val( client['ПерсональныеДанныеЗаявителя']['КемВыданСП'] );
-        $('#order_borrower_attributes_person_attributes_old_pass_issued_code').val( client['ПерсональныеДанныеЗаявителя']['КодПодразделенияСП'] );
-        $('#order_borrower_attributes_person_attributes_old_pass_issue_date').val( window.mfo.formatDate( client['ПерсональныеДанныеЗаявителя']['ДатаВыдачиСП']) );
+            //Паспортные данные
+            $('#order_borrower_attributes_person_attributes_pass_serial_number').val(client['ПерсональныеДанныеЗаявителя']['СерияНомерПаспорта']);
+            $('#order_borrower_attributes_person_attributes_pass_issued').val(client['ПерсональныеДанныеЗаявителя']['КемВыдан']);
+            $('#order_borrower_attributes_person_attributes_pass_issued_code').val(client['ПерсональныеДанныеЗаявителя']['КодПодразделения']);
+            $('#order_borrower_attributes_person_attributes_pass_issue_date').val(window.mfo.formatDate(client['ПерсональныеДанныеЗаявителя']['ДатаВыдачи']));
+
+            //Ранее выданные паспорта
+            $('#order_borrower_attributes_person_attributes_old_pass_serial_number').val(client['ПерсональныеДанныеЗаявителя']['СерияНомерСП']);
+            $('#order_borrower_attributes_person_attributes_old_pass_issued').val(client['ПерсональныеДанныеЗаявителя']['КемВыданСП']);
+            $('#order_borrower_attributes_person_attributes_old_pass_issued_code').val(client['ПерсональныеДанныеЗаявителя']['КодПодразделенияСП']);
+            $('#order_borrower_attributes_person_attributes_old_pass_issue_date').val(window.mfo.formatDate(client['ПерсональныеДанныеЗаявителя']['ДатаВыдачиСП']));
+        }
 
         //плавно отображаем данные
         activeFields.removeClass('wait-data').addClass('fill-data');
@@ -108,7 +115,7 @@
 
     $("[data-targetform=check-borrower]").on('click', function(){
 
-        console.log('chec b');
+        //console.log('chec b');
 
         $('[name=inn]', targetForm).val( $('#order_borrower_attributes_inn').val() );
         $('[name=kpp]', targetForm).val( $('#order_borrower_attributes_kpp').val() );

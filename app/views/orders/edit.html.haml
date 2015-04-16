@@ -106,7 +106,7 @@
           .field-group
             .field
               %label Укажите тип заемщика
-              = b.select :type_o, [['Юридическое лицо', 'ЮЛ'] ,['Физическое лицо', 'ФЛ']]
+              = b.select :type_o, [['Юридическое лицо', 'ЮЛ'] ,['Индивидуальный предприниматель', 'ФЛ']]
 
           .field-group
             .field-horizontal
@@ -157,7 +157,7 @@
                 = render partial: 'shared/address', locals: {a:aa}
 
 
-          .field-group
+          .field-group.borrower-founders{class:"#{' hidden' if @order.borrower.type_o == 'ФЛ'}"}
             %h5.title Учредитель
             = b.fields_for :founder do |bf|
               .field-horizontal
@@ -212,7 +212,7 @@
                     = bank.input_field :address
                     = bank.error :address
 
-          .field-group
+          .field-group.personal-data{class:"#{' hidden' if @order.borrower.type_o == 'ФЛ'}"}
             %h5.title Персональные данные заемщика
 
             = b.fields_for :person do |p|

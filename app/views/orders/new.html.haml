@@ -158,7 +158,7 @@
                 = render partial: 'shared/address', locals: {a:aa}
 
 
-          .field-group
+          .field-group.borrower-founders
             %h5.title Учредитель
             = b.fields_for :founder do |bf|
               .field-horizontal
@@ -213,7 +213,7 @@
                       = bank.input_field :address
                       = bank.error :address
 
-          .field-group
+          .field-group.personal-data
             %h5.title Персональные данные заемщика
 
             = b.fields_for :person do |p|

@@ -20,6 +20,8 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :address_legal, allow_destroy: true
   accepts_nested_attributes_for :address_actual, allow_destroy: true
 
+
+
   validates :type_o, presence: true
   validates :inn, presence: true
   validates :kpp, presence: true, unless: :skip_kpp_validation

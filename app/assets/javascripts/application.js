@@ -56,19 +56,30 @@ window.mfo = {
     if($('#order_platform').length > 0) {
         $('#order_platform').val(value_platform);
     }
-    //смена типа заемщика при создании заявки
+
+
+    //смена типа заемщика при создании/редактировании заявки
     $('#order_borrower_attributes_type_o').on('change', function(){
 
         var value = $(this).val(),
-            field = $("#order_borrower_attributes_kpp"),
-            fieldParent = field.parents('.field');
+            field_kpp = $("#order_borrower_attributes_kpp"),
+            fields_founder = $(".borrower-founders"),
+            fields_personal_data = $(".personal-data"),
+            field_kpp_parent = field_kpp.parents('.field');
 
         if(value == "ФЛ"){
-            fieldParent.addClass('hidden');
-            field.data('store',field.val()).val('')
+            field_kpp_parent.addClass('hidden');
+            field_kpp.data('store',field_kpp.val()).val('')
+
+            fields_founder.addClass('hidden');
+            fields_personal_data.addClass('hidden');
+
         }else{
-            fieldParent.removeClass('hidden');
-            field.val(field.data('store'));
+            field_kpp_parent.removeClass('hidden');
+            field_kpp.val(field_kpp.data('store'));
+
+            fields_founder.removeClass('hidden');
+            fields_personal_data.removeClass('hidden');
         }
 
     });

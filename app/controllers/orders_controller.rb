@@ -159,6 +159,10 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find params[:id]
 
+    if order_params[:borrower_attributes][:type_o] == "ФЛ"
+      @order.borrower.skip_kpp_validation = true
+    end
+
     @message = ""
 
     if @order.update_attributes order_params

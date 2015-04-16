@@ -272,11 +272,11 @@ module OrderHelper
 
       response = savon_client.call(:send_data, message: @order_raw)
 
+      binding.pry
+
       response.http.code == 200
 
      # binding.pry
-
-    # TODO после отправки желательно удалять из базы заявку
 
     else
 
@@ -284,11 +284,7 @@ module OrderHelper
 
   end
 
-  def fetch_orders_with_soap
 
-    @operations = Savon_client::CLIENT.operations
-
-  end
 
   private
 
