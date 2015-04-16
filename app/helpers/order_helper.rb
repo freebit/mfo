@@ -272,7 +272,7 @@ module OrderHelper
 
       response = savon_client.call(:send_data, message: @order_raw)
 
-      binding.pry
+      #binding.pry
 
       response.http.code == 200
 
