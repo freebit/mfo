@@ -3,9 +3,11 @@ module UsersHelper
 
   def fetch_agent_data( user )
 
-    response = Savon_client::CLIENT.call(:get_tarifs)
+    response = soap_response
 
+    # binding.pry
 
+    if response.present? && response.body[:fault].blank? && response.http.code == 200
 
       @tarifs = response.body[:get_tarifs_response][:return][:Тариф]
 
@@ -22,9 +24,19 @@ module UsersHelper
 
       end
 
+        true
 
+    else
 
-    #binding.pry
+        false
+
+    end
+
+  end
+
+  def soap_response
+    Savon_client::CLIENT.call(:get_tarifs)
+    rescue Timeout::Error => e
 
   end
 

@@ -68,6 +68,7 @@ form{
     &.button-right{
       width:100%;
       text-align: right;
+      padding-right: 10px;
     }
 
     &.submit{
@@ -232,8 +233,18 @@ form{
     line-height: 21px;
   }
 
+  .title .del{
+    display: inline-block;
+    float:right;
+    width:15px;
+    height:15px;
+    text-align: center;
+    line-height: 15px;
+    cursor:pointer;
+  }
+
   .check{
-   margin-right: 10px;
+
   }
 }
 

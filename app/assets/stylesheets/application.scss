@@ -74,14 +74,30 @@ header{
       height: auto;
     }
   }
+
+  .user-info{
+    position: relative;
+    float:right;
+    top:3px;
+    right:0px;
+    color:#fff;
+    font-size: 11px;
+    color:lighten(darkseagreen, 20%);
+
+    .login{
+      color:#fff;
+    }
+  }
 }
+
+
 
 .main-menu{
   position: relative;
   float:right;
 
   ul{
-    margin: 0;
+    margin: 0 0 0 20px;
     padding: 0;
     list-style: none;
     font-size: 0;

@@ -3,6 +3,7 @@ class Savon_client
   CLIENT = Savon.client do
     soap_version 2
     wsdl "http://217.29.50.201:8090/mfobg/ws/WebExchange.1cws?wsdl"
+    open_timeout 10
     env_namespace :soap
     headers({})
     namespaces(

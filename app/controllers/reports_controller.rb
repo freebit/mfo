@@ -1,4 +1,7 @@
 class ReportsController < ApplicationController
+
+  before_action :user_is_admin_or_is_agent, only:[:index]
+
   def index
     @title = "Отчет по договорам"
 
@@ -48,6 +51,14 @@ class ReportsController < ApplicationController
 
 
   private
+
+    def user_is_admin_or_is_agent
+
+      unless current_user.is_admin? || current_user.is_agent?
+        redirect_to signin_url, notice: "Войдите как администратор"
+      end
+
+    end
 
     def filter_params
       params.require(:shift).permit(:date_from, :date_to)

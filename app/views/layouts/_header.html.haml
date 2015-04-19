@@ -2,17 +2,29 @@
   .container
     %a.logo{href:orders_path}
       %img{src:image_url('logo.png')}
+
     %nav.main-menu
       %ul
-        - if signed_in? && current_user && current_user.is_admin?
-          %li= link_to "Отчеты", reports_path, :class =>is_active?('reports/index')
+        - if signed_in? && current_user
           %li= link_to "Все заявки", orders_path, :class =>is_active?('orders/index')
           %li= link_to "Новая заявка", new_order_path, :class => is_active?('orders/new')
+          - if current_user.is_admin? || current_user.is_agent?
+            %li= link_to "Отчеты", reports_path, :class =>is_active?('reports/index')
+
+        - if signed_in? && current_user && current_user.is_admin?
           %li= link_to "Пользователи", users_path, :class => is_active?('users/index')
+
         - if signed_in?
           %li= link_to "Выход", signout_path, method: "delete"
         - else
           %li= link_to "Вход", signin_path
+
+    - if signed_in? && current_user
+      %div.user-info
+        %span пользователь:
+        %span.login
+          = current_user.email
+        %span.role (#{current_user.roles.first.title.mb_chars.downcase})
 
     %h1.page-title= @title;
 

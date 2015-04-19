@@ -1,11 +1,12 @@
 = render partial: 'shared/order_menu'
 
-- @active_tab = params[:service].present? && params[:service][:new_order_active_tab].present? ? params[:service][:new_order_active_tab] : 'calc'
+- @active_tab = params[:service].present? && params[:service][:new_order_active_tab].present? ? params[:service][:new_order_active_tab] : (current_user.is_client? ? 'loan' : 'calc')
 .order-form.new{data:{action:'test'}}
   %ul.nav.nav-tabs{id:"order-tabs"}
-    %li{class:"#{'active' if @active_tab == 'calc'}"}
-      %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
-      %span.badge.fade
+    - if current_user.is_admin? || current_user.is_agent?
+      %li{class:"#{'active' if @active_tab == 'calc'}"}
+        %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
+        %span.badge.fade
     %li{class:"#{'active' if @active_tab == 'loan'}"}
       %a{href:"#loan", data:{toggle:"tab"}} Займ
       %span.badge.fade
@@ -25,9 +26,10 @@
     .tab-content{id:"tabs"}
 
       -# КАЛЬКУЛЯТОР #
-      .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}"}
-        = render partial: 'shared/platform_tarif', locals: {f:f}
-        = render partial: 'shared/calcs', locals: {f:f}
+      - if current_user.is_admin? || current_user.is_agent?
+        .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}"}
+          = render partial: 'shared/platform_tarif', locals: {f:f}
+          = render partial: 'shared/calcs', locals: {f:f}
 
       -# ЗАЯВКА #
 
@@ -159,21 +161,29 @@
 
 
           .field-group.borrower-founders
-            %h5.title Учредитель
-            = b.fields_for :founder do |bf|
-              .field-horizontal
-                .field
-                  %label Имя учредитель
-                  = bf.input_field :name
-                  = bf.error :name
-                .field
-                  %label Доля в компании
-                  = bf.input_field :share
-                  = bf.error :share
-              .field.long
-                %label Паспортные данные ОГРН
-                = bf.input_field :pass_data_ogrn
-                = bf.error :pass_data_ogrn
+            .borrower-founders-list
+              = b.fields_for :borrower_founders do |bf|
+                .item
+                  %h5.title
+                    %span Учредитель 1
+                    %span.del &times;
+                  .field-horizontal
+                    .field
+                      %label Имя учредитель
+                      = bf.input_field :name
+                      = bf.error :name
+                    .field
+                      %label Доля в компании
+                      = bf.input_field :share
+                      = bf.error :share
+                  .field.long
+                    %label Паспортные данные ОГРН
+                    = bf.input_field :pass_data_ogrn
+                    = bf.error :pass_data_ogrn
+            .field.button-right
+              %button.add-borrower-founder{type: :button, class:"btn btn-primary"} Добавить учредителя
+
+
 
           .field-group
             %h5.title Основной банковский счет

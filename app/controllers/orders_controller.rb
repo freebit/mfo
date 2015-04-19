@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
 
 
-  before_action :signed_in_user, only: [:index, :new]
-  before_action :user_is_admin, only:[:index, :new]
+  before_action :signed_in_user, only: [:index, :new, :edit]
+  #before_action :user_is_admin, only:[:index, :new]
 
   TARIFS = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
 
@@ -24,7 +24,10 @@ class OrdersController < ApplicationController
     @order.borrower.build_address_legal
     @order.borrower.build_address_actual
 
-    @order.borrower.build_founder
+    @order.borrower.borrower_founders.build
+
+
+
     @order.borrower.build_bank_account
     @order.borrower.bank_account.build_bank
 
@@ -35,15 +38,14 @@ class OrdersController < ApplicationController
     @order.borrower.person.build_curr_place
 
     @order.guarantor_individuals.build
-
     @order.guarantor_individuals[0].build_reg_place
     @order.guarantor_individuals[0].build_curr_place
 
 
     @order.guarantor_legals.build
-    @order.guarantor_legals[0].build_founder
     @order.guarantor_legals[0].build_address_legal
     @order.guarantor_legals[0].build_address_actual
+    @order.guarantor_legals[0].founders.build
     @order.guarantor_legals[0].build_bank_account
 
     @order.guarantor_legals[0].bank_account.build_bank
@@ -102,6 +104,9 @@ class OrdersController < ApplicationController
 
       @title = "Новая заявка"
 
+
+      @order.borrower.borrower_founders.build
+
       if @order.guarantor_individuals.blank?
         @order.guarantor_individuals.build
         @order.guarantor_individuals[0].build_reg_place
@@ -109,8 +114,18 @@ class OrdersController < ApplicationController
       end
 
       if @order.guarantor_legals.blank?
-        @order.guarantor_legals << Organization.new( bank_account:BankAccount.new(bank:Bank.new), person:Individual.new )
+        @order.guarantor_legals.build
+        @order.guarantor_legals[0].founders.build
+        @order.guarantor_legals[0].build_address_legal
+        @order.guarantor_legals[0].build_address_actual
+
+        @order.guarantor_legals[0].build_bank_account
+        @order.guarantor_legals[0].bank_account.build_bank
+        @order.guarantor_legals[0].build_person
+        @order.guarantor_legals[0].person.build_reg_place
+        @order.guarantor_legals[0].person.build_curr_place
       end
+
 
       if @order.documents.blank?
         @order.documents.build
@@ -130,6 +145,11 @@ class OrdersController < ApplicationController
 
     @order = Order.find params[:id]
 
+    if @order.borrower.borrower_founders.blank?
+      @order.borrower.borrower_founders.build
+    end
+
+
     if @order.guarantor_individuals.blank?
       @order.guarantor_individuals.build
       @order.guarantor_individuals[0].build_reg_place
@@ -138,9 +158,10 @@ class OrdersController < ApplicationController
 
     if @order.guarantor_legals.blank?
       @order.guarantor_legals.build
+      @order.guarantor_legals[0].founders.build
       @order.guarantor_legals[0].build_address_legal
       @order.guarantor_legals[0].build_address_actual
-      @order.guarantor_legals[0].build_founder
+
       @order.guarantor_legals[0].build_bank_account
       @order.guarantor_legals[0].bank_account.build_bank
       @order.guarantor_legals[0].build_person
@@ -193,17 +214,26 @@ class OrdersController < ApplicationController
     else
       @title = "Редактирование заявки"
 
+
+      if @order.borrower.borrower_founders.blank?
+        @order.borrower.borrower_founders.build
+      end
+
+
       if @order.guarantor_individuals.blank?
         @order.guarantor_individuals.build
         @order.guarantor_individuals[0].build_reg_place
         @order.guarantor_individuals[0].build_curr_place
       end
 
+
+
       if @order.guarantor_legals.blank?
           @order.guarantor_legals.build
+          @order.guarantor_legals[0].founders.build
           @order.guarantor_legals[0].build_address_legal
           @order.guarantor_legals[0].build_address_actual
-          @order.guarantor_legals[0].build_founder
+
           @order.guarantor_legals[0].build_bank_account
           @order.guarantor_legals[0].bank_account.build_bank
           @order.guarantor_legals[0].build_person
@@ -237,7 +267,7 @@ class OrdersController < ApplicationController
 
                                     borrower_attributes:[
                                         organization_attributes,
-                                        founder_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
+                                        founders_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
                                         bank_account_attributes:[
                                             :id,:_destroy,
                                             :account_number,
@@ -248,7 +278,7 @@ class OrdersController < ApplicationController
 
                                     guarantor_legals_attributes:[
                                         organization_attributes,
-                                        founder_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
+                                        founders_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
                                         bank_account_attributes:[
                                             :id,:_destroy,
                                             :account_number,
@@ -274,18 +304,18 @@ class OrdersController < ApplicationController
       )
     end
 
-  def check_order_by_key
-    Order.where(editkey:params.keys.first).blank?
+  def is_order_by_key?
+    Order.where(editkey:@editkey).present?
   end
 
   def user_is_admin
-    unless current_user.is_admin? && check_order_by_key
+    unless current_user.is_admin? || is_order_by_key?
       redirect_to signin_url, notice: "Войдите как администратор"
     end
   end
 
   def signed_in_user
-    unless signed_in? && check_order_by_key
+    unless signed_in? || is_order_by_key?
       store_location
       redirect_to signin_url, notice: "Для выполнения этого действия нужна авторизация"
     end

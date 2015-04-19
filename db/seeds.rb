@@ -8,9 +8,14 @@
 
 # создаем роли
 
-
-Role.create(name: :admin, title:'Агент')
+Role.create(name: :admin, title:'Администратор')
+Role.create(name: :agent, title:'Агент')
 Role.create(name: :client, title:'Клиент')
+Role.create(name: :guest, title:'Гость')
+
+# создадим суперадмина
+superadmin = User.create(name:"Главный", email:"superadmin@mail.ru", password:"rHA24PSsul", password_confirmation:"rHA24PSsul", active: true);
+UsersRole.create user:superadmin, role: Role.find_by_name(:admin)
 
 # Platform.create(name:"Сбербанк-АСТ",number:"1")
 # Platform.create(name:"Росселторг",number:"2")

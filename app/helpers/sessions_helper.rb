@@ -7,7 +7,9 @@ module SessionsHelper
     user.update_attribute(:last_visit, Time.now)
     self.current_user = user
 
-    fetch_agent_data(user)
+    unless fetch_agent_data(user)
+      flash[:warning] = "Извините за задержку. Сервер не отвечает. Не удалось обновить данные."
+    end
 
   end
 

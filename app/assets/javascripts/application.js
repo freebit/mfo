@@ -52,9 +52,11 @@ window.mfo = {
     });
 
     //установка площадки
-    var value_platform = $('#order_platform_name').val();
-    if($('#order_platform').length > 0) {
-        $('#order_platform').val(value_platform);
+    if($('#order_platform_name').length > 0) {
+        var value_platform = $('#order_platform_name').val();
+        if ($('#order_platform').length > 0) {
+            $('#order_platform').val(value_platform);
+        }
     }
 
 

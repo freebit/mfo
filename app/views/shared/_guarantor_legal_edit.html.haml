@@ -70,21 +70,24 @@
               = render partial: 'shared/address', locals: {a:aa}
 
         .field-group
-          %h5.title Учредитель
-          = glf.fields_for :founder do |bf|
-            .field-horizontal
-              .field
-                %label Имя учредитель
-                = bf.input_field :name
-                = bf.error :name
-              .field
-                %label Доля в компании
-                = bf.input_field :share
-                = bf.error :share
-            .field.long
-              %label Паспортные данные ОГРН
-              = bf.input_field :pass_data_ogrn
-              = bf.error :pass_data_ogrn
+          .guarantor-founders-list
+            %h5.title Учредитель 1
+            = glf.fields_for :founders do |bf|
+              .field-horizontal
+                .field
+                  %label Имя учредитель
+                  = bf.input_field :name
+                  = bf.error :name
+                .field
+                  %label Доля в компании
+                  = bf.input_field :share
+                  = bf.error :share
+              .field.long
+                %label Паспортные данные ОГРН
+                = bf.input_field :pass_data_ogrn
+                = bf.error :pass_data_ogrn
+          .field.button-right
+            %button.add-borrower-founder{type: :button, class:"btn btn-primary"} Добавить учредителя
 
         .field-group
           %h5.title Основной банковский счет

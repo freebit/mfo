@@ -29,6 +29,18 @@ class User < ActiveRecord::Base
     self.roles.first.name == 'admin';
   end
 
+  def is_agent?
+    self.roles.first.name == 'agent';
+  end
+
+  def is_client?
+    self.roles.first.name == 'client';
+  end
+
+  def is_guest?
+    self.roles.first.name == 'guest';
+  end
+
   private
 
     def create_remember_token
