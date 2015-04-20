@@ -36,9 +36,8 @@
       .tab-pane.fade{id:"loan", class:"#{' in active' if @active_tab == 'loan'}"}
         .field-group
           .field
-            %label Электронная площадка
-            = f.input_field :platform
-            = f.error :platform
+            %label Площадка
+            = f.select(:platform, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
           .field
             %label Тариф
             = f.input_field :tarif
