@@ -104,8 +104,9 @@ class OrdersController < ApplicationController
 
       @title = "Новая заявка"
 
-
-      @order.borrower.borrower_founders.build
+      if @order.borrower.borrower_founders.blank?
+        @order.borrower.borrower_founders.build
+      end
 
       if @order.guarantor_individuals.blank?
         @order.guarantor_individuals.build
@@ -267,7 +268,7 @@ class OrdersController < ApplicationController
 
                                     borrower_attributes:[
                                         organization_attributes,
-                                        founders_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
+                                        borrower_founders_attributes:[:id, :_destroy, :name, :pass_data_ogrn, :share],
                                         bank_account_attributes:[
                                             :id,:_destroy,
                                             :account_number,

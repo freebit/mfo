@@ -159,25 +159,7 @@
 
 
           .field-group.borrower-founders{class:"#{' hidden' if @order.borrower.type_o == 'ФЛ'}"}
-            .borrower-founders-list
-              = b.fields_for :borrower_founders do |bf|
-                .item
-                  %h5.title Учредитель 1
-                  .field-horizontal
-                    .field
-                      %label Имя учредитель
-                      = bf.input_field :name
-                      = bf.error :name
-                    .field
-                      %label Доля в компании
-                      = bf.input_field :share
-                      = bf.error :share
-                  .field.long
-                    %label Паспортные данные ОГРН
-                    = bf.input_field :pass_data_ogrn
-                    = bf.error :pass_data_ogrn
-            .field.button-right
-              %button.add-borrower-founder{type: :button, class:"btn btn-primary"} Добавить учредителя
+            = render partial:'shared/founders', locals: {b:b}
 
           .field-group
             %h5.title Основной банковский счет

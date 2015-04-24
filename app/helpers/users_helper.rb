@@ -37,7 +37,7 @@ module UsersHelper
   def soap_response
     Savon_client::CLIENT.call(:get_tarifs)
     rescue Timeout::Error => e
-
+    #rescue Errno::ECONNRESET => e
   end
 
 end

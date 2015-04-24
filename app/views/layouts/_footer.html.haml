@@ -12,3 +12,12 @@
     = hidden_field_tag :action, "get-client"
     = text_field_tag :inn, ""
     = text_field_tag :kpp, ""
+
+%div.modal.fade.bs-example-modal-sm{id:"founder-message",tabindex:"-1",role:"dialog",aria:{labelledby:"mySmallModalLabel",hidden:"true"}}
+  %div.modal-dialog.modal-sm
+    %div.modal-content
+      %div.modal-header
+        %button.close{type:"button",data:{dismiss:"modal"},aria:{hidden:"true"}} &times;
+        %h4.modal-title Сообщение
+      %div.modal-body
+        Должен быть хотя бы один учредитель!

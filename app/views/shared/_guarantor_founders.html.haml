@@ -1,0 +1,23 @@
+.founders-list
+  - gl.founders.each.with_index do |f, index|
+    = b.simple_fields_for :founders, f do |bf|
+      .item
+        = bf.hidden_field :_destroy
+        %h5.title
+          %span Учредитель #{index + 1}
+          %span.del &times;
+        .field-horizontal
+          .field
+            %label Имя учредитель
+            = bf.input_field :name
+            = bf.error :name
+          .field
+            %label Доля в компании
+            = bf.input_field :share
+            = bf.error :share
+        .field.long
+          %label Паспортные данные ОГРН
+          = bf.input_field :pass_data_ogrn
+          = bf.error :pass_data_ogrn
+.field.button-right
+  %button.add-founder{type: :button, class:"btn btn-primary"} Добавить учредителя

@@ -74,7 +74,7 @@ window.mfo = {
             field_kpp.data('store',field_kpp.val()).val('')
 
             fields_founder.addClass('hidden');
-            fields_personal_data.addClass('hidden');
+            //fields_personal_data.addClass('hidden');
 
         }else{
             field_kpp_parent.removeClass('hidden');
@@ -126,7 +126,7 @@ window.mfo = {
         var pane = $(this),
             errors_length = $('.help-block', pane).length;
         errors_length && $('#order-tabs > li:eq('+i+') .badge').addClass('in').text(errors_length)
-        console.log( $('#order-tabs > li:eq('+i+') .badge'))
+        //console.log( $('#order-tabs > li:eq('+i+') .badge'))
     });
 
 })(jQuery);
