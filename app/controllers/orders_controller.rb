@@ -4,6 +4,7 @@ class OrdersController < ApplicationController
   before_action :signed_in_user, only: [:index, :new, :edit]
   #before_action :user_is_admin, only:[:index, :new]
 
+  @EDIT_KEY = "editKey"
   TARIFS = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
 
   def index
@@ -176,6 +177,7 @@ class OrdersController < ApplicationController
 
     @tarifs = TARIFS
 
+
   end
 
   def update
@@ -192,25 +194,24 @@ class OrdersController < ApplicationController
         @order.update_attribute :updated_at, DateTime.now
 
       if service_params[:send_mfo].to_b
-        if send_mfo @order
 
+        if send_mfo @order
           @order.update_attribute :status, "Отправлена в МФО"
           @order.destroy
-
-          flash[:success] = "Заявка обновлена <br/> Заявка отправлена в МФО"
-
+          flash[:success] = "Заявка отправлена в МФО"
         else
-
-          flash[:warning] = "Заявка обновлена <br/> Не удалось отправить заявку в МФО"
-
+          flash[:warning] = "Не удалось отправить заявку в МФО"
         end
 
       else
         flash[:success] = "Заявка обновлена"
       end
 
-
-      redirect_to orders_path
+      unless session[:editkey].present?
+         redirect_to orders_path
+      else
+        render action: 'guest_index'
+      end
 
     else
       @title = "Редактирование заявки"
@@ -219,7 +220,6 @@ class OrdersController < ApplicationController
       if @order.borrower.borrower_founders.blank?
         @order.borrower.borrower_founders.build
       end
-
 
       if @order.guarantor_individuals.blank?
         @order.guarantor_individuals.build
@@ -252,6 +252,11 @@ class OrdersController < ApplicationController
 
       render 'edit'
     end
+
+  end
+
+
+  def guest_index
 
   end
 

@@ -12,7 +12,7 @@ module OrderHelper
 
     # @order.МассивАнкет
 
-      @order_raw = { МассивАнкет: [ АнкетаЗаявка: {
+      order_raw = { МассивАнкет: [ АнкетаЗаявка: {
                   Дата:  format_date_for_datetime( DateTime.now ),
                   Номер: "",
                   Агент: order.agent,
@@ -107,22 +107,28 @@ module OrderHelper
                                 КемВыданСП: order.borrower.person.old_pass_issued,
                                 КодПодразделенияСП: order.borrower.person.old_pass_issued_code,
                             },
-                            Учередители:[{
-                                             УчередительНаименование: order.borrower.founder.name,
-                                             Доля: order.borrower.founder.share,
-                                             ПаспортныеДанныеОГРН: order.borrower.founder.pass_data_ogrn
-                                         }]
+                            Учередители:[]
 
                           },
                   ПоручительЮЛ:nil,
                   ПоручительФЛ:nil,
-                  ДокументыИсполнителя:nil
+                  ДокументыИсполнителя:[]
 
                 }]
       }
 
+      if order.borrower.borrower_founders.any?
+        order.borrower.borrower_founders.each_with_index do |bf, index|
+          order_raw[:МассивАнкет][0][:АнкетаЗаявка][:Заемщик][:Учередители] << {
+              УчередительНаименование: bf.name,
+              Доля: bf.share,
+              ПаспортныеДанныеОГРН: bf.pass_data_ogrn
+          }
+        end
+      end
+
       if order.guarantor_individuals[0].present?
-        @order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ПоручительФЛ] = {
+        order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ПоручительФЛ] = {
             ФИО: order.guarantor_individuals[0].fullname,
             ДатаРождения: format_date_for_datetime(order.guarantor_individuals[0].birthday),
             СерияНомерПаспорта: order.guarantor_individuals[0].pass_serial_number,
@@ -168,7 +174,7 @@ module OrderHelper
 
       if order.guarantor_legals[0].present?
 
-        @order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ПоручительЮЛ] = {
+        order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ПоручительЮЛ] = {
 
             Тип: order.guarantor_legals[0].type_o,
             Наименование: order.guarantor_legals[0].name,
@@ -249,34 +255,44 @@ module OrderHelper
                 КемВыданСП: order.guarantor_legals[0].person.old_pass_issued,
                 КодПодразделенияСП: order.guarantor_legals[0].person.old_pass_issued_code,
             },
-            Учередители:[{
-                             УчередительНаименование: order.guarantor_legals[0].founder.name,
-                             Доля: order.guarantor_legals[0].founder.share,
-                             ПаспортныеДанныеОГРН: order.guarantor_legals[0].founder.pass_data_ogrn
-                         }]
+            Учередители:[]
 
         }
+
+        order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ПоручительЮЛ][:Учередители]
+
+        if order.guarantor_legals[0].founders.any?
+          order.guarantor_legals[0].founders.each_with_index do |glf, index|
+            order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ПоручительЮЛ][:Учередители] << {
+                УчередительНаименование: glf.name,
+                Доля: glf.share,
+                ПаспортныеДанныеОГРН: glf.pass_data_ogrn
+            }
+          end
+        end
 
       end
 
 
-      if order.documents.present?
-        @order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ДокументыИсполнителя] = {
-          ТипДокументаИсполнителя: order.documents.first.type_d,
-          Файл: Base64.encode64( File.open(order.documents.first.file.path, "rb").read ),
-          Расширение: order.documents.first.file.path.split(".").last
-        }
+      if order.documents.any?
+        order.documents.each_with_index do |d, index|
+          order_raw[:МассивАнкет][0][:АнкетаЗаявка][:ДокументыИсполнителя] << {
+              ТипДокументаИсполнителя: d.type_d,
+              Файл: Base64.encode64( File.open(d.file.path, "rb").read ),
+              Расширение: d.file.path.split(".").last
+          }
+        end
       end
-
-
-
-      response = savon_client.call(:send_data, message: @order_raw)
 
       #binding.pry
 
+
+      response = savon_client.call(:send_data, message: order_raw)
+
       response.http.code == 200
 
-     # binding.pry
+
+      #binding.pry
 
     else
 

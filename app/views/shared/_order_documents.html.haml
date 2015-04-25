@@ -17,6 +17,7 @@
         = d.error :type_d
       .field.file-name
         = content_tag( :div, d.object.file.path.split('/').last, class:"file-name") if d.object.file?
+        -#= link_to d.object.file.path.split('/').last, d.object.file.path
       .field.file
         = d.file_field :file
         = d.hidden_field :file_cache

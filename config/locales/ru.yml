@@ -58,6 +58,10 @@ ru:
             attributes:
               name:
                 blank: "Поле не может быть пустым"
+              share:
+                blank: "Поле не может быть пустым"
+              pass_data_ogrn:
+                blank: "Поле не может быть пустым"
         individual:
           attributes:
             email:

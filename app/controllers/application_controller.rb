@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
     def set_share_variable
       @requested_action = params[:action]
       @editkey = params.keys.first if (params.keys.first.size == 22 && params.keys.first.size != "controller")
+      session[:editkey] ||= @editkey
 
       # if @editkey
       #   current_user = User.new

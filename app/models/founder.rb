@@ -6,7 +6,7 @@ class Founder < ActiveRecord::Base
 
   validates :attachable_type, presence: true
   validates :name, presence: true
-  # validates :pass_data_ogrn, presence: true
-  # validates :share, presence: true
+  #validates :pass_data_ogrn, presence: true
+  validates :share, presence: true
 
 end

@@ -2,15 +2,7 @@ Rails.application.routes.draw do
 
   get 'reports/fetch_report'
 
-  # get 'order/index'
-  # get 'order/new'
-  # get 'order/edit'
-
   resources :orders
-
-  #match '/orders', to: 'orders#create',          via: 'post'
-
-
 
 
   get 'users/index'
@@ -30,8 +22,6 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:new, :create, :destroy]
 
-
-  #get 'reports/index'
 
   resources :reports
 

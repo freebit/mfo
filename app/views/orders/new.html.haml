@@ -61,15 +61,15 @@
             %label АгентНаименование
             = f.input_field :agent_name, value: current_user.name
             = f.error :agent_name
-          .field
+          .field.hidden
             %label Агент Вознаграждение
             = f.input_field :agent_summa
             = f.error :agent_summa
-          .field
+          .field.hidden
             %label Мфо Вознаграждение
             = f.input_field :mfo_summa
             = f.error :mfo_summa
-          .field
+          .field.hidden
             %label Договор Вознаграждение
             = f.input_field :dogovor_summa
             = f.error :dogovor_summa

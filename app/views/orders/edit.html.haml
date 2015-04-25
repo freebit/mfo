@@ -1,5 +1,4 @@
 = render partial: 'shared/order_menu'
--#= @order.errors.messages
 - @active_tab = params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : 'loan'
 .order-form.edit
   %ul.nav.nav-tabs{id:"order-tabs"}
@@ -62,15 +61,15 @@
             %label АгентНаименование
             = f.input_field :agent_name
             = f.error :agent_name
-          .field
+          .field.hidden
             %label АгентВознаграждение
             = f.input_field :agent_summa
             = f.error :agent_summa
-          .field
+          .field.hidden
             %label МфоВознаграждение
             = f.input_field :mfo_summa
             = f.error :mfo_summa
-          .field
+          .field.hidden
             %label ДоговорВознаграждение
             = f.input_field :dogovor_summa
             = f.error :dogovor_summa
@@ -94,7 +93,7 @@
             %label Дата создания
             = f.date_field :create_date, value: f.object.create_date || Date.today
             = f.error :create_date
-          .field
+          .field.hidden
             %label Статус
             = f.input_field :status
             = f.error :status

@@ -1,40 +1,43 @@
-%table.simple-list
-  %thead
-    %tr
-      %th Дата создания
-      %th Дата обновления
-      %th Сумма займа
-      %th Сумма договора
-      %th Сумма банка
-      %th Сумма агента
-      %th Платформа
-      %th Статус
-      %th Ссылка для клиента
-      %th Edit
-  %tbody
-    - @orders.each do |order|
-      %tr{class:"#{'in-mfo' if order.status == "Отправлено в МФО"}"}
-        %td.date
-          = order.created_at.to_formatted_s(:long)
-        %td.date
-          = order.updated_at.to_formatted_s(:long)
-        %td
-          = order.summa
-        %td
-          = order.dogovor_summa
-        %td
-          = order.mfo_summa
-        %td
-          = order.agent_summa
-        %td
-          = order.platform
-        %td
-          = order.status
-        %td
-          = "#{request.host}#{orders_path}/#{order.id.to_s}/edit?#{order.editkey}"
-        %td.edit
-          - if order.status != "Отправлено в МФО"
-            = link_to "Изменить", edit_order_path(order)
+- if @orders.any?
+  %table.simple-list
+    %thead
+      %tr
+        %th Дата создания
+        %th Дата обновления
+        %th Платформа
+        %th Сумма займа
+        %th Сумма договора
+        %th Сумма банка
+        %th Сумма агента
+        %th Статус
+        %th Ссылка для клиента
+        %th Edit
+    %tbody
+      - @orders.each do |order|
+        %tr{class:"#{'in-mfo' if order.status == "Отправлено в МФО"}"}
+          %td.date
+            = order.created_at.to_formatted_s(:long)
+          %td.date
+            = order.updated_at.to_formatted_s(:long)
+          %td
+            = order.platform
+          %td
+            = order.summa
+          %td
+            = order.dogovor_summa
+          %td
+            = order.mfo_summa
+          %td
+            = order.agent_summa
+          %td
+            = order.status
+          %td
+            = "#{request.host}#{orders_path}/#{order.id.to_s}/edit?#{order.editkey}"
+          %td.edit
+            - if order.status != "Отправлено в МФО"
+              = link_to "Изменить", edit_order_path(order)
+- else
+  %h4 Нет заявок
 
 %script
   window.tarifs =
