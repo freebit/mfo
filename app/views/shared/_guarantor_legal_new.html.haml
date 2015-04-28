@@ -24,11 +24,11 @@
           .field-horizontal
             .field.inn
               %label ИНН
-              = glf.input_field :inn, value:"4325235234"
+              = glf.input_field :inn
               = glf.error :inn
             .field.kpp
               %label КПП
-              = glf.input_field :kpp, value:"4227752865"
+              = glf.input_field :kpp
               = glf.error :kpp
           .field.long
             %label Название организации
@@ -42,15 +42,15 @@
           .field-horizontal
             .field
               %label Дата регистрации
-              = glf.date_field :reg_date, value:"1999-07-21"
+              = glf.date_field :reg_date
               = glf.error :reg_date
             .field
               %label ОГРН
-              = glf.input_field :ogrn, value:"542353245"
+              = glf.input_field :ogrn
               = glf.error :ogrn
           .field
             %label Должность руководителя
-            = glf.input_field :head_position, value:"Генеральный деректор"
+            = glf.input_field :head_position
             = glf.error :head_position
 
           .sub-group
@@ -82,24 +82,24 @@
               = glba.fields_for :bank do |glbab|
                 .field
                   %label Бик
-                  = glbab.input_field :bik, value:"23452352452452"
+                  = glbab.input_field :bik
                   = glbab.error :bik
                 .field-horizontal
                   .field
                     %label Коррсчет
-                    = glbab.input_field :korr_number, value:"23452352452452"
+                    = glbab.input_field :korr_number
                     = glbab.error :korr_number
                   .field
                     %label ИНН
-                    = glbab.input_field :inn, value:"23452352452452"
+                    = glbab.input_field :inn
                     = glbab.error :inn
                   .field
                     %label Наименование банка
-                    = glbab.input_field :name, value:"Банк-гора"
+                    = glbab.input_field :name
                     = glbab.error :name
                   .field
                     %label Город
-                    = glbab.input_field :city, value:"г. Рубище"
+                    = glbab.input_field :city
                     = glbab.error :city
                   .field.long
                     %label Адрес
@@ -127,17 +127,17 @@
                 = glp.error :birth_place
               .field
                 %label Гражданство
-                = glp.input_field :citizenship, value:"РФ"
+                = glp.input_field :citizenship
                 = glp.error :citizenship
 
             .field-horizontal
               .field
                 %label Телефон
-                = glp.input_field :phone, value:"8 903 456 22 11"
+                = glp.input_field :phone
                 = glp.error :phone
               .field
                 %label E-mail
-                = glp.input_field :email, value:"fgart@mail.ru"
+                = glp.input_field :email
                 = glp.error :email
 
             .sub-group
@@ -179,22 +179,22 @@
 
               .field
                 %label Серия и номер паспорта
-                = glp.input_field :old_pass_serial_number, value:"23534 43253"
+                = glp.input_field :old_pass_serial_number
                 = glp.error :old_pass_serial_number
 
               .field.long
                 %label Кем выдан
-                = glp.input_field :old_pass_issued, value:"Дудинским ОВД"
+                = glp.input_field :old_pass_issued
                 = glp.error :old_pass_issued
               .field-horizontal
                 .field
                   %label Код подразделения
-                  = glp.input_field :old_pass_issued_code, value:"ф-2345"
+                  = glp.input_field :old_pass_issued_code
                   = glp.error :old_pass_issued_code
 
                 .field
                   %label Дата выдачи
-                  = glp.date_field :old_pass_issue_date, value:"2001-01-14"
+                  = glp.date_field :old_pass_issue_date
                   = glp.error :old_pass_issue_date
 
 = simple_fields_for :service do |s|

@@ -64,8 +64,9 @@ window.mfo = {
     $('#order_borrower_attributes_type_o').on('change', function(){
 
         var value = $(this).val(),
+            current_pane = $(this).parents('.tab-pane'),
             field_kpp = $("#order_borrower_attributes_kpp"),
-            fields_founder = $(".borrower-founders"),
+            fields_founder = $(".borrower-founders", current_pane),
             fields_personal_data = $(".personal-data"),
             field_kpp_parent = field_kpp.parents('.field');
 

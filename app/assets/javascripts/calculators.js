@@ -123,6 +123,9 @@
                 full_agent_summa += dop_agent_summa;
              }
 
+        //сумма МФО не должна быть меньше указанного минимума
+        full_mfo_summa = full_mfo_summa < window.currentTarif.minimum ? window.currentTarif.minimum : full_mfo_summa
+
         //выставляем значения в калькуляторе
         $('#service_dogovor_summa').val(order_summa);
         $('#service_mfo_summa').val(full_mfo_summa);
