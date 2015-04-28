@@ -37,7 +37,7 @@
           .field
             %label Площадка
             = f.select(:platform, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
-          .field
+          .field.hidden
             %label Тариф
             = f.input_field :tarif
             = f.error :tarif

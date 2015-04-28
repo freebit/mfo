@@ -23,10 +23,10 @@ class Order < ActiveRecord::Base
   validates :submission_deadline, presence: true
   validates :agent, presence: true
   #validates :agent_name, presence: true
-  validates :agent_summa, presence: true
-  validates :mfo_summa, presence: true
-  validates :dogovor_summa, presence: true
-  validates :tarif, presence: true
+  #validates :agent_summa, presence: true
+  #validates :mfo_summa, presence: true
+  #validates :dogovor_summa, presence: true
+  #validates :tarif, presence: true
   #validates :number
   #validates :number_mfo
   #validates :number_data_protocol

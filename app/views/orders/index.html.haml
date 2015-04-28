@@ -6,11 +6,13 @@
         %th Дата обновления
         %th Платформа
         %th Сумма займа
-        %th Сумма договора
-        %th Сумма банка
-        %th Сумма агента
+        - unless current_user.is_client?
+          %th Сумма договора
+          %th Сумма банка
+          %th Сумма агента
         %th Статус
-        %th Ссылка для клиента
+        - unless current_user.is_client?
+          %th Ссылка для клиента
         %th Edit
     %tbody
       - @orders.each do |order|
@@ -23,16 +25,18 @@
             = order.platform
           %td
             = order.summa
-          %td
-            = order.dogovor_summa
-          %td
-            = order.mfo_summa
-          %td
-            = order.agent_summa
+          - unless current_user.is_client?
+            %td
+              = order.dogovor_summa
+            %td
+              = order.mfo_summa
+            %td
+              = order.agent_summa
           %td
             = order.status
-          %td
-            = "#{request.host}#{orders_path}/#{order.id.to_s}/edit?#{order.editkey}"
+          - unless current_user.is_client?
+            %td
+              = "#{request.host}#{orders_path}/#{order.id.to_s}/edit?#{order.editkey}"
           %td.edit
             - if order.status != "Отправлено в МФО"
               = link_to "Изменить", edit_order_path(order)
