@@ -26,7 +26,10 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :address_actual, allow_destroy: true
 
   validates :type_o, presence: true
+
   validates :inn, presence: true
+  validate :inn_length_validation
+
   validates :kpp, presence: true, unless: :skip_kpp_validation
 
 
@@ -37,5 +40,16 @@ class Organization < ActiveRecord::Base
 
   validates :reg_date, presence: true
   validates :ogrn, presence: true
+
+
+  private
+
+    def inn_length_validation
+      if type_o == "ЮЛ"
+        errors.add(:inn, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 10)) if inn.length != 10
+      else
+        errors.add(:inn, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 12)) if inn.length != 12
+      end
+    end
 
 end
