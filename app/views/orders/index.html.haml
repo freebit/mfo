@@ -6,8 +6,13 @@
         %th Дата обновления
         %th Платформа
         %th Сумма займа
+
         - unless current_user.is_client?
           %th Сумма договора
+        - else
+          %th Стоимость
+
+        - unless current_user.is_client?
           %th Сумма банка
           %th Сумма агента
         %th Статус
@@ -25,9 +30,9 @@
             = order.platform
           %td
             = order.summa
+          %td
+            = order.dogovor_summa
           - unless current_user.is_client?
-            %td
-              = order.dogovor_summa
             %td
               = order.mfo_summa
             %td
