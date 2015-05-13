@@ -31,6 +31,7 @@ class Organization < ActiveRecord::Base
   validate :inn_length_validation
 
   validates :kpp, presence: true, unless: :skip_kpp_validation
+  validate :kpp_length_validation, unless: :skip_kpp_validation
 
 
   validates :name, presence: true
@@ -38,8 +39,8 @@ class Organization < ActiveRecord::Base
 
   validates :head_position, presence: true
 
-  validates :reg_date, presence: true
-  validates :ogrn, presence: true
+  #validates :reg_date, presence: true
+  #validates :ogrn, presence: true
 
 
   private
@@ -49,6 +50,12 @@ class Organization < ActiveRecord::Base
         errors.add(:inn, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 10)) if inn.length != 10
       else
         errors.add(:inn, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 12)) if inn.length != 12
+      end
+    end
+
+    def kpp_length_validation
+      if type_o == "ЮЛ"
+        errors.add(:kpp, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 9)) if inn.length != 9
       end
     end
 

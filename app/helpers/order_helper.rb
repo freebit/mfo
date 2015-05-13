@@ -292,7 +292,7 @@ module OrderHelper
       response.http.code == 200
 
 
-      binding.pry
+      #binding.pry
 
     else
 

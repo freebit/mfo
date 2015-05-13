@@ -14,7 +14,7 @@ class Individual < ActiveRecord::Base
 
 
   validates :fullname, presence: true, length: {maximum: 250}
-  validates :birthday, presence: true
+  #validates :birthday, presence: true
   # validates :birth_place, presence: true
   # validates :citizenship, presence: true
   # validates :reg_place, presence: true
