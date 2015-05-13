@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+
+
   helper_method :users
 
   before_action :signed_in_user, only: [:index, :edit, :update]

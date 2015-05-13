@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   #before_action :user_is_admin, only:[:index, :new]
 
   @EDIT_KEY = "editKey"
-  TARIFS = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
+  TARIFS = Tarif.select("type_t, platform, rate, dop_rate, client_rate, minimum").all
 
   def index
     @title = "История заявок"

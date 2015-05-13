@@ -1,40 +1,45 @@
 = simple_fields_for :service do |s|
-  .calc.tender
-    %h3.title.hidden Тендерный
-    .field-horizontal
-      .field.short.offset-right
-        %label Сумма займа
-        = s.number_field :order_summa, value: f.object.summa || "0"
-      .field.short
-        %label Доход договора
-        = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0"
-    .field-horizontal
-      .field.short
-        %label Доход МФО
-        = s.input_field :mfo_summa, value: f.object.mfo_summa || "0"
-      .field.small
-        %label Ставка %
-        = s.number_field :order_rate, value: f.object.base_rate || "0"
-      .field.short
-        %label Доход Агента
-        = s.input_field :agent_summa, value: f.object.agent_summa || "0"
 
-  .calc.business.hidden
-    %h3.title Предпринимательский
-    .field-horizontal
-      .field.short.offset-right
-        %label Сумма займа
-        = s.input_field :p_order_summa, value: params[:service] && params[:service][:p_order_summa] ? params[:service][:p_order_summa] : "0"
-      .field.short
-        %label Доход договора
-        = s.input_field :p_dogovor_summa, value: params[:service] && params[:service][:p_order_summa] ? params[:service][:p_dogovor_summa] : "0"
-    .field-horizontal
-      .field.short
-        %label Доход агента
-        = s.input_field :p_agent_summa, disabled: true, value: params[:service] && params[:service][:p_agent_summa] ? params[:service][:p_agent_summa] : "0"
-      .field.small
-        %label Ставка %
-        = s.input_field :p_order_rate, value: params[:service] && params[:service][:p_order_rate] ? params[:service][:p_order_rate] : "0"
-      .field.short
-        %label Доход МФО
-        = s.input_field :p_mfo_summa, disabled: true, value: params[:service] && params[:service][:p_mfo_summa] ? params[:service][:p_mfo_summa] : "0"
+  - if current_user.is_admin? || current_user.is_agent?
+
+    .calc.tender
+      %h3.title.hidden Тендерный
+      .field-horizontal
+        .field.short.offset-right
+          %label Сумма займа
+          = s.number_field :order_summa, value: f.object.summa || "0"
+        .field.short
+          %label Доход договора
+          = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0"
+      .field-horizontal
+        .field.short
+          %label Доход МФО
+          = s.input_field :mfo_summa, value: f.object.mfo_summa || "0"
+        .field.small
+          %label Ставка %
+          = s.number_field :order_rate, value: f.object.base_rate || "0"
+        .field.short
+          %label Доход Агента
+          = s.input_field :agent_summa, value: f.object.agent_summa || "0"
+
+  - elsif current_user.is_client?
+
+    .calc.business
+      %h3.title.hidden Пользовательский
+      .field-horizontal
+        .field
+          %label Сумма займа
+          = s.number_field :order_summa, value: f.object.summa || "0"
+        .field.small
+          %label Стоимость
+          = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0"
+      -#.field-horizontal
+      -#  .field.short
+      -#    %label Доход агента
+      -#    = s.input_field :p_agent_summa, disabled: true, value: params[:service] && params[:service][:p_agent_summa] ? params[:service][:p_agent_summa] : "0"
+      -#  .field.small
+      -#    %label Ставка %
+      -#    = s.input_field :p_order_rate, value: params[:service] && params[:service][:p_order_rate] ? params[:service][:p_order_rate] : "0"
+      -#  .field.short
+      -#    %label Доход МФО
+      -#    = s.input_field :p_mfo_summa, disabled: true, value: params[:service] && params[:service][:p_mfo_summa] ? params[:service][:p_mfo_summa] : "0"

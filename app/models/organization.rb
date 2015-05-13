@@ -55,7 +55,7 @@ class Organization < ActiveRecord::Base
 
     def kpp_length_validation
       if type_o == "ЮЛ"
-        errors.add(:kpp, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 9)) if inn.length != 9
+        errors.add(:kpp, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 9)) if kpp.length != 9
       end
     end
 

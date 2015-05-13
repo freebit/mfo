@@ -126,8 +126,7 @@ window.mfo = {
     $('#tabs.tab-content > .tab-pane').each(function(i){
         var pane = $(this),
             errors_length = $('.help-block', pane).length;
-        errors_length && $('#order-tabs > li:eq('+i+') .badge').addClass('in').text(errors_length)
-        //console.log( $('#order-tabs > li:eq('+i+') .badge'))
+        errors_length && $('#order-tabs > li:eq('+i+') .badge').addClass('in').text(errors_length);
     });
 
 })(jQuery);

@@ -2,7 +2,7 @@
 - @active_tab = params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : 'loan'
 .order-form.edit
   %ul.nav.nav-tabs{id:"order-tabs"}
-    - if @editkey.blank?
+    - if @editkey.blank? && (current_user.is_admin? || current_user.is_agent? || current_user.is_client?)
       %li{class:"#{'active' if @active_tab == 'calc'}"}
         %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
         %span.badge.fade
@@ -25,8 +25,8 @@
     .tab-content{id:"tabs"}
 
       -# КАЛЬКУЛЯТОР #
-      - if @editkey.blank?
-        .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}"}
+      - if @editkey.blank? && (current_user.is_admin? || current_user.is_agent? || current_user.is_client?)
+        .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}", data:{type:"#{current_user.roles.first.name}"}}
           = render partial: 'shared/platform_tarif', locals: {f:f}
           = render partial: 'shared/calcs', locals:{f:f}
 
@@ -37,7 +37,7 @@
           .field
             %label Площадка
             = f.select(:platform, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
-          .field
+          .field.hidden
             %label Тариф
             = f.input_field :tarif
             = f.error :tarif

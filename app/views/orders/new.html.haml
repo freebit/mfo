@@ -2,7 +2,7 @@
 - @active_tab = params[:service].present? && params[:service][:new_order_active_tab].present? ? params[:service][:new_order_active_tab] : (current_user.is_client? ? 'loan' : 'calc')
 .order-form.new{data:{action:'test'}}
   %ul.nav.nav-tabs{id:"order-tabs"}
-    - if current_user.is_admin? || current_user.is_agent?
+    - if current_user.is_admin? || current_user.is_agent? || current_user.is_client?
       %li{class:"#{'active' if @active_tab == 'calc'}"}
         %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
         %span.badge.fade
@@ -25,8 +25,8 @@
     .tab-content{id:"tabs"}
 
       -# КАЛЬКУЛЯТОР #
-      - if current_user.is_admin? || current_user.is_agent?
-        .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}"}
+      - if current_user.is_admin? || current_user.is_agent? || current_user.is_client?
+        .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}", data:{type:"#{current_user.roles.first.name}"}}
           = render partial: 'shared/platform_tarif', locals: {f:f}
           = render partial: 'shared/calcs', locals: {f:f}
 

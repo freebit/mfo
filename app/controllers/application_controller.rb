@@ -19,10 +19,6 @@ class ApplicationController < ActionController::Base
       @editkey = params.keys.first if (params.keys.first.size == 22 && params.keys.first.size != "controller")
       session[:editkey] ||= @editkey
 
-      # if @editkey
-      #   current_user = User.new
-      #   current_user.roles << Role.new(name:"guest",title:"Гость")
-      # end
 
     end
 

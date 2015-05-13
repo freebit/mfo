@@ -16,11 +16,12 @@ module UsersHelper
 
         t = Tarif.find_or_create_by(type_t:tarif[:ТипТарифа], platform:tarif[:Площадка])
 
-        t.update  type_t:    tarif[:ТипТарифа],
-                  platform:  tarif[:Площадка],
-                  rate:      tarif[:Ставка],
-                  dop_rate:  tarif[:СтавкаДополнительная],
-                  minimum:   tarif[:Минималка]
+        t.update  type_t:       tarif[:ТипТарифа],
+                  platform:     tarif[:Площадка],
+                  rate:         tarif[:Ставка],
+                  dop_rate:     tarif[:СтавкаДополнительная],
+                  client_rate:  tarif[:СтавкаКонечника],
+                  minimum:      tarif[:Минималка]
 
       end
 

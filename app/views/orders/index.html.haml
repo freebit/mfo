@@ -36,7 +36,7 @@
             = order.status
           - unless current_user.is_client?
             %td
-              = "#{request.host}#{orders_path}/#{order.id.to_s}/edit?#{order.editkey}"
+              = "#{request.protocol}#{request.host}#{orders_path}/#{order.id.to_s}/edit?#{order.editkey}"
           %td.edit
             - if order.status != "Отправлено в МФО"
               = link_to "Изменить", edit_order_path(order)
