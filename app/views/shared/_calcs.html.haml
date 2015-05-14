@@ -11,22 +11,22 @@
         .field.short
           %label Доход договора по тарифу
           = s.input_field :dogovor_summa_tarif, disabled: true
-      .field-horizontal
+      .field-horizontal.top-offset
         .field.short.offset-right
           %label Сумма займа
           = s.number_field :order_summa, value: f.object.summa || "0"
         .field.short
-          %label Доход договора
+          %label Доход договора по ставке
           = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0"
       .field-horizontal
         .field.short
-          %label Доход МФО
+          %label Доход МФО по ставке
           = s.input_field :mfo_summa, value: f.object.mfo_summa || "0"
         .field.small
           %label Ставка %
           = s.number_field :order_rate, value: f.object.base_rate || "0"
         .field.short
-          %label Доход Агента
+          %label Доход Агента по ставке
           = s.input_field :agent_summa, value: f.object.agent_summa || "0"
 
   - elsif current_user.is_client?
