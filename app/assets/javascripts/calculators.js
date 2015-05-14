@@ -43,14 +43,14 @@
 
             // if((e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode == 37 || e.keyCode == 8) return;
 
-            var rate = parseFloat($(this).val(), 10) || 0,
+            var rate = parseFloat( $(this).val(), 10 ) || 0,
                 mfo_rate = window.currentTarif.rate,
                 agent_rate = rate - mfo_rate,
                 mfo_margin_rate = 0,
                 summa = parseFloat($('#service_order_summa').val(), 10) || 0,
                 dogovor_summa = parseFloat($('#service_dogovor_summa').val(), 10) || 0;
 
-            if(dogovor_summa >= window.currentTarif.minimum){
+            if(dogovor_summa >= window.currentTarif.minimum && rate > 0){
                 mfo_margin_rate = (agent_rate / 100) * mfo_margin;
                 mfo_rate = mfo_rate + mfo_margin_rate;
                 agent_rate = agent_rate - mfo_margin_rate;
@@ -124,7 +124,7 @@
                 mfo_margin_rate = (agent_rate / 100) * mfo_margin,
                 order_summa = (summa / 100) * base_rate,
                 agent_summa = 0,
-                mfo_summa = 0,
+                mfo_summa = window.currentTarif.minimum,
                 mfo_summa_without_margin = 0,
                 mfo_margin_value = 0;
 
@@ -134,25 +134,24 @@
                     mfo_summa_without_margin = (summa / 100) * mfo_rate;
                     mfo_summa = (summa / 100) * (mfo_rate + mfo_margin_rate);
                     mfo_margin_value = (agent_summa / 100) * mfo_margin;
+
+                    //сумма МФО не должна быть меньше указанного минимума
+                    mfo_summa = mfo_summa_without_margin < window.currentTarif.minimum ? (window.currentTarif.minimum + mfo_margin_value) : mfo_summa;
+
+                    //если это тариф типа Б, где при победе снимается еще одна ставка
+                    if (dop_rate) {
+                        var dop_summa = (summa / 100) * dop_rate,
+                            dop_mfo_rate = 1.5,
+                            dop_agent_rate = 0.5,
+                            dop_mfo_summa = (summa / 100) * dop_mfo_rate,
+                            dop_agent_summa = (summa / 100) * dop_agent_rate;
+
+                        order_summa += dop_summa;
+                        mfo_summa += dop_mfo_summa;
+                        agent_summa += dop_agent_summa;
+                    }
                 }
 
-
-
-            //если это тариф типа Б, где при победе снимается еще одна ставка
-            if (dop_rate > 0) {
-                var dop_summa = (summa / 100) * dop_rate,
-                    dop_mfo_rate = 1.5,
-                    dop_agent_rate = 0.5,
-                    dop_mfo_summa = (summa / 100) * dop_mfo_rate,
-                    dop_agent_summa = (summa / 100) * dop_agent_rate;
-
-                order_summa += dop_summa;
-                mfo_summa += dop_mfo_summa;
-                agent_summa += dop_agent_summa;
-            }
-
-            //сумма МФО не должна быть меньше указанного минимума
-            mfo_summa = mfo_summa_without_margin < window.currentTarif.minimum ? (window.currentTarif.minimum + mfo_margin_value) : mfo_summa;
 
             //выставляем значения в калькуляторе
             $('#service_dogovor_summa').val(order_summa);
