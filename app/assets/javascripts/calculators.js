@@ -15,9 +15,9 @@
                 base_rate = parseFloat($('#service_order_rate').val(), 10) || 0;
 
             //считаем, если указана ставка
-            if (base_rate > 0) {
+            //if (base_rate > 0) {
                 calcTender(summa, base_rate);
-            }
+            //}
 
         }
 
@@ -46,22 +46,21 @@
             var rate = parseFloat($(this).val(), 10) || 0,
                 mfo_rate = window.currentTarif.rate,
                 agent_rate = rate - mfo_rate,
-                mfo_margin_rate = (agent_rate / 100) * mfo_margin,
-                mfo_rate = mfo_rate + mfo_margin_rate,
-                agent_rate = agent_rate - mfo_margin_rate,
-                summa = parseFloat($('#service_order_summa').val(), 10) || 0;
+                mfo_margin_rate = 0,
+                summa = parseFloat($('#service_order_summa').val(), 10) || 0,
+                dogovor_summa = parseFloat($('#service_dogovor_summa').val(), 10) || 0;
+
+            if(dogovor_summa >= window.currentTarif.minimum){
+                mfo_margin_rate = (agent_rate / 100) * mfo_margin;
+                mfo_rate = mfo_rate + mfo_margin_rate;
+                agent_rate = agent_rate - mfo_margin_rate;
+            }
 
 
-            if (summa <= 0) {
+            if(summa <= 0){
                 alert('Укажите сумму займа')
-            } else {
-                //выставляем новую ставку агента
-                $('.tarif .value.agent_rate').text((agent_rate).toPrecision(3) + "%");
-
-                //если не отрицательное число, выставляем новую ставку мфо
-                if (agent_rate >= 0) {
-                    $('.tarif .value.mfo_rate').text((mfo_rate).toPrecision(3) + "%");
-                }
+            }else{
+                setRates(mfo_rate, agent_rate);
                 calcTender(summa, rate);
             }
 
@@ -77,7 +76,6 @@
             if (summa <= 0) {
                 alert('Укажите сумму займа')
             } else {
-
                 calcTender(summa, rate);
             }
         });
@@ -88,6 +86,8 @@
             var platform = platform || $('#order_platform_name').val(),
                 type = type || $('#order_tarif_name').val(),
                 base_rate = parseInt($('#service_order_rate').val(), 10) || 0,
+                summa = parseFloat($('#service_order_summa').val(), 10) || 0,
+                order_summa = (summa / 100) * base_rate,
                 mfo_rate = 0,
                 agent_rate = 0;
 
@@ -104,13 +104,16 @@
                 agent_rate = base_rate - mfo_rate;
             }
 
-            var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
+
+            if(order_summa >= window.currentTarif.minimum) {
+                var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
+                mfo_rate = mfo_rate + mfo_margin_rate;
+                agent_rate = agent_rate - mfo_margin_rate;
+            }
 
             //выставляем ставку банка
-            $('.tarif .value.mfo_rate').text((mfo_rate + mfo_margin_rate) + "%");
+            setRates(mfo_rate, agent_rate);
 
-
-            $('.tarif .value.agent_rate').text((agent_rate - mfo_margin_rate) + "%");
         }
 
 
@@ -120,18 +123,20 @@
                 agent_rate = base_rate - mfo_rate,
                 mfo_margin_rate = (agent_rate / 100) * mfo_margin,
                 order_summa = (summa / 100) * base_rate,
-                agent_summa = (summa / 100) * (agent_rate - mfo_margin_rate),
-                mfo_summa = (summa / 100) * (mfo_rate + mfo_margin_rate),
+                agent_summa = 0,
+                mfo_summa = 0,
+                mfo_summa_without_margin = 0,
                 mfo_margin_value = 0;
 
-                //считаем маржу МФО в 10%
-                if(agent_rate > 0) {
+
+                if(order_summa >= window.currentTarif.minimum) {
+                    agent_summa = (summa / 100) * (agent_rate - mfo_margin_rate);
+                    mfo_summa_without_margin = (summa / 100) * mfo_rate;
+                    mfo_summa = (summa / 100) * (mfo_rate + mfo_margin_rate);
                     mfo_margin_value = (agent_summa / 100) * mfo_margin;
                 }
 
-                //пересчитываем суммы с учетом маржи
-                //agent_summa = agent_summa - mfo_margin_value;
-                //mfo_summa = mfo_summa + mfo_margin_value;
+
 
             //если это тариф типа Б, где при победе снимается еще одна ставка
             if (dop_rate > 0) {
@@ -147,7 +152,7 @@
             }
 
             //сумма МФО не должна быть меньше указанного минимума
-            mfo_summa = mfo_summa < window.currentTarif.minimum ? (window.currentTarif.minimum + mfo_margin_value) : mfo_summa;
+            mfo_summa = mfo_summa_without_margin < window.currentTarif.minimum ? (window.currentTarif.minimum + mfo_margin_value) : mfo_summa;
 
             //выставляем значения в калькуляторе
             $('#service_dogovor_summa').val(order_summa);
@@ -164,7 +169,10 @@
 
         }
 
-
+        function setRates(mfo_rate, agent_rate){
+            $('.tarif .value.mfo_rate').text(mfo_rate + "%");
+            $('.tarif .value.agent_rate').text(agent_rate + "%");
+        }
 
 
     //калькулятор для конечных клиентов
