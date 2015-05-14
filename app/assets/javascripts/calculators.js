@@ -122,14 +122,15 @@
                 dop_rate = window.currentTarif.dop_rate,
                 agent_rate = base_rate - mfo_rate,
                 mfo_margin_rate = (agent_rate / 100) * mfo_margin,
-                order_summa = (summa / 100) * base_rate,
+                order_summa = ((summa / 100) * base_rate),
+                order_summa = order_summa > window.currentTarif.minimum ? order_summa : window.currentTarif.minimum,
                 agent_summa = 0,
                 mfo_summa = window.currentTarif.minimum,
                 mfo_summa_without_margin = 0,
                 mfo_margin_value = 0;
 
 
-                if(order_summa >= window.currentTarif.minimum) {
+                if(order_summa > window.currentTarif.minimum) {
                     agent_summa = (summa / 100) * (agent_rate - mfo_margin_rate);
                     mfo_summa_without_margin = (summa / 100) * mfo_rate;
                     mfo_summa = (summa / 100) * (mfo_rate + mfo_margin_rate);

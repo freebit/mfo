@@ -5,6 +5,7 @@ class Individual < ActiveRecord::Base
   #before_save { self.email = email.downcase }
 
   attr_accessor :_destroy
+  attr_accessor :skip_validation
 
   has_one :reg_place, ->{where type_a: 'reg_place'}, class_name:'Address', dependent: :destroy
   has_one :curr_place, ->{where type_a: 'curr_place'}, class_name:'Address', dependent: :destroy
@@ -13,7 +14,7 @@ class Individual < ActiveRecord::Base
   accepts_nested_attributes_for :curr_place, allow_destroy: true
 
 
-  validates :fullname, presence: true, length: {maximum: 250}
+  validates :fullname, presence: true, length: {maximum: 250}, unless: :skip_validation
   #validates :birthday, presence: true
   # validates :birth_place, presence: true
   # validates :citizenship, presence: true

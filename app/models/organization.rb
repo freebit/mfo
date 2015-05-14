@@ -5,6 +5,8 @@ class Organization < ActiveRecord::Base
   attr_accessor :_destroy
   attr_accessor :skip_kpp_validation
 
+  attr_accessor :skip_validation
+
 
   has_one :person, class_name: 'Individual', dependent: :destroy
   has_one :bank_account, dependent: :destroy
@@ -27,17 +29,17 @@ class Organization < ActiveRecord::Base
 
   validates :type_o, presence: true
 
-  validates :inn, presence: true
+  validates :inn, presence: true, unless: :skip_validation
   validate :inn_length_validation
 
-  validates :kpp, presence: true, unless: :skip_kpp_validation
+  validates :kpp, presence: true, unless: (:skip_kpp_validation || :skip_validation)
   validate :kpp_length_validation, unless: :skip_kpp_validation
 
 
-  validates :name, presence: true
-  validates :fullname, presence: true
+  validates :name, presence: true, unless: :skip_validation
+  validates :fullname, presence: true, unless: :skip_validation
 
-  validates :head_position, presence: true
+  validates :head_position, presence: true, unless: :skip_validation
 
   #validates :reg_date, presence: true
   #validates :ogrn, presence: true

@@ -66,6 +66,14 @@ class OrdersController < ApplicationController
 
     @order = Order.new order_params
 
+    #если это агент сохраняет, но не отправляет в МФО, то снимаем валидации
+    if !current_user.is_client? || !service_params[:send_mfo].to_b
+      @order.skip_validation = true
+      @order.borrower.skip_validation = true
+      @order.borrower.borrower_founders[0].skip_validation = true
+      @order.borrower.person.skip_validation = true
+    end
+
     if order_params[:borrower_attributes][:type_o] == "ФЛ"
       @order.borrower.skip_kpp_validation = true
     end

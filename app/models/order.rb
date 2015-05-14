@@ -1,6 +1,8 @@
 class Order < ActiveRecord::Base
 
 
+  attr_accessor :skip_validation
+
   has_one :borrower, ->{ where attachable_type: 'borrower'}, class_name: 'Organization', dependent: :destroy
 
   has_many :guarantor_legals, ->{ where attachable_type: 'guarantor_legal'}, class_name: 'Organization', dependent: :destroy
@@ -20,8 +22,10 @@ class Order < ActiveRecord::Base
 
   validates :summa, presence: true, numericality: {greater_than: 0}
   validates :platform, presence: true
-  validates :submission_deadline, presence: true
+  validates :submission_deadline, presence: true, unless: :skip_validation
   validates :agent, presence: true
+  validates :create_date, presence: true
+
   #validates :agent_name, presence: true
   #validates :agent_summa, presence: true
   #validates :mfo_summa, presence: true
@@ -31,9 +35,9 @@ class Order < ActiveRecord::Base
   #validates :number_mfo
   #validates :number_data_protocol
   #validates :personal_number
-  validates :create_date, presence: true
+
   #validates :status, presence: true
 
-  validates_presence_of :documents
+  validates_presence_of :documents, unless: :skip_validation
 
 end
