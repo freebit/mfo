@@ -121,7 +121,17 @@
                 mfo_margin_rate = (agent_rate / 100) * mfo_margin,
                 order_summa = (summa / 100) * base_rate,
                 agent_summa = (summa / 100) * (agent_rate - mfo_margin_rate),
-                mfo_summa = (summa / 100) * (mfo_rate + mfo_margin_rate);
+                mfo_summa = (summa / 100) * (mfo_rate + mfo_margin_rate),
+                mfo_margin_value = 0;
+
+                //считаем маржу МФО в 10%
+                if(agent_rate > 0) {
+                    mfo_margin_value = (agent_summa / 100) * mfo_margin;
+                }
+
+                //пересчитываем суммы с учетом маржи
+                //agent_summa = agent_summa - mfo_margin_value;
+                //mfo_summa = mfo_summa + mfo_margin_value;
 
             //если это тариф типа Б, где при победе снимается еще одна ставка
             if (dop_rate > 0) {
@@ -137,7 +147,7 @@
             }
 
             //сумма МФО не должна быть меньше указанного минимума
-            mfo_summa = mfo_summa < window.currentTarif.minimum ? window.currentTarif.minimum : mfo_summa
+            mfo_summa = mfo_summa < window.currentTarif.minimum ? (window.currentTarif.minimum + mfo_margin_value) : mfo_summa;
 
             //выставляем значения в калькуляторе
             $('#service_dogovor_summa').val(order_summa);
@@ -153,6 +163,9 @@
             $('#order_agent_summa').val(agent_summa);
 
         }
+
+
+
 
     //калькулятор для конечных клиентов
     }else{

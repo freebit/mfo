@@ -2,6 +2,10 @@
   = form_tag "/report", method: :post, id: "fetch-report-form", remote:true do |f|
     .field-horizontal.order-filter
       .indicator.hidden{id:"report-indicator"}
+      -#- if current_user.is_admin?
+      -#  .field.short
+      -#    %label Пользователь
+      -#    = select_tag "user", options_for_select(["оформление", "согласование","к выдаче", "выдан", "закрыт", "отклонена", "отказ клиента"]), prompt: "Выберете пользователя"
       .field
         %label C
         = date_field_tag 'shift[date_from]', "2015-04-06"
@@ -23,7 +27,3 @@
       %th Сумма агента
       %th Статус
   %tbody
-
-%script
-  window.tarifs =
-  =raw @tarifs.to_json

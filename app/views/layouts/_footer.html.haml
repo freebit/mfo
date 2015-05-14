@@ -1,10 +1,11 @@
 %footer
   .container
-    .col-md-6
-      %span= debug(params) if Rails.env.development?
-    .col-md-6.text-right
-      %span
-        &copy;2014 ООО «МФО Альянс»
+    .row
+      .col-md-6
+        %span= debug(params) if Rails.env.development?
+      .col-md-6.text-right
+        %span
+          &copy; ООО «МФО Альянс»
 
 %aside.ajax-form-block.hidden
   = form_tag "/uzel", data:{formtype:"check-borrower"}, remote:true do

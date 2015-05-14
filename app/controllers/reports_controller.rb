@@ -4,13 +4,9 @@ class ReportsController < ApplicationController
 
   def index
     @title = "Отчет по договорам"
-
-    @tarifs = Tarif.select("type_t, platform, rate, dop_rate, minimum").all
   end
 
   def fetch_report
-
-
 
     @response = {}
     @error = {}
@@ -39,13 +35,7 @@ class ReportsController < ApplicationController
 
    end
 
-
-
-    #binding.pry
-
-
-
-    render json: @response
+   render json: @response
 
   end
 
@@ -61,6 +51,6 @@ class ReportsController < ApplicationController
     end
 
     def filter_params
-      params.require(:shift).permit(:date_from, :date_to)
+      params.require(:shift).permit(:date_from, :date_to, :user)
     end
 end
