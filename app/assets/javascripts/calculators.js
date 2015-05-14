@@ -50,7 +50,7 @@
                 summa = parseFloat($('#service_order_summa').val(), 10) || 0,
                 dogovor_summa = parseFloat($('#service_dogovor_summa').val(), 10) || 0;
 
-            if(dogovor_summa >= window.currentTarif.minimum && rate > 0){
+            if(dogovor_summa > window.currentTarif.minimum && rate > 0){
                 mfo_margin_rate = (agent_rate / 100) * mfo_margin;
                 mfo_rate = mfo_rate + mfo_margin_rate;
                 agent_rate = agent_rate - mfo_margin_rate;
@@ -105,7 +105,7 @@
             }
 
 
-            if(order_summa >= window.currentTarif.minimum) {
+            if(order_summa > window.currentTarif.minimum) {
                 var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
                 mfo_rate = mfo_rate + mfo_margin_rate;
                 agent_rate = agent_rate - mfo_margin_rate;
