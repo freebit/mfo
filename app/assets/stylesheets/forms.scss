@@ -24,6 +24,10 @@ form{
     width:250px;
     margin:0 0 10px 0;
 
+    input[disabled]{
+      background-color: #aaa;
+    }
+
     &.radio-group{
       width:400px;
       margin-bottom: 30px;

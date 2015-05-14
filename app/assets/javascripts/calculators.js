@@ -14,11 +14,8 @@
             var summa = parseFloat($('#service_order_summa').val(), 10) || 0,
                 base_rate = parseFloat($('#service_order_rate').val(), 10) || 0;
 
-            //считаем, если указана ставка
-            //if (base_rate > 0) {
-                calcTender(summa, base_rate);
-            //}
 
+            calcTender(summa, base_rate);
         }
 
         //считаем при смене платформы или типа тарифа
@@ -82,7 +79,6 @@
 
 
         function setTarif(platform, type) {
-            //alert('setTarif')
             var platform = platform || $('#order_platform_name').val(),
                 type = type || $('#order_tarif_name').val(),
                 base_rate = parseInt($('#service_order_rate').val(), 10) || 0,
@@ -114,6 +110,8 @@
             //выставляем ставку банка
             setRates(mfo_rate, agent_rate);
 
+
+
         }
 
 
@@ -122,12 +120,18 @@
                 dop_rate = window.currentTarif.dop_rate,
                 agent_rate = base_rate - mfo_rate,
                 mfo_margin_rate = (agent_rate / 100) * mfo_margin,
-                order_summa = ((summa / 100) * base_rate),
+                order_summa = (summa / 100) * base_rate,
                 order_summa = order_summa > window.currentTarif.minimum ? order_summa : window.currentTarif.minimum,
                 agent_summa = 0,
                 mfo_summa = window.currentTarif.minimum,
                 mfo_summa_without_margin = 0,
-                mfo_margin_value = 0;
+                mfo_margin_value = 0,
+                dop_summa = 0,
+                dop_mfo_rate = 1.5,
+                dop_agent_rate = 0.5,
+                dop_mfo_summa = 0,
+                dop_agent_summa = 0;
+
 
 
                 if(order_summa > window.currentTarif.minimum) {
@@ -141,11 +145,9 @@
 
                     //если это тариф типа Б, где при победе снимается еще одна ставка
                     if (dop_rate) {
-                        var dop_summa = (summa / 100) * dop_rate,
-                            dop_mfo_rate = 1.5,
-                            dop_agent_rate = 0.5,
-                            dop_mfo_summa = (summa / 100) * dop_mfo_rate,
-                            dop_agent_summa = (summa / 100) * dop_agent_rate;
+                        dop_summa = (summa / 100) * dop_rate;
+                        dop_mfo_summa = (summa / 100) * dop_mfo_rate;
+                        dop_agent_summa = (summa / 100) * dop_agent_rate;
 
                         order_summa += dop_summa;
                         mfo_summa += dop_mfo_summa;
@@ -153,8 +155,14 @@
                     }
                 }
 
+            //посчитаем доход договора по тарифу
+            var dogovor_summa_tarif = (summa / 100) * window.currentTarif.rate;
+
+
 
             //выставляем значения в калькуляторе
+            $('#service_dogovor_summa_tarif').val(dogovor_summa_tarif);
+            $('#service_dogovor_summa').val(order_summa);
             $('#service_dogovor_summa').val(order_summa);
             $('#service_mfo_summa').val(mfo_summa);
             $('#service_agent_summa').val(agent_summa);
