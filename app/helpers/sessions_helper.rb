@@ -7,6 +7,9 @@ module SessionsHelper
     user.update_attribute(:last_visit, Time.now)
     self.current_user = user
 
+    #почистим признак клиента-редактора, если вдруг до этого заходили по ним
+    session.delete(:editkey)
+
     unless fetch_agent_data(user)
       flash[:warning] = "Извините за задержку. Сервер не отвечает. Не удалось обновить данные."
     end

@@ -191,6 +191,17 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find params[:id]
 
+    #если не отправляет в МФО
+    if !service_params[:send_mfo].to_b
+        # и сохраняет не конечник или гость, то снимаем валидации
+      if current_user.present? && !current_user.is_client?
+        @order.skip_validation = true
+        @order.borrower.skip_validation = true
+        @order.borrower.borrower_founders[0].skip_validation = true
+        @order.borrower.person.skip_validation = true
+      end
+    end
+
     if order_params[:borrower_attributes][:type_o] == "ФЛ"
       @order.borrower.skip_kpp_validation = true
     end
@@ -215,6 +226,8 @@ class OrdersController < ApplicationController
         flash[:success] = "Заявка обновлена"
       end
 
+
+
       unless session[:editkey].present?
          redirect_to orders_path
       else
@@ -222,8 +235,8 @@ class OrdersController < ApplicationController
       end
 
     else
-      @title = "Редактирование заявки"
 
+      @title = "Редактирование заявки"
 
       if @order.borrower.borrower_founders.blank?
         @order.borrower.borrower_founders.build
