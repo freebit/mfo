@@ -16,7 +16,7 @@
       = submit_tag "Получить отчет", class:'btn btn-success'
       = select_tag "order-status", options_for_select(["оформление", "согласование","к выдаче", "выдан", "закрыт", "отклонена", "отказ клиента"]), prompt: "Отфильтруйте по статусу"
 
-%table.fade.simple-list{id:"reports-list"}
+%table.fade.simple-list{id:"orders-list"}
   %thead
     %tr
       %th

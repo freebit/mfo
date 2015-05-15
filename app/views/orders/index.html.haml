@@ -38,7 +38,7 @@
               = order.mfo_summa
             %td
               = order.agent_summa
-          %td
+          %td.status
             = order.status
           - unless current_user.is_client?
             %td
@@ -50,6 +50,29 @@
             = link_to "Удалить", order, method: :delete, data: {confirm: "Удалить заявку?"}
 - else
   %h4 Нет заявок на заполнении
+
+
+.fetch-orders-form.text-right
+  = form_tag "/report", method: :post, id: "fetch-orders-form", remote:true do |f|
+    .indicator{id:"report-indicator"} получаем заявки
+    = hidden_field_tag 'shift[date_from]', "1970-01-01"
+    = hidden_field_tag 'shift[date_to]', Date.today
+    = hidden_field_tag :authenticity_token
+    .field-horizontal.order-filter
+      -#= submit_tag "Обновить список", class:'btn btn-success hidden'
+      = select_tag "order-status", options_for_select(["на заполнении","оформление", "согласование","к выдаче", "выдан", "закрыт", "отклонена", "отказ клиента"]), prompt: "Отфильтруйте по статусу", class: 'hidden'
+%table.fade.simple-list{id:"orders-list"}
+  %caption Отправленные заявки
+  %thead
+    %tr
+      %th
+      %th Дата создания
+      %th Дата выдачи
+      %th Заемщик
+      %th Сумма займа
+      %th Сумма агента
+      %th Статус
+  %tbody
 
 %script
   window.tarifs =

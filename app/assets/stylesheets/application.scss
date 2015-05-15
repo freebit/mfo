@@ -147,8 +147,9 @@ main{
 
 .indicator{
   position: absolute;
-  width:143px;
+  width:170px;
   height: 11px;
+  line-height: 11px;
   bottom:10px;
   left:2px;
   background-image: asset_url('ajax-loader.gif');
@@ -166,6 +167,14 @@ main{
   position: relative;
   width:100%;
   border-collapse: collapse;
+
+  caption{
+    margin: 0 0 15px 0;
+    caption-side: top;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+  }
 
   thead th{
     font-size: 12px;

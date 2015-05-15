@@ -7,7 +7,7 @@
       %ul
         - if signed_in? && current_user
           %li= link_to "Новая заявка", new_order_path, :class => is_active?('orders/new')
-          %li= link_to "Заявки на заполнении", orders_path, :class =>is_active?('orders/index')
+          %li= link_to "История заявок", orders_path, :class =>is_active?('orders/index')
 
           - if current_user.is_admin? || current_user.is_agent?
             %li= link_to "Отчеты", reports_path, :class =>is_active?('reports/index')
