@@ -2,7 +2,7 @@
 - @active_tab = params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : 'loan'
 .order-form.edit
   %ul.nav.nav-tabs{id:"order-tabs"}
-    - if @editkey.blank?
+    - if session[:editkey].blank?
       - if current_user.present? && (current_user.is_admin? || current_user.is_agent? || current_user.is_client?)
         %li{class:"#{'active' if @active_tab == 'calc'}"}
           %a{href:"#calc", data:{toggle:"tab"}} Калькулятор
@@ -26,7 +26,7 @@
     .tab-content{id:"tabs"}
 
       -# КАЛЬКУЛЯТОР #
-      - if @editkey.blank?
+      - if session[:editkey].blank?
         - if current_user.present? && (current_user.is_admin? || current_user.is_agent? || current_user.is_client?)
           .tab-pane.fade{id:"calc", class:"#{' in active' if @active_tab == 'calc'}", data:{type:"#{current_user.roles.first.name}"}}
             = render partial: 'shared/platform_tarif', locals: {f:f}
@@ -322,7 +322,8 @@
           = s.hidden_field :send_mfo, value: false
           = s.hidden_field :edit_order_active_tab, value: params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : ""
 
-        = submit_tag "Сформировать ссылку", class:'btn btn-primary'
+        - title = session[:editkey].blank? ? 'Сформировать ссылку' : 'Сохранить'
+        = submit_tag title, class:'btn btn-primary'
 
 
 %script

@@ -60,6 +60,16 @@ class UsersController < ApplicationController
 
   end
 
+  def destroy
+    user = User.find(params[:id])
+    user_role = UsersRole.find_by(user:user)
+    user.destroy
+    user_role.destroy
+
+    flash[:success] = "Пользователь удален"
+    redirect_to users_path
+  end
+
   def ajax_uzel
 
     client = Savon_client::CLIENT

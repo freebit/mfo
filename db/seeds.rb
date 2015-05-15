@@ -11,7 +11,6 @@
 Role.create(name: :admin, title:'Администратор')
 Role.create(name: :agent, title:'Агент')
 Role.create(name: :client, title:'Клиент')
-Role.create(name: :guest, title:'Гость')
 
 # создадим суперадмина
 superadmin = User.create(name:"Главный", email:"superadmin@mail.ru", password:"rHA24PSsul", password_confirmation:"rHA24PSsul", active: true);

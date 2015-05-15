@@ -18,7 +18,8 @@
         %th Статус
         - unless current_user.is_client?
           %th Ссылка для клиента
-        %th Edit
+        %th &nbsp;
+        %th &nbsp;
     %tbody
       - @orders.each do |order|
         %tr{class:"#{'in-mfo' if order.status == "Отправлено в МФО"}"}
@@ -45,6 +46,8 @@
           %td.edit
             - if order.status != "Отправлено в МФО"
               = link_to "Изменить", edit_order_path(order)
+          %td.del
+            = link_to "Удалить", order, method: :delete, data: {confirm: "Удалить заявку?"}
 - else
   %h4 Нет заявок на заполнении
 

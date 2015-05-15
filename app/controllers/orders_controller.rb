@@ -277,6 +277,13 @@ class OrdersController < ApplicationController
   end
 
 
+  def destroy
+    Order.find(params[:id]).destroy
+    flash[:success] = "Заявка удалена"
+    redirect_to orders_path
+  end
+
+
   def guest_index
 
   end

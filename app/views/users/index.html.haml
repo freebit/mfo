@@ -7,6 +7,7 @@
       %th Активность
       %th Последний вход
       %th
+      %th
     %tbody
       - @users.each do |user|
         %tr
@@ -21,6 +22,9 @@
           %td= user.last_visit.to_formatted_s(:long) if user.last_visit
           %td.edit
             = link_to "изменить", edit_user_path(user)
+          - unless user.is_admin?
+            %td.del
+              = link_to "удалить", user, method: :delete, data:{confirm:"Удалить пользователя?"}
 - if current_user && current_user.is_admin?
   %div.add-user= link_to "Добавить пользователя", users_new_path
 
