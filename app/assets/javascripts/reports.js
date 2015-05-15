@@ -21,23 +21,34 @@
 
 
 
-            var table = $('#orders-list'),
-                html = "";
+            var table = $('#reports-list'),
+                html = "",
+                summa = 0,
+                j = 0;
 
             for (var i= 0,ln=data.data.length;i<ln;i++){
                 var order = data.data[i],
-                    d = new Date(order["Дата"]),
+                    status = order["СтатусСделки"].toLowerCase();
+                if(status != 'выдан' && status != 'закрыт') continue;
+
+                var d = new Date(order["Дата"]),
                     dv = new Date(order["ДатаВыдачи"]);
+
                 html += "<tr>" +
-                            "<td>" + (i+1) + "</td>" +
+                            "<td>" + (j+1) + "</td>" +
                             "<td>" + window.mfo.formatDate(d) + "</td>" +
                             "<td>" + window.mfo.formatDate(dv) + "</td>" +
                             "<td>" + order["ЗаемщикНаименование"] + "</td>" +
                             "<td>" + order["СуммаЗайма"] + "</td>" +
                             "<td>" + order["СуммаВознагражденияАгента"] + "</td>" +
-                            "<td class='status'>" + order["СтатусСделки"] + "</td>" +
+                            "<td class='status'>" + status + "</td>" +
                         "</tr>";
+
+                summa += parseFloat(order["СуммаВознагражденияАгента"], 10);
+                j++;
             }
+
+            html += "<tr><td colspan='7'></tr><tr class='selected'><td colspan='5'>Итого:</td><td>"+summa+"</td><td></td></tr>";
 
             $('tbody', table).html(html);
             table.addClass('in');
