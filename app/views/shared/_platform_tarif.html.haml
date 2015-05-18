@@ -8,8 +8,3 @@
         .field.short
           %label Тариф
           = p.select(:name, Tarif.uniq.pluck(:type_t).map {|platform| [platform, platform, data:{number:platform}]}, selected:f.object.tarif)
-      .field-horizontal.tarif
-        %span.title.mfo_rate Ставка МФО:
-        %span.value.mfo_rate
-        %span.title.agent_rate Ставка агента:
-        %span.value.agent_rate 0%
