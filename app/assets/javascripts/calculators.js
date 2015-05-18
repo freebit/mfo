@@ -67,7 +67,7 @@
 
         //считаем при смене дохода агента
         $('#service_agent_summa').on('keyup, change', function (e) {
-            alert($(this).val())
+            //alert($(this).val())
         });
 
 
@@ -113,7 +113,7 @@
                     mfo_forminimal_rate = (mfo_summa/summa) * 100;
                     agent_forminimal_rate = (agent_summa/summa) * 100;
 
-                    setRates(mfo_forminimal_rate, agent_forminimal_rate);
+                    setRates(mfo_forminimal_rate.toFixed(1), agent_forminimal_rate.toFixed(1));
 
                 }else{
                     agent_summa = (summa / 100) * agent_rate;
@@ -123,7 +123,7 @@
                     var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
                     mfo_rate = mfo_rate + mfo_margin_rate;
                     agent_rate = agent_rate - mfo_margin_rate;
-                    setRates(mfo_rate, agent_rate);
+                    setRates(mfo_rate.toFixed(1), agent_rate.toFixed(1));
                 }
 
             //если это тариф типа Б, где при победе снимается еще одна ставка
@@ -139,11 +139,11 @@
                 if(minimalka){
                     mfo_forminimal_rate += dop_mfo_rate;
                     agent_forminimal_rate += dop_agent_rate;
-                    setRates(mfo_forminimal_rate, agent_forminimal_rate);
+                    setRates(mfo_forminimal_rate.toFixed(2), agent_forminimal_rate.toFixed(2));
                 }else{
                     mfo_rate += dop_mfo_rate;
                     agent_rate += dop_agent_rate;
-                    setRates(mfo_rate, agent_rate);
+                    setRates(mfo_rate.toFixed(1), agent_rate.toFixed(1));
                 }
 
             }
