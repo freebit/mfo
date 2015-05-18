@@ -21,13 +21,13 @@
       .field-horizontal
         .field.short
           %label Доход МФО по ставке
-          = s.input_field :mfo_summa, value: f.object.mfo_summa || "0"
+          = s.number_field :mfo_summa, value: f.object.mfo_summa || "0"
         .field.small
           %label Ставка %
           = s.number_field :order_rate, value: f.object.base_rate || "0"
         .field.short
           %label Доход Агента по ставке
-          = s.input_field :agent_summa, value: f.object.agent_summa || "0"
+          = s.number_field :agent_summa, value: f.object.agent_summa || "0"
 
   - elsif current_user.is_client?
 
