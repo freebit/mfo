@@ -322,7 +322,7 @@
           = s.hidden_field :send_mfo, value: false
           = s.hidden_field :edit_order_active_tab, value: params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : ""
 
-        - title = session[:editkey].blank? ? 'Сформировать ссылку' : 'Сохранить'
+        - title = (session[:editkey].blank? || (current_user.present? && (current_user.is_admin? || current_user.is_agent?))) ? 'Сформировать ссылку' : 'Сохранить'
         = submit_tag title, class:'btn btn-primary'
 
 

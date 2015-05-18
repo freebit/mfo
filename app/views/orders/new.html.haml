@@ -320,7 +320,8 @@
           = s.hidden_field :send_mfo, value: false
           = s.hidden_field :new_order_active_tab
 
-        = submit_tag "Сформировать ссылку", class:'btn btn-primary'
+        - title = (current_user.present? && (current_user.is_admin? || current_user.is_agent?)) ? 'Сформировать ссылку' : 'Сохранить'
+        = submit_tag title, class:'btn btn-primary'
 
 
 %script
