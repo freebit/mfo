@@ -81,6 +81,12 @@
                     break;
                 }
             }
+
+            if(window.currentTarif.dop_rate){
+                $('.victory').removeClass('hidden');
+            }else{
+                $('.victory').addClass('hidden');
+            }
         }
 
 
@@ -103,7 +109,10 @@
                 dop_mfo_rate = 1.5,
                 dop_agent_rate = 0.5,
                 dop_mfo_summa = 0,
-                dop_agent_summa = 0;
+                dop_agent_summa = 0,
+                order_victory_summa = 0,
+                mfo_victory_summa = 0,
+                agent_victory_summa = 0;
 
                 if(minimalka){
                     agent_summa = order_summa - mfo_summa;
@@ -132,19 +141,19 @@
                 dop_mfo_summa = (summa / 100) * dop_mfo_rate;
                 dop_agent_summa = (summa / 100) * dop_agent_rate;
 
-                order_summa += dop_summa;
-                mfo_summa += dop_mfo_summa;
-                agent_summa += dop_agent_summa;
+                order_victory_summa = order_summa + dop_summa;
+                mfo_victory_summa = mfo_summa + dop_mfo_summa;
+                agent_victory_summa = agent_summa + dop_agent_summa;
 
-                if(minimalka){
-                    mfo_forminimal_rate += dop_mfo_rate;
-                    agent_forminimal_rate += dop_agent_rate;
-                    setRates(mfo_forminimal_rate.toFixed(2), agent_forminimal_rate.toFixed(2));
-                }else{
-                    mfo_rate += dop_mfo_rate;
-                    agent_rate += dop_agent_rate;
-                    setRates(mfo_rate.toFixed(1), agent_rate.toFixed(1));
-                }
+                //if(minimalka){
+                //    mfo_forminimal_rate += dop_mfo_rate;
+                //    agent_forminimal_rate += dop_agent_rate;
+                //    setRates(mfo_forminimal_rate.toFixed(2), agent_forminimal_rate.toFixed(2));
+                //}else{
+                //    mfo_rate += dop_mfo_rate;
+                //    agent_rate += dop_agent_rate;
+                //    setRates(mfo_rate.toFixed(1), agent_rate.toFixed(1));
+                //}
 
             }
 
@@ -155,6 +164,10 @@
             $('#service_dogovor_summa').val(order_summa);
             $('#service_mfo_summa').val(mfo_summa);
             $('#service_agent_summa').val(agent_summa);
+
+            //при победе тарифа Б
+            $('#service_mfo_victory_summa').val(mfo_victory_summa);
+            $('#service_agent_victory_summa').val(agent_victory_summa);
 
             //выставляем значения в заявке
             $('#order_tarif').val($('#order_tarif_name').val());
