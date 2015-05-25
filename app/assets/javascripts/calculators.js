@@ -11,8 +11,8 @@
         if ($('#order_tarif_name').length) {
             setTarif();
 
-            var summa = parseFloat($('#service_order_summa').val(), 10) || 0,
-                base_rate = parseFloat($('#service_order_rate').val(), 10) || 0;
+            var summa = parseFloat($('#service_order_summa').val(), 10) || 0.00,
+                base_rate = parseFloat($('#service_order_rate').val()) || 0.00;
 
 
             Calculate(summa, base_rate);
@@ -22,10 +22,12 @@
         $('#order_platform_name, #order_tarif_name').on('change', function () {
             var platform = $('#order_platform_name').val(),
                 type = $('#order_tarif_name').val(),
-                summa = parseFloat($('#service_order_summa').val(), 10) || 0,
-                base_rate = parseFloat($('#service_order_rate').val(), 10) || 0
+                summa = parseFloat($('#service_order_summa').val(), 10) || 0;
+
 
             setTarif(platform, type);
+
+            var base_rate = parseFloat($('#service_order_rate').val(), 10) || window.currentTarif.rate;
 
             if (summa <= 0) {
                 alert('Укажите сумму займа')
@@ -40,7 +42,7 @@
 
             // if((e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode == 37 || e.keyCode == 8) return;
 
-            var rate = parseFloat( $(this).val(), 10 ) || 0,
+            var rate = parseFloat($(this).val(), 10 ) || 0,
                 summa = parseFloat($('#service_order_summa').val(), 10) || 0;
 
             if(summa <= 0){
@@ -161,7 +163,7 @@
             //выставляем значения в калькуляторе
             $('#service_dogovor_summa_tarif').val(dohod_summa_tarif);
             $('#service_dogovor_summa').val(order_summa);
-            $('#service_dogovor_summa').val(order_summa);
+            $('#service_order_rate').val(mfo_rate);
             $('#service_mfo_summa').val(mfo_summa);
             $('#service_agent_summa').val(agent_summa);
 
@@ -180,9 +182,25 @@
         }
 
         function setRates(mfo_rate, agent_rate){
-            $('.tarif .value.mfo_rate').text(mfo_rate + "%");
-            $('.tarif .value.agent_rate').text(agent_rate + "%");
+            $('.tarif .value.mfo_rate').text((mfo_rate || 0) + "%");
+            $('.tarif .value.agent_rate').text((agent_rate || 0) + "%");
         }
+
+
+
+        function twoFixed(number){
+            var strNumber = "";
+            try{
+                strNumber = new String(number);
+            }catch(err){
+                console.log(err);
+            }
+
+
+        }
+
+
+
 
 
     //калькулятор для конечных клиентов
