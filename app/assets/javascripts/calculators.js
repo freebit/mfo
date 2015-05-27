@@ -130,9 +130,9 @@
 
         function Calculate(summa, base_rate, by_rate_flag) {
             var by_rate = !!by_rate_flag,
-                mfo_rate = window.currentTarif.rate,
+                mfo_rate = 0,
+                agent_rate = 0,
                 minimum = floorFigure(window.currentTarif.minimum, 2),
-                agent_rate = base_rate - mfo_rate,
 
                 dohod_summa_tarif = floorFigure(((summa / 100) * window.currentTarif.rate), 2), //посчитаем доход по тарифу
                 minimalka = dohod_summa_tarif <= minimum,
@@ -155,7 +155,7 @@
 
                 //преобразуем по минималке
                 if(summa > 0) {
-
+                    mfo_rate = window.currentTarif.rate;
                     order_summa = order_summa > minimum ? order_summa : minimum;
                     mfo_summa = minimum;
                 }
@@ -179,11 +179,15 @@
 
                 }else{
                     if(summa > 0) {
+                        var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
+                        agent_rate = base_rate - mfo_rate;
+
                         agent_summa = (summa / 100) * agent_rate;
                         mfo_summa = ((summa / 100) * mfo_rate) + ((agent_summa / 100) * mfo_margin);
                         agent_summa = agent_summa - ((agent_summa / 100) * mfo_margin);
+                        agent_summa = agent_summa < 0 ? 0 : agent_summa;
 
-                        var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
+                        //пересчитываем превышение
                         mfo_rate = floorFigure((mfo_rate + mfo_margin_rate), 2);
                         agent_rate = floorFigure(agent_rate - mfo_margin_rate, 2);
                     }
@@ -211,7 +215,7 @@
 
             $('#service_dogovor_summa').val(order_summa);
 
-            !by_rate && $('#service_order_rate').val(base_rate);
+            !by_rate && $('#service_order_rate').val(mfo_rate);
 
             $('#service_mfo_summa').val(mfo_summa);
 
@@ -232,8 +236,11 @@
         }
 
         function setRates(mfo_rate, agent_rate){
-            $('.tarif .value.mfo_rate').text((mfo_rate || 0) + "%");
-            $('.tarif .value.agent_rate').text((agent_rate || 0) + "%");
+            var mfo_r = mfo_rate < 0 ? 0 : mfo_rate,
+                agent_r = agent_rate < 0 ? 0 : agent_rate;
+
+            $('.tarif .value.mfo_rate').text((mfo_r || 0) + "%");
+            $('.tarif .value.agent_rate').text((agent_r || 0) + "%");
         }
 
         function floorFigure(figure, decimals){
