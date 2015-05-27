@@ -211,7 +211,7 @@
 
             $('#service_dogovor_summa').val(order_summa);
 
-            !by_rate && $('#service_order_rate').val(mfo_rate);
+            !by_rate && $('#service_order_rate').val(base_rate);
 
             $('#service_mfo_summa').val(mfo_summa);
 
