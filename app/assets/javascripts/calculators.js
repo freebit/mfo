@@ -78,7 +78,7 @@
 
             $('#service_order_rate').val(order_rate)
 
-            Calculate(summa, order_rate, true);
+            Calculate(summa, order_rate, true, true);
 
 
         });
@@ -86,16 +86,23 @@
         //считаем при смене дохода агента
         $('#service_agent_summa').on('keyup, change', function (e) {
 
-            var summa = parseFloat($('#service_order_summa').val(), 10) || 0;
+            var summa = parseFloat($('#service_order_summa').val(), 10) || 0,
+                mfo_summa = 0;
 
             if(summa == 0) return;
 
-            var agent_summa = parseFloat($(this).val(), 10);
+            var dohod_summa_tarif = (summa / 100) * window.currentTarif.rate,
+                minimalka = dohod_summa_tarif < window.currentTarif.minimum,
+                agent_summa = parseFloat($(this).val(), 10);
 
+            if(minimalka){
+                mfo_summa = window.currentTarif.minimum
+            }else{
+                mfo_summa = ((summa/100) * window.currentTarif.rate) + ((agent_summa/100) * mfo_margin);
+            }
 
             //пересчитаем доход МФО
-            var mfo_summa = ((summa/100) * window.currentTarif.rate) + ((agent_summa/100) * mfo_margin),
-                order_summa = floorFigure(mfo_summa + agent_summa, 2),
+            var order_summa = floorFigure(mfo_summa + agent_summa, 2),
                 order_rate = floorFigure((order_summa/summa) * 100, 2),
                 mfo_rate_fact = floorFigure((mfo_summa/summa) * 100, 2),
                 agent_rate = floorFigure(agent_summa * (100/summa), 2);
@@ -128,15 +135,16 @@
         }
 
 
-        function Calculate(summa, base_rate, by_rate_flag) {
+        function Calculate(summa, base_rate, by_rate_flag, by_order_flag) {
             var by_rate = !!by_rate_flag,
+                by_order = !!by_order_flag,
                 base_rate = base_rate <= 0 ? window.currentTarif.rate : base_rate,
                 mfo_rate = 0,
                 agent_rate = 0,
                 minimum = floorFigure(window.currentTarif.minimum, 2),
 
                 dohod_summa_tarif = floorFigure(((summa / 100) * window.currentTarif.rate), 2), //посчитаем доход по тарифу
-                minimalka = dohod_summa_tarif <= minimum,
+                minimalka = dohod_summa_tarif < minimum,
 
                 order_summa = floorFigure(((summa / 100) * base_rate), 2),
                 agent_summa = parseFloat($('#service_agent_summa').val(), 10) || 0,
@@ -214,7 +222,7 @@
             //выставляем значения в калькуляторе
             $('#service_dogovor_summa_tarif').val(dohod_summa_tarif);
 
-            $('#service_dogovor_summa').val(order_summa);
+            !by_order && $('#service_dogovor_summa').val(order_summa);
 
             !by_rate && $('#service_order_rate').val(mfo_rate);
 
