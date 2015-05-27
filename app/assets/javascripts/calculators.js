@@ -130,6 +130,7 @@
 
         function Calculate(summa, base_rate, by_rate_flag) {
             var by_rate = !!by_rate_flag,
+                base_rate = base_rate <= 0 ? window.currentTarif.rate : base_rate,
                 mfo_rate = 0,
                 agent_rate = 0,
                 minimum = floorFigure(window.currentTarif.minimum, 2),
@@ -138,7 +139,7 @@
                 minimalka = dohod_summa_tarif <= minimum,
 
                 order_summa = floorFigure(((summa / 100) * base_rate), 2),
-                agent_summa = 0,
+                agent_summa = parseFloat($('#service_agent_summa').val(), 10) || 0,
                 mfo_summa = 0,
                 dop_summa = 0,
                 mfo_forminimal_rate = 0,
