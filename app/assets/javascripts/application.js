@@ -129,5 +129,11 @@ window.mfo = {
         errors_length && $('#order-tabs > li:eq('+i+') .badge').addClass('in').text(errors_length);
     });
 
+
+    //запрещаем отправку формы по Enter
+    $('form :input').on('keypress', function(e){
+        return e.keyCode != 13;
+    });
+
 })(jQuery);
 
