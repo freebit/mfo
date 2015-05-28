@@ -96,9 +96,9 @@
                 agent_summa = parseFloat($(this).val(), 10);
 
             if(minimalka){
-                mfo_summa = window.currentTarif.minimum + ((agent_summa/100) * mfo_margin);
+                mfo_summa = window.currentTarif.minimum + ((agent_summa*0.1)/0.9);
             }else{
-                mfo_summa = ((summa/100) * window.currentTarif.rate) + ((agent_summa/100) * mfo_margin);
+                mfo_summa = ((summa/100) * window.currentTarif.rate) + ((agent_summa*0.1)/0.9);
             }
 
             //пересчитаем доход МФО
