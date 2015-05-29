@@ -22,18 +22,15 @@
         $('#order_platform_name, #order_tarif_name').on('change', function () {
             var platform = $('#order_platform_name').val(),
                 type = $('#order_tarif_name').val(),
-                summa = parseFloat($('#service_order_summa').val(), 10) || 0;
+                summa = 0;
 
 
             setTarif(platform, type);
 
-            var base_rate = parseFloat($('#service_order_rate').val(), 10) || window.currentTarif.rate;
+            var base_rate = window.currentTarif.rate;
 
-            if (summa <= 0) {
-                alert('Укажите сумму займа')
-            } else {
-                Calculate(summa, base_rate);
-            }
+            Calculate(summa, base_rate, false, false, true);
+
         });
 
 
@@ -56,7 +53,7 @@
 
         //считаем при смене суммы займа
         $('#service_order_summa').on('keyup, change', function (e) {
-            var rate = parseFloat($('#service_order_rate').val(), 10) || 0,
+            var rate = window.currentTarif.rate,
                 summa = parseFloat($(this).val(), 10) || 0;
 
 
@@ -103,9 +100,10 @@
 
             //пересчитаем доход МФО
             var order_summa = floorFigure(mfo_summa + agent_summa, 2),
+                agent_rate = floorFigure(agent_summa * (100/summa), 2),
                 order_rate = floorFigure((order_summa/summa) * 100, 2),
-                mfo_rate_fact = floorFigure((mfo_summa/summa) * 100, 2),
-                agent_rate = floorFigure(agent_summa * (100/summa), 2);
+                mfo_rate_fact = floorFigure(((mfo_summa/summa) * 100), 2);
+
 
             $('#service_mfo_summa').val( floorFigure(mfo_summa, 2) );
             $('#service_dogovor_summa').val(order_summa);
@@ -135,9 +133,10 @@
         }
 
 
-        function Calculate(summa, base_rate, by_rate_flag, by_order_flag) {
+        function Calculate(summa, base_rate, by_rate_flag, by_order_flag, by_summa_flag) {
             var by_rate = !!by_rate_flag,
                 by_order = !!by_order_flag,
+                by_summa = !!by_summa_flag,
                 base_rate = base_rate <= 0 ? window.currentTarif.rate : base_rate,
                 mfo_rate = 0,
                 agent_rate = 0,
@@ -147,7 +146,7 @@
                 minimalka = dohod_summa_tarif < minimum,
 
                 order_summa = floorFigure(((summa / 100) * base_rate), 2),
-                agent_summa = parseFloat($('#service_agent_summa').val(), 10) || 0,
+                agent_summa = 0,//parseFloat($('#service_agent_summa').val(), 10) || 0,
                 mfo_summa = 0,
                 dop_summa = 0,
                 mfo_forminimal_rate = 0,
@@ -188,8 +187,9 @@
 
                 }else{
                     if(summa > 0) {
-                        var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
                         agent_rate = base_rate - mfo_rate;
+
+                        var mfo_margin_rate = (agent_rate / 100) * mfo_margin;
 
                         agent_summa = (summa / 100) * agent_rate;
                         mfo_summa = ((summa / 100) * mfo_rate) + ((agent_summa / 100) * mfo_margin);
@@ -197,8 +197,8 @@
                         agent_summa = agent_summa < 0 ? 0 : agent_summa;
 
                         //пересчитываем превышение
-                        mfo_rate = floorFigure((mfo_rate + mfo_margin_rate), 2);
                         agent_rate = floorFigure(agent_rate - mfo_margin_rate, 2);
+                        mfo_rate = floorFigure((mfo_rate + mfo_margin_rate), 2);
                     }
 
                     setRates(mfo_rate, agent_rate);
@@ -212,8 +212,8 @@
                 dop_agent_summa = (summa / 100) * dop_agent_rate;
 
                 order_victory_summa = order_summa + dop_summa;
-                mfo_victory_summa = mfo_summa + dop_mfo_summa;
-                agent_victory_summa = agent_summa + dop_agent_summa;
+                mfo_victory_summa = dop_mfo_summa;
+                agent_victory_summa = dop_agent_summa;
 
 
             }
@@ -221,6 +221,8 @@
 
             //выставляем значения в калькуляторе
             $('#service_dogovor_summa_tarif').val(dohod_summa_tarif);
+
+            by_summa && $('#service_order_summa').val(summa);
 
             !by_order && $('#service_dogovor_summa').val(order_summa);
 
