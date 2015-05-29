@@ -29,7 +29,7 @@
 
             var base_rate = window.currentTarif.rate;
 
-            Calculate(summa, base_rate, false, false, true);
+            Calculate(summa, base_rate);
 
         });
 
@@ -222,7 +222,7 @@
             //выставляем значения в калькуляторе
             $('#service_dogovor_summa_tarif').val(dohod_summa_tarif);
 
-            by_summa && $('#service_order_summa').val(summa);
+            //by_summa && $('#service_order_summa').val(summa);
 
             !by_order && $('#service_dogovor_summa').val(order_summa);
 
