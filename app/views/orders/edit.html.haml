@@ -1,5 +1,5 @@
 = render partial: 'shared/order_menu'
-- @active_tab = params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : 'loan'
+- @active_tab = params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : 'calc'
 .order-form.edit
   %ul.nav.nav-tabs{id:"order-tabs"}
     - if session[:editkey].blank?
@@ -316,14 +316,14 @@
       .tab-pane.fade{ id:"documents", class:"#{' in active' if @active_tab == 'documents'}"}
         = render partial: 'shared/order_documents', locals:{f:f}
 
+      - if !current_user.is_client?
+        .field-submit
+          = simple_fields_for :service do |s|
+            = s.hidden_field :send_mfo, value: false
+            = s.hidden_field :edit_order_active_tab, value: params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : ""
 
-      .field-submit
-        = simple_fields_for :service do |s|
-          = s.hidden_field :send_mfo, value: false
-          = s.hidden_field :edit_order_active_tab, value: params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : ""
-
-        - title = (session[:editkey].blank? || (current_user.present? && (current_user.is_admin? || current_user.is_agent?))) ? 'Сформировать ссылку' : 'Сохранить'
-        = submit_tag title, class:'btn btn-primary'
+          - title = (session[:editkey].blank? || (current_user.present? && (current_user.is_admin? || current_user.is_agent?))) ? 'Сформировать ссылку' : 'Сохранить'
+          = submit_tag title, class:'btn btn-primary'
 
 
 %script

@@ -54,7 +54,7 @@
           = s.number_field :order_summa, value: f.object.summa || "0"
         .field.small
           %label Стоимость
-          = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0"
+          = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0", disabled: true
       -#.field-horizontal
       -#  .field.short
       -#    %label Доход агента

@@ -1,5 +1,5 @@
 = render partial: 'shared/order_menu'
-- @active_tab = params[:service].present? && params[:service][:new_order_active_tab].present? ? params[:service][:new_order_active_tab] : (current_user.is_client? ? 'loan' : 'calc')
+- @active_tab = params[:service].present? && params[:service][:new_order_active_tab].present? ? params[:service][:new_order_active_tab] : (current_user.is_client? ? 'calc' : 'calc')
 .order-form.new{data:{action:'test'}}
   %ul.nav.nav-tabs{id:"order-tabs"}
     - if current_user.is_admin? || current_user.is_agent? || current_user.is_client?
@@ -125,7 +125,7 @@
           .field-group
             %h5.title Основные данные
             .field.long
-              %label Название организации
+              %label Сокращённое наименование организации
               = b.input_field :name
               = b.error :name
             .field.long
@@ -135,7 +135,7 @@
 
             .field-horizontal
               .field
-                %label Дата регистрации
+                %label Дата государственной регистрации
                 = b.date_field :reg_date
                 = b.error :reg_date
               .field
@@ -314,8 +314,7 @@
       .tab-pane.fade{ id:"documents", class:"#{' in active' if @active_tab == 'documents'}"}
         = render partial: 'shared/order_documents', locals:{f:f}
 
-
-      .field-submit
+      .field-submit{class:"#{'hidden' if current_user.is_client?}"}
         = simple_fields_for :service do |s|
           = s.hidden_field :send_mfo, value: false
           = s.hidden_field :new_order_active_tab

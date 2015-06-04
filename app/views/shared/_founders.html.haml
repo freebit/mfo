@@ -8,15 +8,15 @@
           %span.del &times;
         .field-horizontal
           .field
-            %label Имя учредитель
+            %label ФИО учредителя
             = bf.input_field :name
             = bf.error :name
           .field
-            %label Доля в компании
+            %label Доля в компании в %
             = bf.input_field :share
             = bf.error :share
         .field.long
-          %label Паспортные данные ОГРН
+          %label Паспортные данные или номера ОГРН и ИНН для организаций
           = bf.input_field :pass_data_ogrn
           = bf.error :pass_data_ogrn
 .field.button-right
