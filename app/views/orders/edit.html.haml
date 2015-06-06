@@ -38,7 +38,9 @@
         .field-group
           .field
             %label Площадка
-            = f.select(:platform, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
+            -#= f.select(:platform, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]})
+            = f.input_field :platform, readonly: true
+            = f.error :platform
           .field.hidden
             %label Тариф
             = f.input_field :tarif
@@ -49,12 +51,26 @@
             = f.error :base_rate
           .field
             %label Сумма
-            = f.input_field :summa
+            = f.input_field :summa, readonly: true
             = f.error :summa
           .field
             %label Крайний срок предоставления
             = f.date_field :submission_deadline
             = f.error :submission_deadline
+
+          .field
+            %label Предмет контракта
+            = f.input_field :contract_subject
+            = f.error :contract_subject
+          .field
+            %label Номер лота
+            = f.input_field :lot_number
+            = f.error :lot_number
+          .field#personal-number
+            %label Номер лицевого счета
+            = f.input_field :personal_number
+            = f.error :personal_number
+
           .field.hidden
             %label Агент
             = f.input_field :agent
@@ -87,10 +103,6 @@
             %label НомерДатаПротокола
             = f.input_field :number_data_protocol
             = f.error :number_data_protocol
-          .field.hidden
-            %label Лицевой счет
-            = f.input_field :personal_number
-            = f.error :personal_number
           .field.hidden
             %label Дата создания
             = f.date_field :create_date, value: f.object.create_date || Date.today

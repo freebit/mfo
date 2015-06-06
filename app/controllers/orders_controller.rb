@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   #before_action :user_is_admin, only:[:index, :new]
 
   @EDIT_KEY = "editKey"
-  TARIFS = Tarif.select("type_t, platform, rate, dop_rate, client_rate, minimum").all
+  TARIFS = Tarif.select("type_t, platform, rate, dop_rate, client_rate, client_dop_rate, minimum", "personal_number_flag").all
 
   def index
     @title = "История заявок"
@@ -66,12 +66,15 @@ class OrdersController < ApplicationController
 
     @order = Order.new order_params
 
-    #если это агент сохраняет, но не отправляет в МФО, то снимаем валидации
-    if !current_user.is_client? || !service_params[:send_mfo].to_b
-      @order.skip_validation = true
-      @order.borrower.skip_validation = true
-      @order.borrower.borrower_founders[0].skip_validation = true
-      @order.borrower.person.skip_validation = true
+    #если не отправляет в МФО
+    if !service_params[:send_mfo].to_b
+      # и сохраняет не конечник или гость, то снимаем валидации
+      if current_user.present? && !current_user.is_client?
+        @order.skip_validation = true
+        @order.borrower.skip_validation = true
+        @order.borrower.borrower_founders[0].skip_validation = true
+        @order.borrower.person.skip_validation = true
+      end
     end
 
     if order_params[:borrower_attributes][:type_o] == "ФЛ"
@@ -297,7 +300,9 @@ class OrdersController < ApplicationController
       person_attributes = [:id, :fullname, :birthday, :citizenship, :phone, :email, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date, :_destroy, :birth_place, reg_place_attributes: address_attributes, curr_place_attributes: address_attributes]
       bank_attributes = [:id, :bik, :korr_number, :inn, :name, :city, :address, :_destroy]
 
-      params.require(:order).permit(:summa, :platform, :tarif, :base_rate, :submission_deadline, :agent, :agent_name, :agent_summa, :mfo_summa, :dogovor_summa, :number, :number_mfo, :number_data_protocol,:personal_number, :create_date, :updated_at, :status,
+      params.require(:order).permit(:summa, :platform, :tarif, :base_rate, :submission_deadline, :agent, :agent_name,
+                                    :agent_summa, :mfo_summa, :dogovor_summa, :number, :number_mfo,
+                                    :number_data_protocol, :contract_subject, :lot_number, :personal_number, :create_date, :updated_at, :status,
 
                                     borrower_attributes:[
                                         organization_attributes,

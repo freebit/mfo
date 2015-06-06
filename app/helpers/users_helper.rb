@@ -5,7 +5,7 @@ module UsersHelper
 
     response = soap_response
 
-    # binding.pry
+    #binding.pry
 
     if response.present? && response.body[:fault].blank? && response.http.code == 200
 
@@ -16,12 +16,14 @@ module UsersHelper
 
         t = Tarif.find_or_create_by(type_t:tarif[:ТипТарифа], platform:tarif[:Площадка])
 
-        t.update  type_t:       tarif[:ТипТарифа],
-                  platform:     tarif[:Площадка],
-                  rate:         tarif[:Ставка],
-                  dop_rate:     tarif[:СтавкаДополнительная],
-                  client_rate:  tarif[:СтавкаКонечника],
-                  minimum:      tarif[:Минималка]
+        t.update  type_t:               tarif[:ТипТарифа],
+                  platform:             tarif[:Площадка],
+                  rate:                 tarif[:Ставка],
+                  dop_rate:             tarif[:СтавкаДополнительная],
+                  client_rate:          tarif[:СтавкаКонечника],
+                  client_dop_rate:      tarif[:СтавкаКонечникаДополнительная],
+                  minimum:              tarif[:Минималка],
+                  personal_number_flag: tarif[:ЕстьЛицевойСчет]
 
       end
 
@@ -36,9 +38,11 @@ module UsersHelper
   end
 
   def soap_response
-    Savon_client::CLIENT.call(:get_tarifs)
-    rescue Timeout::Error => e
-    #rescue Errno::ECONNRESET => e
+    begin
+      Savon_client::CLIENT.call(:get_tarifs)
+    rescue (Timeout::Error || Errno::ECONNRESET) => e
+      puts "-- #{e} --"
+    end
   end
 
 end

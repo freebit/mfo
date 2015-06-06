@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150515054237) do
+ActiveRecord::Schema.define(version: 20150605111359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,8 @@ ActiveRecord::Schema.define(version: 20150515054237) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.string   "editkey"
+    t.string   "contract_subject"
+    t.string   "lot_number"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -178,9 +180,11 @@ ActiveRecord::Schema.define(version: 20150515054237) do
     t.float    "rate"
     t.float    "dop_rate"
     t.float    "minimum"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.float    "client_rate"
+    t.boolean  "personal_number_flag"
+    t.float    "client_dop_rate"
   end
 
   add_index "tarifs", ["type_t", "platform"], name: "index_tarifs_on_type_t_and_platform", unique: true, using: :btree

@@ -10,7 +10,7 @@
           -#= s.number_field :mfo_summa_tarif, disabled: true
         .field.short
           %label Доход МФО по тарифу
-          = s.input_field :dogovor_summa_tarif, disabled: true
+          = s.input_field :dogovor_summa_tarif, readonly: true
       .field-horizontal.top-offset
         .field.short
           %label Сумма займа
@@ -31,7 +31,7 @@
       .field-horizontal
         .field.short.offset-right
           %label Доход МФО по ставке
-          = s.input_field :mfo_summa, value: f.object.mfo_summa || "0", disabled: true
+          = s.input_field :mfo_summa, value: f.object.mfo_summa || "0", readonly: true
         .field.short
           %label Доход Агента по ставке
           = s.number_field :agent_summa, value: f.object.agent_summa || "0"
@@ -39,10 +39,10 @@
       .field-horizontal.victory.hidden
         .field.short.offset-right
           %label Доход МФО при победе
-          = s.input_field :mfo_victory_summa, value: f.object.mfo_summa || "0", disabled: true
+          = s.input_field :mfo_victory_summa, value: f.object.mfo_summa || "0", readonly: true
         .field.short
           %label Доход Агента при победе
-          = s.input_field :agent_victory_summa, value: f.object.agent_summa || "0", disabled: true
+          = s.input_field :agent_victory_summa, value: f.object.agent_summa || "0", readonly: true
 
   - elsif current_user.is_client?
 
@@ -54,7 +54,7 @@
           = s.number_field :order_summa, value: f.object.summa || "0"
         .field.small
           %label Стоимость
-          = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0", disabled: true
+          = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0", readonly: true
       -#.field-horizontal
       -#  .field.short
       -#    %label Доход агента

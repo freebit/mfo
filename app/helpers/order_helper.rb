@@ -22,10 +22,12 @@ module OrderHelper
                   КрайнийСрокПредоставления: format_date_for_datetime(order.submission_deadline),
                   НомерМФО: nil,
                   НомерДатаПротокола: order.number_data_protocol,
-                  СуммаГарантийногоВзноса: order.summa,
+                  СуммаГарантийногоВзноса: order.dogovor_summa,
                   СуммаЗайма: order.summa,
                   ЭлектроннаяПлощадка: order.platform,
                   Тариф: order.tarif,
+                  ПредметКонтракта: order.contract_subject,
+                  НомерЛота: order.lot_number,
                   ЛицевойСчет: order.personal_number,
                   Заемщик:{
                             Тип: order.borrower.type_o,

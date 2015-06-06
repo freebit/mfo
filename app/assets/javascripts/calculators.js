@@ -130,6 +130,12 @@
             }else{
                 $('.victory').addClass('hidden');
             }
+
+            if(window.currentTarif.personal_number_flag) {
+                $('#personal-number').removeClass('hidden')
+            }else{
+                $('#personal-number').addClass('hidden')
+            }
         }
 
 
@@ -269,37 +275,38 @@
 
         //если есть список платформ
         if($('#order_platform_name').length){
-            var platform = $('#order_platform_name').val();
-            setClientTarif(platform)
+            setClientTarif()
         }
 
         //считаем при смене платформы или типа тарифа
-        $('#order_platform_name').on('change', function () {
+        $('#order_platform_name, #order_tarif_name').on('change', function () {
 
-            setClientTarif($(this).val());
+            setClientTarif();
+
+            if(window.currentTarif){
+                var client_rate = getRate();
+                calcValue(client_rate);
+            }
 
         });
 
         //считаем при смене суммы
         $('#service_order_summa').on('keyup, change', function (e) {
-            var client_rate = window.currentTarif.client_rate;
+            var client_rate = getRate();
             calcValue(client_rate);
         });
 
         function setClientTarif(platform) {
-            var platform = platform || $('#order_platform_name').val();
+            var platform = $('#order_platform_name').val(),
+                type = $('#order_tarif_name').val();
 
             for (var i = 0, ln = window.tarifs.length; i < ln; i++) {
-                if (window.tarifs[i].platform == platform) {
+                if (window.tarifs[i].platform == platform  && window.tarifs[i].type_t == type) {
                     window.currentTarif = window.tarifs[i];
                     break;
                 }
             }
 
-            if(window.currentTarif){
-                var client_rate = window.currentTarif.client_rate;
-                calcValue(client_rate);
-            }
         }
 
         function calcValue(rate){
@@ -308,8 +315,13 @@
 
             $('#service_dogovor_summa').val(value);
 
+            $('#order_tarif').val($('#order_tarif_name').val());
             $('#order_summa').val(summa);
             $('#order_dogovor_summa').val(value);
+        }
+
+        function getRate(){
+           return !!window.currentTarif.client_dop_rate ? window.currentTarif.client_dop_rate : window.currentTarif.client_rate;
         }
 
     }

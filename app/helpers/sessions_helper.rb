@@ -11,7 +11,9 @@ module SessionsHelper
     session.delete(:editkey)
 
     unless fetch_agent_data(user)
-      flash[:warning] = "Извините за задержку. Сервер не отвечает. Не удалось обновить данные."
+      flash[:warning] = "Извините за задержку. Сервер не отвечает. Не удалось получить тарифы."
+    else
+      flash[:success] = "Тарифы обновлены. Можно работать"
     end
 
   end
