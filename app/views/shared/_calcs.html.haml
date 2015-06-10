@@ -55,6 +55,10 @@
         .field.small
           %label Стоимость
           = s.input_field :dogovor_summa, value: f.object.dogovor_summa || "0", readonly: true
+        .field.small.victory.hidden
+          %label + победа
+          = s.input_field :dogovor_victory_summa, value: f.object.dogovor_summa || "0", readonly: true
+
       -#.field-horizontal
       -#  .field.short
       -#    %label Доход агента

@@ -37,8 +37,6 @@
         //считаем при смене ставки
         $('#service_order_rate').on('keyup, change', function (e) {
 
-            // if((e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode == 37 || e.keyCode == 8) return;
-
             var rate = parseFloat($(this).val(), 10 ) || 0,
                 summa = parseFloat($('#service_order_summa').val(), 10) || 0;
 
@@ -284,19 +282,17 @@
             setClientTarif();
 
             if(window.currentTarif){
-                var client_rate = getRate();
-                calcValue(client_rate);
+                calcValue();
             }
 
         });
 
         //считаем при смене суммы
         $('#service_order_summa').on('keyup, change', function (e) {
-            var client_rate = getRate();
-            calcValue(client_rate);
+            calcValue();
         });
 
-        function setClientTarif(platform) {
+        function setClientTarif() {
             var platform = $('#order_platform_name').val(),
                 type = $('#order_tarif_name').val();
 
@@ -307,22 +303,31 @@
                 }
             }
 
+            if(window.currentTarif.client_dop_rate){
+                $('.victory').removeClass('hidden');
+            }else{
+                $('.victory').addClass('hidden');
+            }
         }
 
-        function calcValue(rate){
+        function calcValue(){
             var summa = $('#service_order_summa').val(),
-                value = (summa / 100) * rate;
+                value = (summa / 100) * window.currentTarif.client_rate,
+                dop_value = 0;
+
+            if(window.currentTarif.client_dop_rate){
+                dop_value = (summa / 100) * window.currentTarif.client_dop_rate;
+            }
 
             $('#service_dogovor_summa').val(value);
+            $('#service_dogovor_victory_summa').val(dop_value);
 
             $('#order_tarif').val($('#order_tarif_name').val());
             $('#order_summa').val(summa);
             $('#order_dogovor_summa').val(value);
+
         }
 
-        function getRate(){
-           return !!window.currentTarif.client_dop_rate ? window.currentTarif.client_dop_rate : window.currentTarif.client_rate;
-        }
 
     }
 
