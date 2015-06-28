@@ -5,4 +5,6 @@ class Address < ActiveRecord::Base
 
   attr_accessor :_destroy
 
+  #validates :region, presence: true
+
 end

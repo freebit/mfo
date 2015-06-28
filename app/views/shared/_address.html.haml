@@ -5,7 +5,7 @@
     = a.error :indx
   .field
     %label Регион
-    = a.select(:region, Region.all.map{|region| [region.name, region.code, data:{code:region.code}]})
+    = a.select(:region, Region.all.map{|region| [region.name, region.code, data:{code:region.code}]}.push(["Укажите регион",""]).reverse)
     = a.error :region
 .field-horizontal
   .field
@@ -19,8 +19,8 @@
 .field-horizontal
   .field
     %label Тип улицы
-    = a.select(:street_code, StreetType.all.map{|type| [type.name, type.code, data:{code:type.code}]})
-    = a.error :region
+    = a.select(:street_code, StreetType.all.map{|type| [type.name, type.code, data:{code:type.code}]}.push(["Укажите тип улицы",""]).reverse)
+    = a.error :street_code
   .field
     %label Название улицы
     = a.input_field :street_name

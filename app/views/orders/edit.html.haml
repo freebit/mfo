@@ -70,6 +70,10 @@
             %label Номер лицевого счета
             = f.input_field :personal_number
             = f.error :personal_number
+          .field.hidden#number-mmvb
+            %label Номер заявки ММВБ
+            = f.input_field :number_mmvb
+            = f.error :number_mmvb
 
           .field.hidden
             %label Агент
@@ -120,7 +124,8 @@
           .field-group
             .field
               %label Укажите тип заемщика
-              = b.select :type_o, [['Юридическое лицо', 'ЮЛ'] ,['Индивидуальный предприниматель', 'ФЛ']]
+              = b.select :type_o, [['Выберите тип заемщика', ''],['Юридическое лицо', 'ЮЛ'] ,['Индивидуальный предприниматель', 'ФЛ']]
+              = b.error :type_o
 
           .field-group
             .field-horizontal
@@ -155,10 +160,19 @@
                 %label ОГРН
                 = b.input_field :ogrn
                 = b.error :ogrn
+            .field-horizontal
+              .field
+                %label Должность руководителя
+                = b.input_field :head_position
+                = b.error :head_position
+              .field
+                %label Телефон
+                = b.input_field :phone
+                = b.error :phone
             .field
-              %label Должность руководителя
-              = b.input_field :head_position
-              = b.error :head_position
+              %label Email
+              = b.input_field :email
+              = b.error :email
 
             .sub-group
               %h5.title Юридический адрес
@@ -334,8 +348,8 @@
             = s.hidden_field :send_mfo, value: false
             = s.hidden_field :edit_order_active_tab, value: params[:service] && params[:service][:edit_order_active_tab] ? params[:service][:edit_order_active_tab] : ""
 
-          - title = (session[:editkey].blank? || (current_user.present? && (current_user.is_admin? || current_user.is_agent?))) ? 'Сформировать ссылку' : 'Сохранить'
-          = submit_tag title, class:'btn btn-primary'
+          -# title = (session[:editkey].blank? || (current_user.present? && (current_user.is_admin? || current_user.is_agent?))) ? 'Сформировать ссылку' : 'Сохранить'
+          = submit_tag 'Сохранить', class:'btn btn-primary'
 
 
 %script

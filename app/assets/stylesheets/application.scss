@@ -166,6 +166,7 @@ main{
 .simple-list{
   position: relative;
   width:100%;
+  margin-top: 15px;
   border-collapse: collapse;
 
   caption{
@@ -203,6 +204,11 @@ main{
       font-weight: bolder;
     }
   }
+
+  &.orders tbody tr:first-child{
+    background-color: lighten(darkseagreen, 15%);
+  }
+
 }
 
 footer{

@@ -29,6 +29,7 @@ module OrderHelper
                   ПредметКонтракта: order.contract_subject,
                   НомерЛота: order.lot_number,
                   ЛицевойСчет: order.personal_number,
+                  НомерЗаявкиММВБ: order.number_mmvb,
                   Заемщик:{
                             Тип: order.borrower.type_o,
                             Наименование: order.borrower.name,
@@ -69,6 +70,8 @@ module OrderHelper
                             },
                             ДолжностьРуководителя:order.borrower.head_position,
                             ДатаГосРегистрации:format_date_for_datetime(order.borrower.reg_date),
+                            Телефон:order.borrower.phone,
+                            EMail: order.borrower.email,
                             ПерсональныеДанныеЗаявителя:{
                                 ФИО: order.borrower.person.fullname,
                                 ДатаРождения: format_date_for_datetime(order.borrower.person.birthday),

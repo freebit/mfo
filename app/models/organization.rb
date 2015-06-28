@@ -5,7 +5,7 @@ class Organization < ActiveRecord::Base
   attr_accessor :_destroy
   attr_accessor :skip_kpp_validation
 
-  attr_accessor :skip_validation
+  attr_accessor :skip_validation, :skip_kpp_validation
 
 
   has_one :person, class_name: 'Individual', dependent: :destroy
@@ -27,13 +27,13 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :address_legal, allow_destroy: true
   accepts_nested_attributes_for :address_actual, allow_destroy: true
 
-  validates :type_o, presence: true
+  validates :type_o, presence: true, unless: :skip_validation
 
   validates :inn, presence: true, unless: :skip_validation
-  validate :inn_length_validation
+  validate :inn_length_validation, unless: :skip_validation
 
-  validates :kpp, presence: true, unless: (:skip_kpp_validation || :skip_validation)
-  validate :kpp_length_validation, unless: :skip_kpp_validation
+  validates :kpp, presence: true, unless: (:skip_validation || :skip_kpp_validation)
+  validate :kpp_length_validation, unless: (:skip_validation || :skip_kpp_validation)
 
 
   validates :name, presence: true, unless: :skip_validation
@@ -57,7 +57,7 @@ class Organization < ActiveRecord::Base
 
     def kpp_length_validation
       if type_o == "ЮЛ"
-        errors.add(:kpp, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 9)) if kpp.length != 9
+        errors.add(:kpp, I18n.t('activerecord.errors.models.organization.attributes.inn.fail_length', count: 9)) if(kpp.length > 0 && kpp.length != 9)
       end
     end
 

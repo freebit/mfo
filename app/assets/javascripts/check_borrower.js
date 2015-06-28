@@ -27,6 +27,9 @@
             legal_addres = client['ЮридическийАдрес'],
             actual_addres = client['ФактическийАдрес'];
 
+        //console.log(client);
+        console.log(window.mfo.formatDate(client['ДатаГосРегистрации']));
+
         //организация
         //$('#order_borrower_attributes_type_o').val( data['Тип'] );
 
@@ -66,9 +69,18 @@
 
         //учредитель
         if(client['Учередители']) {
-            $('#order_borrower_attributes_founder_attributes_name').val(client['Учередители']['УчередительНаименование']);
-            $('#order_borrower_attributes_founder_attributes_pass_data_ogrn').val(client['Учередители']['ПаспортныеДанныеОГРН']);
-            $('#order_borrower_attributes_founder_attributes_share').val(client['Учередители']['Доля']);
+            $('#borrower .founders-list .item:not(:first)').remove();
+            var parent = $('#borrower .borrower-founders');
+
+            $('#order_borrower_attributes_borrower_founders_attributes_0_name').val(client['Учередители'][0]['УчередительНаименование']);
+            $('#order_borrower_attributes_borrower_founders_attributes_0_pass_data_ogrn').val(client['Учередители'][0]['ПаспортныеДанныеОГРН']);
+            $('#order_borrower_attributes_borrower_founders_attributes_0_share').val(client['Учередители'][0]['Доля']);
+
+            for(var i = 1,ln = client['Учередители'].length; i < ln; i++){
+                window.mfo.addFounder(parent, client['Учередители'][i]);
+            }
+
+            window.mfo.reindexFounders(parent);
         }
 
         //Банковский счет
@@ -89,6 +101,30 @@
             $('#order_borrower_attributes_person_attributes_reg_place').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']);
             $('#order_borrower_attributes_person_attributes_curr_place').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']);
 
+
+            //Адрес регистрации
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_indx').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['ПочтовыйИндекс']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_raion').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['Район']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_street_code').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['КодУлицы']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_region').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['Регион']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_punkt').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['НаселенныйПункт']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_street_name').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['Улица']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_house').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['НомерДома']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_corps').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['Корпус']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_building').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['Строение']);
+            $('#order_borrower_attributes_person_attributes_reg_place_attributes_apart_number').val(client['ПерсональныеДанныеЗаявителя']['АдресРегистрации']['НомерКвартиры']);
+
+            //Адрес пребывания
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_indx').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['ПочтовыйИндекс']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_raion').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['Район']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_street_code').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['КодУлицы']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_region').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['Регион']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_punkt').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['НаселенныйПункт']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_street_name').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['Улица']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_house').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['НомерДома']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_corps').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['Корпус']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_building').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['Строение']);
+            $('#order_borrower_attributes_person_attributes_curr_place_attributes_apart_number').val(client['ПерсональныеДанныеЗаявителя']['АдресМестаПребывания']['НомерКвартиры']);
 
             //Паспортные данные
             $('#order_borrower_attributes_person_attributes_pass_serial_number').val(client['ПерсональныеДанныеЗаявителя']['СерияНомерПаспорта']);

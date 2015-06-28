@@ -40,6 +40,8 @@ ru:
               blank: "Должен быть прикреплен хотя бы один документ"
         organization:
           attributes:
+            type_o:
+              blank: "Укажите тип заемщика"
             name:
               blank: "Поле не может быть пустым"
             fullname:
@@ -79,3 +81,6 @@ ru:
               blank: "Поле не может быть пустым"
             pass_issue_date:
               blank: "Поле не может быть пустым"
+        address_legal:
+          attributes:
+            region: "Укажите регион"

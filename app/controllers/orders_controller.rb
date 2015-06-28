@@ -5,14 +5,14 @@ class OrdersController < ApplicationController
   #before_action :user_is_admin, only:[:index, :new]
 
   @EDIT_KEY = "editKey"
-  TARIFS = Tarif.select("type_t, platform, rate, dop_rate, client_rate, client_dop_rate, minimum", "personal_number_flag").all
+  TARIFS = Tarif.select("type_t, platform, rate, dop_rate, client_rate, client_dop_rate, minimum, personal_number_flag").all
 
   def index
     @title = "История заявок"
 
     @tarifs = TARIFS
 
-    @orders = Order.where(agent:current_user.email, status: "На заполнении")
+    @orders = Order.where(agent:current_user.email, status: "На заполнении").order(:updated_at).reverse_order
 
   end
 
@@ -296,13 +296,13 @@ class OrdersController < ApplicationController
     def order_params
 
       address_attributes = [:id, :indx, :region, :raion, :punkt, :street_code, :street_name, :house, :corps, :building, :apart_number, :_destroy]
-      organization_attributes = [:id, :type_o, :inn, :kpp, :name, :fullname, :ogrn, :head_position, :reg_date, :_destroy, address_legal_attributes: address_attributes, address_actual_attributes: address_attributes]
+      organization_attributes = [:id, :type_o, :inn, :kpp, :name, :fullname, :ogrn, :head_position, :phone, :email, :reg_date, :_destroy, address_legal_attributes: address_attributes, address_actual_attributes: address_attributes]
       person_attributes = [:id, :fullname, :birthday, :citizenship, :phone, :email, :pass_serial_number, :pass_issued, :pass_issued_code, :pass_issue_date, :old_pass_serial_number, :old_pass_issued, :old_pass_issued_code, :old_pass_issue_date, :_destroy, :birth_place, reg_place_attributes: address_attributes, curr_place_attributes: address_attributes]
       bank_attributes = [:id, :bik, :korr_number, :inn, :name, :city, :address, :_destroy]
 
       params.require(:order).permit(:summa, :platform, :tarif, :base_rate, :submission_deadline, :agent, :agent_name,
                                     :agent_summa, :mfo_summa, :dogovor_summa, :number, :number_mfo,
-                                    :number_data_protocol, :contract_subject, :lot_number, :personal_number, :create_date, :updated_at, :status,
+                                    :number_data_protocol, :contract_subject, :lot_number, :personal_number, :number_mmvb, :create_date, :updated_at, :status,
 
                                     borrower_attributes:[
                                         organization_attributes,

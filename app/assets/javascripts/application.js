@@ -23,6 +23,7 @@ window.mfo = {
 
         maxGuarantors_individual: 1
         ,maxGuarantors_legal: 1
+        ,mfo_margin: 10
     }
 
     ,formatDate: function(src){
@@ -31,7 +32,53 @@ window.mfo = {
             m = date.getMonth() + 1,
             d = date.getDate();
 
+        y = y == 1 ? '0001' : y;
+
         return y + "-" + (m >= 10 ? m : "0" + m) + "-" + (d >= 10 ? d : "0" + d)
+    }
+
+    ,addFounder: function(parent, data){
+        var  block = $('.founders-list .item:last', parent),
+            new_founder = undefined;
+
+        block.find("input[name$='[_destroy]']").val('false');
+
+
+        if(block.hasClass('hidden') && !block.hasClass('deleted')){
+            block.removeClass('hidden');
+            new_founder = block;
+        }else {
+            new_founder = block.clone();
+            $('input', new_founder).removeClass('wait-data').val('');
+            new_founder.removeClass('hidden deleted');
+
+            $('.founders-list', parent).append(new_founder);
+        }
+
+        $('[id$=name]',new_founder).val(data['УчередительНаименование']);
+        $('[id$=share]',new_founder).val(data['Доля']);
+        $('[id$=pass_data_ogrn]',new_founder).val(data['ПаспортныеДанныеОГРН']);
+
+    }
+
+    ,reindexFounders: function(parent){
+        $('.founders-list .item', parent).each(function(i){
+
+            $('select,input', $(this)).attr('name', function(){
+                return $(this).attr('name').replace(/\d(?!.*\d)/, i);
+            })
+            .attr('id', function(){
+                return $(this).attr('id').replace(/\d(?!.*\d)/, i);
+            });
+
+        });
+
+        $('.founders-list .item:not(.hidden)', parent).each(function(i){
+
+            $('.title span:first', $(this)).text(function(){
+                return $(this).text().replace(/\d{1,10}/, i+1);
+            });
+        });
     }
 
     ,clearFields: function(parent) {

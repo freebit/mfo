@@ -21,9 +21,9 @@ module UsersHelper
                   rate:                 tarif[:Ставка],
                   dop_rate:             tarif[:СтавкаДополнительная],
                   client_rate:          tarif[:СтавкаКонечника],
-                  client_dop_rate:      tarif[:СтавкаКонечникаДополнительная],
                   minimum:              tarif[:Минималка],
-                  personal_number_flag: tarif[:ЕстьЛицевойСчет]
+                  personal_number_flag: tarif[:ЕстьЛицевойСчет],
+                  client_dop_rate:      tarif[:СтавкаКонечникаДополнительная]
 
       end
 

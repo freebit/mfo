@@ -16,6 +16,7 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :guarantor_individuals, allow_destroy: true
   accepts_nested_attributes_for :documents, allow_destroy: true
 
+  validates_associated :borrower
   validates_associated :guarantor_legals
   validates_associated :guarantor_legals
 

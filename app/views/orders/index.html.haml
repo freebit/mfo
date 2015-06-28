@@ -1,10 +1,12 @@
 - if @orders.any?
-  %table.simple-list
+  %table.simple-list.orders
+    %caption Заявки на редактировании
     %thead
       %tr
         %th Дата создания
         %th Дата обновления
         %th Платформа
+        %th ИНН
         %th Сумма займа
 
         - unless current_user.is_client?
@@ -18,6 +20,7 @@
         %th Статус
         - unless current_user.is_client?
           %th Ссылка для клиента
+
         %th &nbsp;
         %th &nbsp;
     %tbody
@@ -29,6 +32,8 @@
             = order.updated_at.to_formatted_s(:long)
           %td
             = order.platform
+          %td
+            = order.borrower.inn
           %td
             = order.summa
           %td

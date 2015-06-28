@@ -2,9 +2,9 @@
   = f.fields_for :platform do |p|
     .field
       %label Площадка
-      = p.select(:name, Tarif.uniq.pluck(:platform).map {|platform| [platform, platform, data:{number:platform}]}, selected:f.object.platform)
+      = p.select(:name,  Tarif.uniq.pluck(:platform).map { |platform| [platform, platform, data:{number:platform}] }.push(["Выберите платформу",""]).reverse, selected:f.object.platform)
   - class_name = current_user.is_client? ? 'small' : 'short'
   = f.fields_for :tarif do |t|
     .field{class:"#{class_name}"}
       %label Тариф
-      = t.select(:name, Tarif.uniq.pluck(:type_t).map {|platform| [platform, platform, data:{number:platform}]}, selected:f.object.tarif)
+      = t.select(:name, Tarif.uniq.pluck(:type_t).map { |platform| [platform, platform, data:{number:platform}] }.push(["Выберите тариф",""]).reverse, selected:f.object.tarif)
