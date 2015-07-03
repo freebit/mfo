@@ -151,10 +151,28 @@
 
     $("[data-targetform=check-borrower]").on('click', function(){
 
-        //console.log('chec b');
+        var borrower_type = $('#order_borrower_attributes_type_o').val(),
+            inn = $('#order_borrower_attributes_inn').val(),
+            kpp = $('#order_borrower_attributes_kpp').val();
+            error_message = undefined;
 
-        $('[name=inn]', targetForm).val( $('#order_borrower_attributes_inn').val() );
-        $('[name=kpp]', targetForm).val( $('#order_borrower_attributes_kpp').val() );
+        if(!borrower_type){
+            error_message = "Укажите тип заемщика";
+
+        }else if((borrower_type == 'ЮЛ') && (!inn || !kpp)){
+            error_message = "Укажите ИНН и КПП";
+        }else if((borrower_type == 'ФЛ') && !inn){
+            error_message = "Укажите ИНН";
+        }
+
+        if(error_message){
+            alert(error_message);
+            return;
+        }
+
+
+        $('[name=inn]', targetForm).val( inn );
+        $('[name=kpp]', targetForm).val( kpp );
 
         $('#borrower-indicator').text('').removeClass('message').removeClass('hidden');
 
